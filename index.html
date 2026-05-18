@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Groundwork Model v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Jost:wght@200;300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #18140f;
+    --paper: #f7f2ea;
+    --warm: #b8924a;
+    --accent: #b84a2a;
+    --muted: #7a7060;
+    --light: #e5ddd0;
+    --green: #2e5e3a;
+    --blue: #1e3d5c;
+    --teal: #1e5c4f;
+    --sand: #ede5d4;
+    --charcoal: #2a2520;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: var(--charcoal);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: 50px;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-weight: 600;
+    color: var(--paper); letter-spacing: 0.04em;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .nav-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.12em;
+    background: var(--accent); color: white;
+    padding: 0.2rem 0.5rem; text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex; gap: 1.75rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .nav-links a {
+    color: rgba(247,242,234,0.55); text-decoration: none;
+    transition: color 0.2s; cursor: pointer;
+  }
+  .nav-links a:hover { color: var(--paper); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--charcoal);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+    padding-top: 50px;
+  }
+  .hero-left {
+    padding: 6rem 3rem 6rem 5rem;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; z-index: 2;
+  }
+  .hero-right {
+    position: relative;
+    background: linear-gradient(135deg, #1e1a14 0%, #2a2218 50%, #1a1610 100%);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hero-grid-decoration {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(184,146,74,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(184,146,74,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .hero-circle {
+    width: 320px; height: 320px;
+    border: 1px solid rgba(184,146,74,0.2);
+    border-radius: 50%;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-circle::before {
+    content: '';
+    position: absolute;
+    width: 260px; height: 260px;
+    border: 1px solid rgba(184,146,74,0.15);
+    border-radius: 50%;
+  }
+  .hero-circle::after {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    border: 1px solid rgba(184,146,74,0.1);
+    border-radius: 50%;
+  }
+  .hero-circle-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--warm);
+    text-align: center; line-height: 2;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6vw, 6.5rem);
+    font-weight: 700; line-height: 0.92;
+    color: var(--paper); letter-spacing: -0.01em;
+    opacity: 0; animation: fadeUp 0.7s 0.4s forwards;
+  }
+  .hero h1 em { font-style: italic; color: var(--warm); }
+  .hero-desc {
+    margin-top: 2rem;
+    font-size: 0.95rem; color: rgba(247,242,234,0.55);
+    max-width: 42ch; line-height: 1.8;
+    opacity: 0; animation: fadeUp 0.7s 0.6s forwards;
+  }
+  .hero-stats {
+    margin-top: 3rem;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1px; background: rgba(247,242,234,0.08);
+    border: 1px solid rgba(247,242,234,0.08);
+    opacity: 0; animation: fadeUp 0.7s 0.8s forwards;
+  }
+  .hero-stat {
+    padding: 1.25rem 1rem;
+    background: rgba(247,242,234,0.02);
+  }
+  .hero-stat .n {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 700; color: var(--warm);
+    line-height: 1;
+  }
+  .hero-stat .l {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(247,242,234,0.35);
+    margin-top: 0.35rem;
+  }
+  .hero-tags {
+    margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 0.4rem;
+    opacity: 0; animation: fadeUp 0.7s 1s forwards;
+  }
+  .htag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid rgba(46,94,58,0.6); color: rgba(100,200,130,0.7);
+  }
+
+  /* ── SHARED SECTION STYLES ── */
+  .section-wrap { max-width: 1140px; margin: 0 auto; padding: 6rem 4rem; }
+  .section-wrap.full { max-width: 100%; padding: 6rem 4rem; }
+  .sec-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.75rem;
+  }
+  .sec-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    font-weight: 700; line-height: 1.05;
+    margin-bottom: 1.25rem;
+  }
+  .sec-lead {
+    font-size: 1rem; color: var(--muted);
+    max-width: 58ch; line-height: 1.8;
+    border-left: 2px solid var(--warm);
+    padding-left: 1.25rem;
+    margin-bottom: 3.5rem;
+  }
+  hr.div { border: none; border-top: 1px solid var(--light); max-width: 1140px; margin: 0 auto; }
+
+  /* ── PHYSICAL ACTIVITY SECTION ── */
+  .pa-section { background: var(--charcoal); }
+  .pa-section .sec-title { color: var(--paper); }
+  .pa-section .sec-lead { color: rgba(247,242,234,0.55); border-left-color: var(--warm); }
+  .pa-section .sec-eyebrow { color: var(--warm); }
+
+  .pa-spectrum {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(247,242,234,0.06);
+    border: 1px solid rgba(247,242,234,0.06);
+    margin-bottom: 3rem;
+  }
+  .pa-card {
+    background: rgba(247,242,234,0.02);
+    padding: 2.5rem 2rem;
+    transition: background 0.2s;
+  }
+  .pa-card:hover { background: rgba(247,242,234,0.05); }
+  .pa-card .pa-icon {
+    font-size: 2rem; margin-bottom: 1rem;
+  }
+  .pa-card .pa-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 0.5rem;
+  }
+  .pa-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem; font-weight: 700;
+    color: var(--paper); margin-bottom: 0.75rem; line-height: 1.2;
+  }
+  .pa-card p { font-size: 0.82rem; color: rgba(247,242,234,0.55); line-height: 1.65; }
+  .pa-card .pa-evidence {
+    margin-top: 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.08em;
+    color: var(--accent); text-transform: uppercase;
+  }
+  .pa-card .pa-spec {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(247,242,234,0.08);
+  }
+  .pa-card .pa-spec li {
+    font-size: 0.78rem; color: rgba(247,242,234,0.45);
+    margin-bottom: 0.3rem; padding-left: 0.75rem; position: relative;
+    list-style: none;
+  }
+  .pa-card .pa-spec li::before {
+    content: '→'; position: absolute; left: 0;
+    color: var(--warm); font-size: 0.7rem;
+  }
+
+  .pa-mechanisms {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 1px; background: rgba(247,242,234,0.06);
+    border: 1px solid rgba(247,242,234,0.06);
+  }
+  .mech-card {
+    background: rgba(247,242,234,0.02);
+    padding: 1.75rem 1.5rem;
+  }
+  .mech-card .mech-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 700;
+    color: rgba(184,146,74,0.2); line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .mech-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-weight: 600;
+    color: var(--paper); margin-bottom: 0.5rem;
+  }
+  .mech-card p { font-size: 0.75rem; color: rgba(247,242,234,0.45); line-height: 1.55; }
+
+  /* ── DAILY MOVEMENT BLUEPRINT ── */
+  .move-blueprint {
+    display: grid; grid-template-columns: 1fr 2fr; gap: 1px;
+    background: var(--light); border: 1px solid var(--light);
+    margin-top: 3rem;
+  }
+  .move-sidebar {
+    background: var(--ink); color: var(--paper);
+    padding: 2.5rem 2rem;
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .move-sidebar .move-total {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem; font-weight: 700;
+    color: var(--warm); line-height: 1;
+  }
+  .move-sidebar .move-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.1em;
+    color: rgba(247,242,234,0.4); text-transform: uppercase;
+    margin-top: -0.5rem;
+  }
+  .move-sidebar p { font-size: 0.8rem; color: rgba(247,242,234,0.5); line-height: 1.65; }
+  .move-breakdown { background: var(--paper); padding: 2.5rem; }
+  .move-row {
+    display: grid; grid-template-columns: 140px 60px 1fr;
+    align-items: center; gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--light);
+  }
+  .move-row:last-child { border-bottom: none; }
+  .move-row .move-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-weight: 600;
+  }
+  .move-row .move-mins {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; color: var(--warm); font-weight: 500;
+  }
+  .move-row .move-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .move-bar-wrap { margin-top: 0.4rem; height: 3px; background: var(--light); border-radius: 2px; }
+  .move-bar { height: 3px; background: var(--warm); border-radius: 2px; }
+
+  /* ── INSTRUCTION MODEL ── */
+  .instr-section { background: var(--sand); }
+  .instr-stack {
+    display: flex; flex-direction: column; gap: 1px;
+    margin-top: 3rem;
+  }
+  .instr-layer {
+    display: grid; grid-template-columns: 220px 1fr 200px;
+    gap: 0;
+    border: 1px solid var(--light);
+  }
+  .instr-layer + .instr-layer { border-top: none; }
+  .instr-label {
+    padding: 2.25rem 2rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .instr-label .phase-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .instr-label h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 700; line-height: 1.2;
+  }
+  .instr-label p { font-size: 0.78rem; color: var(--muted); margin-top: 0.4rem; }
+  .instr-content {
+    border-left: 1px solid var(--light);
+    padding: 2.25rem 2.5rem;
+    background: var(--paper);
+  }
+  .instr-content p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.75rem; }
+  .instr-content p:last-child { margin-bottom: 0; }
+  .instr-content strong { color: var(--ink); font-weight: 500; }
+  .instr-metrics {
+    border-left: 1px solid var(--light);
+    padding: 2.25rem 1.75rem;
+    background: var(--paper);
+    display: flex; flex-direction: column; justify-content: center; gap: 1rem;
+  }
+  .instr-metric .metric-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.75rem; font-weight: 700; color: var(--ink);
+    line-height: 1;
+  }
+  .instr-metric .metric-lbl {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin-top: 0.15rem;
+  }
+
+  /* ── TIMING & BLOCKS ── */
+  .timing-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;
+    margin-top: 3rem;
+  }
+  .timing-card { border-top: 3px solid var(--ink); padding-top: 1.5rem; }
+  .timing-card .t-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+  .timing-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 700; margin-bottom: 0.75rem;
+  }
+  .timing-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+  .timing-rule {
+    margin-top: 1rem; padding: 0.75rem 1rem;
+    background: var(--sand);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.06em;
+    color: var(--ink); line-height: 1.5;
+  }
+
+  /* ── ENVIRONMENT ── */
+  .env-section { background: var(--ink); }
+  .env-section .sec-title { color: var(--paper); }
+  .env-section .sec-lead { color: rgba(247,242,234,0.55); border-left-color: var(--accent); }
+  .env-section .sec-eyebrow { color: var(--warm); }
+
+  .env-floor-plan {
+    margin-top: 3rem;
+    border: 1px solid rgba(247,242,234,0.08);
+    padding: 3rem;
+    position: relative;
+  }
+  .env-floor-plan::before {
+    content: 'STUDIO FLOOR PLAN — RESEARCH-BASED ENVIRONMENT DESIGN';
+    position: absolute; top: -0.6rem; left: 2rem;
+    background: var(--ink); padding: 0 0.75rem;
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.12em; color: var(--warm);
+  }
+
+  .env-zones {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1px;
+    background: rgba(247,242,234,0.06);
+  }
+  .env-zone {
+    padding: 2rem;
+    background: rgba(247,242,234,0.02);
+    transition: background 0.2s;
+  }
+  .env-zone:hover { background: rgba(247,242,234,0.05); }
+  .env-zone.large { grid-row: span 2; }
+  .env-zone .zone-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 0.5rem;
+  }
+  .env-zone h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--paper); margin-bottom: 0.5rem;
+  }
+  .env-zone p { font-size: 0.78rem; color: rgba(247,242,234,0.5); line-height: 1.6; }
+  .env-zone .zone-features {
+    margin-top: 0.75rem; list-style: none;
+  }
+  .env-zone .zone-features li {
+    font-size: 0.72rem; color: rgba(247,242,234,0.35);
+    padding-left: 0.75rem; position: relative; margin-bottom: 0.25rem;
+  }
+  .env-zone .zone-features li::before {
+    content: '·'; position: absolute; left: 0; color: var(--warm);
+  }
+  .env-zone .cite {
+    margin-top: 0.75rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.06em;
+    color: rgba(184,146,74,0.5); text-transform: uppercase;
+  }
+
+  .seating-spectrum {
+    margin-top: 2rem;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px;
+    background: rgba(247,242,234,0.06);
+    border: 1px solid rgba(247,242,234,0.06);
+  }
+  .seat-card {
+    background: rgba(247,242,234,0.02);
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+  }
+  .seat-card .seat-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+  .seat-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--paper); margin-bottom: 0.3rem;
+  }
+  .seat-card p { font-size: 0.7rem; color: rgba(247,242,234,0.4); line-height: 1.5; }
+  .seat-card .best-for {
+    margin-top: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.06em;
+    color: var(--warm); text-transform: uppercase;
+  }
+
+  /* ── FULL DAY ── */
+  .day-section { background: var(--sand); }
+  .day-phase-tabs {
+    display: flex; gap: 1px; margin-bottom: 3rem;
+    background: var(--light); border: 1px solid var(--light);
+  }
+  .day-tab {
+    flex: 1; padding: 1rem;
+    background: var(--paper); text-align: center;
+    cursor: pointer; transition: background 0.2s;
+    border: none; font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .day-tab.active { background: var(--ink); color: var(--warm); }
+  .day-tab:hover:not(.active) { background: var(--sand); }
+
+  .day-content { display: none; }
+  .day-content.active { display: block; }
+
+  .day-timeline { display: flex; flex-direction: column; gap: 1px; }
+  .day-block {
+    display: grid; grid-template-columns: 110px 90px 1fr 200px;
+    gap: 0; border: 1px solid var(--light);
+  }
+  .day-block + .day-block { border-top: none; }
+  .day-time {
+    background: var(--paper); padding: 1.5rem 1.25rem;
+    display: flex; align-items: center; justify-content: center;
+    border-right: 1px solid var(--light);
+  }
+  .day-time span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.08em; color: var(--muted); text-align: center;
+  }
+  .day-type {
+    padding: 1.5rem 1rem;
+    display: flex; align-items: center; justify-content: center;
+    border-right: 1px solid var(--light);
+    background: var(--paper);
+  }
+  .day-type span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase;
+    text-align: center; line-height: 1.6;
+  }
+  .day-main {
+    padding: 1.5rem 2rem; background: var(--paper);
+    border-right: 1px solid var(--light);
+  }
+  .day-main h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 0.3rem;
+  }
+  .day-main p { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+  .day-why {
+    padding: 1.5rem 1.25rem; background: var(--paper);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .day-why .why-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 0.35rem;
+  }
+  .day-why p { font-size: 0.72rem; color: var(--muted); line-height: 1.55; }
+  .day-block.anchor .day-time { background: var(--ink); }
+  .day-block.anchor .day-time span { color: var(--warm); }
+  .day-block.anchor .day-type { background: var(--ink); }
+  .day-block.anchor .day-type span { color: rgba(247,242,234,0.5); }
+  .day-block.anchor .day-main { background: var(--ink); }
+  .day-block.anchor .day-main h4 { color: var(--paper); }
+  .day-block.anchor .day-main p { color: rgba(247,242,234,0.5); }
+  .day-block.anchor .day-why { background: var(--ink); }
+  .day-block.anchor .day-why .why-label { color: var(--warm); }
+  .day-block.anchor .day-why p { color: rgba(247,242,234,0.4); }
+  .day-block.movement .day-type span { color: var(--green); }
+  .day-block.movement .day-main h4 { color: var(--green); }
+
+  /* ── PHASES ── */
+  .phases-section { }
+  .phase-row {
+    display: grid; grid-template-columns: 180px 1fr;
+    gap: 0; border: 1px solid var(--light);
+    margin-bottom: -1px;
+  }
+  .phase-id {
+    background: var(--ink); color: var(--paper);
+    padding: 3rem 2rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .phase-id .age {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 0.5rem;
+  }
+  .phase-id h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 700; line-height: 1.15;
+  }
+  .phase-body {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    background: var(--light);
+  }
+  .phase-col { background: var(--paper); padding: 2.5rem; }
+  .phase-col + .phase-col { border-left: 1px solid var(--light); }
+  .phase-col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1rem;
+  }
+  .phase-col p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.75rem; }
+  .phase-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+  .ptag {
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.3rem 0.65rem; border: 1px solid var(--light); color: var(--muted);
+  }
+  .ptag.g { border-color: var(--green); color: var(--green); }
+  .ptag.b { border-color: var(--blue); color: var(--blue); }
+  .ptag.r { border-color: var(--accent); color: var(--accent); }
+  .ptag.t { border-color: var(--teal); color: var(--teal); }
+
+  /* ── ASSESSMENT ── */
+  .assess-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem;
+    margin-top: 3rem;
+  }
+  .assess-card { border-top: 3px solid var(--accent); padding-top: 1.5rem; }
+  .assess-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem;
+  }
+  .assess-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.7; }
+  .assess-card ul { margin-top: 1rem; padding-left: 0; list-style: none; }
+  .assess-card ul li {
+    font-size: 0.78rem; color: var(--muted); margin-bottom: 0.35rem;
+    padding-left: 0.85rem; position: relative;
+  }
+  .assess-card ul li::before {
+    content: '→'; position: absolute; left: 0; color: var(--warm); font-size: 0.7rem;
+  }
+
+  /* ── EVIDENCE WALL ── */
+  .evidence-section { background: var(--charcoal); }
+  .evidence-section .sec-title { color: var(--paper); }
+  .evidence-section .sec-eyebrow { color: var(--warm); }
+  .evidence-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: rgba(247,242,234,0.05);
+    border: 1px solid rgba(247,242,234,0.05);
+    margin-top: 3rem;
+  }
+  .ev-item {
+    background: rgba(247,242,234,0.02);
+    padding: 2rem 2.5rem;
+    display: grid; grid-template-columns: 1fr 90px;
+    gap: 2rem; align-items: center;
+    transition: background 0.2s;
+  }
+  .ev-item:hover { background: rgba(247,242,234,0.04); }
+  .ev-item h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem; font-weight: 600;
+    color: var(--paper); margin-bottom: 0.4rem;
+  }
+  .ev-item p { font-size: 0.78rem; color: rgba(247,242,234,0.5); line-height: 1.6; }
+  .ev-item .study { font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 0.08em; color: var(--warm); text-transform: uppercase; margin-top: 0.5rem; }
+  .ev-stat {
+    text-align: center; border-left: 1px solid rgba(247,242,234,0.06);
+    padding-left: 2rem;
+  }
+  .ev-stat .big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--warm); line-height: 1;
+  }
+  .ev-stat .small {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(247,242,234,0.3); margin-top: 0.3rem; line-height: 1.4;
+  }
+
+  /* ── FAMILY PARTNERSHIP ── */
+  .family-section { background: var(--sand); }
+
+  .works-vs-doesnt {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--light); border: 1px solid var(--light);
+    margin-bottom: 3.5rem;
+  }
+  .works-col { background: var(--paper); padding: 2.5rem; }
+  .works-col .col-header {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 1.5rem; padding-bottom: 0.75rem;
+    border-bottom: 2px solid;
+  }
+  .works-col.yes .col-header { color: var(--green); border-color: var(--green); }
+  .works-col.no .col-header { color: var(--accent); border-color: var(--accent); }
+  .works-item {
+    display: grid; grid-template-columns: 20px 1fr; gap: 0.75rem;
+    margin-bottom: 1.25rem; align-items: start;
+  }
+  .works-item .wi-icon { font-size: 0.85rem; margin-top: 0.1rem; }
+  .works-item h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem;
+  }
+  .works-item p { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+  .works-item .effect {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+  .works-col.yes .effect { color: var(--green); }
+  .works-col.no .effect { color: var(--accent); }
+
+  .six-standards {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--light); border: 1px solid var(--light);
+    margin-bottom: 3.5rem;
+  }
+  .standard-card {
+    background: var(--paper); padding: 2rem 1.75rem;
+    transition: background 0.2s;
+  }
+  .standard-card:hover { background: #e8e0cf; }
+  .standard-card .std-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem; font-weight: 700;
+    color: var(--light); line-height: 1; margin-bottom: 0.4rem;
+  }
+  .standard-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 0.6rem;
+  }
+  .standard-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
+  .standard-card .how {
+    margin-top: 1rem; padding-top: 1rem;
+    border-top: 1px solid var(--light);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.06em;
+    color: var(--ink); line-height: 1.7;
+  }
+  .standard-card .how strong {
+    color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em;
+  }
+
+  .family-by-phase {
+    display: flex; flex-direction: column; gap: 1px;
+    margin-bottom: 3.5rem;
+  }
+  .fbp-row {
+    display: grid; grid-template-columns: 160px 1fr 1fr; gap: 0;
+    border: 1px solid var(--light);
+  }
+  .fbp-row + .fbp-row { border-top: none; }
+  .fbp-phase {
+    background: var(--ink); color: var(--paper);
+    padding: 2rem 1.75rem;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .fbp-phase .fp-age {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 0.4rem;
+  }
+  .fbp-phase h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 700;
+  }
+  .fbp-col {
+    background: var(--paper); padding: 2rem 2.25rem;
+  }
+  .fbp-col + .fbp-col { border-left: 1px solid var(--light); }
+  .fbp-col-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.75rem;
+  }
+  .fbp-col ul { list-style: none; }
+  .fbp-col ul li {
+    font-size: 0.8rem; color: var(--muted);
+    padding-left: 0.85rem; position: relative;
+    margin-bottom: 0.4rem; line-height: 1.55;
+  }
+  .fbp-col ul li::before {
+    content: '→'; position: absolute; left: 0;
+    color: var(--warm); font-size: 0.7rem;
+  }
+
+  .family-calendar {
+    background: var(--ink);
+    padding: 3rem;
+    border: 1px solid rgba(247,242,234,0.06);
+  }
+  .family-calendar .cal-header {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 2rem;
+  }
+  .cal-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: rgba(247,242,234,0.05);
+    border: 1px solid rgba(247,242,234,0.05);
+  }
+  .cal-item {
+    background: rgba(247,242,234,0.02);
+    padding: 1.5rem 1.25rem;
+  }
+  .cal-item .cal-freq {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--warm); margin-bottom: 0.4rem;
+  }
+  .cal-item h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--paper); margin-bottom: 0.4rem;
+  }
+  .cal-item p { font-size: 0.75rem; color: rgba(247,242,234,0.45); line-height: 1.6; }
+
+  @media (max-width: 900px) {
+    .works-vs-doesnt { grid-template-columns: 1fr; }
+    .six-standards { grid-template-columns: 1fr; }
+    .fbp-row { grid-template-columns: 1fr; }
+    .fbp-col + .fbp-col { border-left: none; border-top: 1px solid var(--light); }
+    .cal-grid { grid-template-columns: 1fr 1fr; }
+  }
+  footer { background: var(--ink); padding: 4rem; }
+  .footer-inner {
+    max-width: 1140px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .footer-left h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--paper); margin-bottom: 0.5rem;
+  }
+  .footer-left p { font-size: 0.82rem; color: rgba(247,242,234,0.35); }
+  .footer-right {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(247,242,234,0.25); text-align: right; line-height: 2;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 5rem 2rem 3rem; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .pa-spectrum { grid-template-columns: 1fr; }
+    .pa-mechanisms { grid-template-columns: 1fr 1fr; }
+    .section-wrap { padding: 4rem 1.5rem; }
+    .section-wrap.full { padding: 4rem 1.5rem; }
+    .instr-layer { grid-template-columns: 1fr; }
+    .instr-metrics { border-left: none; border-top: 1px solid var(--light); }
+    .timing-grid { grid-template-columns: 1fr; }
+    .env-zones { grid-template-columns: 1fr; }
+    .env-zone.large { grid-row: span 1; }
+    .seating-spectrum { grid-template-columns: 1fr 1fr; }
+    .day-block { grid-template-columns: 90px 1fr; }
+    .day-type, .day-why { display: none; }
+    .phase-body { grid-template-columns: 1fr; }
+    .phase-col + .phase-col { border-left: none; border-top: 1px solid var(--light); }
+    .assess-grid { grid-template-columns: 1fr; }
+    .evidence-grid { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+    .move-blueprint { grid-template-columns: 1fr; }
+    .move-row { grid-template-columns: 1fr 60px; }
+    .move-row .move-desc { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    The Groundwork
+    <span class="nav-badge">v3</span>
+  </div>
+  <div class="nav-links">
+    <a onclick="document.getElementById('movement').scrollIntoView({behavior:'smooth'})">Movement</a>
+    <a onclick="document.getElementById('instruction').scrollIntoView({behavior:'smooth'})">Instruction</a>
+    <a onclick="document.getElementById('environment').scrollIntoView({behavior:'smooth'})">Environment</a>
+    <a onclick="document.getElementById('day').scrollIntoView({behavior:'smooth'})">The Day</a>
+    <a onclick="document.getElementById('phases').scrollIntoView({behavior:'smooth'})">Phases</a>
+    <a onclick="document.getElementById('family').scrollIntoView({behavior:'smooth'})">Family</a>
+    <a onclick="document.getElementById('assessment').scrollIntoView({behavior:'smooth'})">Assessment</a>
+    <a onclick="document.getElementById('evidence').scrollIntoView({behavior:'smooth'})">Evidence</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Research-Backed K–12 School Model · Version 3</div>
+    <h1>The Ground<em>work</em><br>Model</h1>
+    <p class="hero-desc">Every hour of the day, every inch of the environment, every minute of instruction — designed from the ground up by research. Version 3 fully integrates the physical activity program, instruction method science, and environment design research.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="n">13</div>
+        <div class="l">Research Domains</div>
+      </div>
+      <div class="hero-stat">
+        <div class="n">50+</div>
+        <div class="l">Studies Referenced</div>
+      </div>
+      <div class="hero-stat">
+        <div class="n">90+</div>
+        <div class="l">Min Movement Daily</div>
+      </div>
+      <div class="hero-stat">
+        <div class="n">0</div>
+        <div class="l">Sacred Assumptions</div>
+      </div>
+    </div>
+    <div class="hero-tags">
+      <span class="htag">+ Full movement program</span>
+      <span class="htag">+ Research-timed instruction blocks</span>
+      <span class="htag">+ Environment design spec</span>
+      <span class="htag">+ Seating science</span>
+      <span class="htag">+ Phase-specific daily schedules</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-grid-decoration"></div>
+    <div class="hero-circle">
+      <div class="hero-circle-text">
+        Character<br>Problem Solving<br>Communication<br>Creation<br>Self-Direction
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHYSICAL ACTIVITY -->
+<div class="pa-section" id="movement">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">02 — The Movement Program</div>
+    <h2 class="sec-title" style="color:var(--paper)">Physical Activity<br>Is Academic Infrastructure</h2>
+    <p class="sec-lead">The research is unambiguous: movement isn't a break from learning — it is the mechanism that makes learning possible. The Groundwork Model treats physical activity as a core academic requirement, not a reward or recess.</p>
+
+    <div class="pa-spectrum">
+      <div class="pa-card">
+        <div class="pa-icon">🏃</div>
+        <div class="pa-type">Type 1 · Aerobic</div>
+        <h3>Sustained Cardio Movement</h3>
+        <p>Running, cycling, swimming, vigorous play, and team sports. The strongest evidence base for academic gains — specifically math and overall achievement. Triggers BDNF (brain-derived neurotrophic factor), the protein that supports neuron growth and synaptic plasticity.</p>
+        <div class="pa-evidence">He et al. 2025 · SMD = 0.22 overall achievement</div>
+        <ul class="pa-spec">
+          <li>Minimum 20–30 continuous minutes per session</li>
+          <li>Moderate intensity — elevates heart rate</li>
+          <li>Outdoors preferred over gym when possible</li>
+          <li>Daily — not 3x/week</li>
+        </ul>
+      </div>
+      <div class="pa-card">
+        <div class="pa-icon">🚲</div>
+        <div class="pa-type">Type 2 · Balance & Coordination</div>
+        <h3>Cycling, Climbing & Balance</h3>
+        <p>Bike riding, balance beams, climbing structures, gymnastics, and coordination drills. These activities specifically activate the prefrontal cortex — the region responsible for executive function, decision-making, and focus. Especially powerful for younger children during the critical developmental window.</p>
+        <div class="pa-evidence">League of Bicyclists 2025 · Prefrontal cortex activation</div>
+        <ul class="pa-spec">
+          <li>Balance bikes introduced in Roots Phase</li>
+          <li>Cycling infrastructure on campus (paths, bike storage)</li>
+          <li>Climbing walls or structures in outdoor space</li>
+          <li>Balance challenges integrated into warm-ups</li>
+        </ul>
+      </div>
+      <div class="pa-card">
+        <div class="pa-icon">🎭</div>
+        <div class="pa-type">Type 3 · Improvised Movement</div>
+        <h3>Unstructured Creative Play</h3>
+        <p>Child-designed games, free movement, improvisational physical activity. Research shows improvised movement significantly outperforms structured PE for developing divergent thinking — the same cognitive capacity at the heart of creativity and problem-solving. The mechanism: real-time physical decision-making activates creative neural networks.</p>
+        <div class="pa-evidence">ScienceDirect 2025 · Divergent thinking activation</div>
+        <ul class="pa-spec">
+          <li>Daily unstructured outdoor play — not directed by adults</li>
+          <li>Student-invented games encouraged</li>
+          <li>Large open outdoor space for free movement</li>
+          <li>Especially critical after cognitive work sessions</li>
+        </ul>
+      </div>
+      <div class="pa-card">
+        <div class="pa-icon">🤸</div>
+        <div class="pa-type">Type 4 · Micro-Movement</div>
+        <h3>Movement Breaks & Desk Activity</h3>
+        <p>Short movement breaks every 20–30 minutes of seated work, standing desks, wobble stools, and brain breaks. Prevents the cognitive performance drop that follows extended sitting. Particularly important for younger students and students with attention regulation challenges.</p>
+        <div class="pa-evidence">Hendershot 2022 · Flexible seating engagement research</div>
+        <ul class="pa-spec">
+          <li>No more than 20 consecutive minutes of seated work for ages 5–10</li>
+          <li>No more than 30 consecutive minutes for ages 10–14</li>
+          <li>Standing desks and wobble stools available throughout</li>
+          <li>2-minute movement breaks built into instruction blocks</li>
+        </ul>
+      </div>
+      <div class="pa-card">
+        <div class="pa-icon">🌿</div>
+        <div class="pa-type">Type 5 · Outdoor Nature Time</div>
+        <h3>Green Space & Nature Exposure</h3>
+        <p>Time in natural environments — not just outdoors on pavement. Nature specifically restores directed attention through what researchers call "soft fascination" — effortless engagement that replenishes the focused attention depleted by academic work. Up to 2.3 hours per day positively associated with math, language, and reading.</p>
+        <div class="pa-evidence">BMC Public Health 2023 · 2.3h/day sweet spot</div>
+        <ul class="pa-spec">
+          <li>Campus includes green space, gardens, and natural surfaces</li>
+          <li>Outdoor learning is a regular instruction option</li>
+          <li>After-lunch outdoor time always in nature, not hallways</li>
+          <li>School garden maintained by students</li>
+        </ul>
+      </div>
+      <div class="pa-card">
+        <div class="pa-icon">⚽</div>
+        <div class="pa-type">Type 6 · Team Sports & Cooperative Play</div>
+        <h3>Sports & Collaborative Games</h3>
+        <p>Team sports build emotional intelligence, collaboration, resilience, and the capacity to handle both success and failure in a real-stakes environment. Regular sports participation improves concentration which then drives academic gains. Sports are part of the character curriculum, not separate from it.</p>
+        <div class="pa-evidence">Sember et al. 2020 · Concentration as academic mediator</div>
+        <ul class="pa-spec">
+          <li>Available daily, not only in PE class</li>
+          <li>Multiple sport options — not just mainstream team sports</li>
+          <li>Cooperative games alongside competitive ones</li>
+          <li>Student-organized leagues and challenges</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:3rem">
+      <div class="sec-eyebrow" style="color:var(--warm)">Why It Works — The 5 Mechanisms</div>
+      <div class="pa-mechanisms">
+        <div class="mech-card">
+          <div class="mech-num">01</div>
+          <h4 style="color:var(--paper)">BDNF Production</h4>
+          <p>Exercise stimulates brain-derived neurotrophic factor — the protein that grows new neurons and strengthens synaptic connections. Called "Miracle-Gro for the brain" by Harvard researchers.</p>
+        </div>
+        <div class="mech-card">
+          <div class="mech-num">02</div>
+          <h4 style="color:var(--paper)">Cerebral Blood Flow</h4>
+          <p>Aerobic exercise increases oxygen and glucose delivery to the brain — directly fueling the metabolic demands of learning and memory consolidation.</p>
+        </div>
+        <div class="mech-card">
+          <div class="mech-num">03</div>
+          <h4 style="color:var(--paper)">Executive Function</h4>
+          <p>Physical activity directly strengthens working memory, cognitive flexibility, and inhibitory control — the three components of executive function that predict academic success.</p>
+        </div>
+        <div class="mech-card">
+          <div class="mech-num">04</div>
+          <h4 style="color:var(--paper)">Attention Restoration</h4>
+          <p>Nature exposure and outdoor movement restore directed attention capacity that gets depleted by sustained academic work — allowing students to re-engage cognitively.</p>
+        </div>
+        <div class="mech-card">
+          <div class="mech-num">05</div>
+          <h4 style="color:var(--paper)">Emotional Regulation</h4>
+          <p>Endorphin release from exercise reduces cortisol (stress hormone), lowers anxiety, and creates the emotional conditions necessary for learning and memory formation.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Movement Blueprint -->
+    <div style="margin-top:3rem">
+      <div class="sec-eyebrow" style="color:var(--warm)">Daily Movement Blueprint</div>
+      <div class="move-blueprint">
+        <div class="move-sidebar">
+          <div>
+            <div class="move-total">90+</div>
+            <div class="move-label">Minutes of movement daily</div>
+          </div>
+          <p>The research minimum for cognitive benefit is 60 minutes. The Groundwork Model targets 90+ by distributing movement throughout the day rather than concentrating it in a single PE class.</p>
+          <p>Movement is never removed for academic catch-up. It is the mechanism that makes academic catch-up possible.</p>
+        </div>
+        <div class="move-breakdown">
+          <div class="move-row">
+            <div class="move-name">Morning Activity</div>
+            <div class="move-mins">20 min</div>
+            <div>
+              <div class="move-desc">Aerobic or balance activity before Foundations Block — primes the brain for focused learning. Cycling, running, or balance circuits. Research shows morning exercise most powerfully primes executive function.</div>
+              <div class="move-bar-wrap"><div class="move-bar" style="width:22%"></div></div>
+            </div>
+          </div>
+          <div class="move-row">
+            <div class="move-name">Micro-Breaks</div>
+            <div class="move-mins">10 min</div>
+            <div>
+              <div class="move-desc">2-minute movement breaks every 20–30 minutes of instruction. Prevents the attention and performance drop from extended sitting. Built into every instructional block.</div>
+              <div class="move-bar-wrap"><div class="move-bar" style="width:11%"></div></div>
+            </div>
+          </div>
+          <div class="move-row">
+            <div class="move-name">Post-Lunch Play</div>
+            <div class="move-mins">25 min</div>
+            <div>
+              <div class="move-desc">Unstructured outdoor play in natural space after lunch. Mix of improvised movement and cooperative games. Student-directed. Restores attention for afternoon learning blocks.</div>
+              <div class="move-bar-wrap"><div class="move-bar" style="width:28%"></div></div>
+            </div>
+          </div>
+          <div class="move-row">
+            <div class="move-name">Elective Movement</div>
+            <div class="move-mins">20 min</div>
+            <div>
+              <div class="move-desc">Embedded in Elective Track time — ecology, design, making, and outdoor learning all include physical activity as a natural component of the work.</div>
+              <div class="move-bar-wrap"><div class="move-bar" style="width:22%"></div></div>
+            </div>
+          </div>
+          <div class="move-row">
+            <div class="move-name">Sport / Team Play</div>
+            <div class="move-mins">20 min</div>
+            <div>
+              <div class="move-desc">Structured team sport or cooperative game. Builds collaboration, resilience, and emotional intelligence alongside physical fitness. 3x per week minimum for team sports; daily for cooperative games.</div>
+              <div class="move-bar-wrap"><div class="move-bar" style="width:22%"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- INSTRUCTION MODEL -->
+<div class="instr-section" id="instruction">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">03 — Instruction Design</div>
+    <h2 class="sec-title">How, How Long &<br>In What Sequence</h2>
+    <p class="sec-lead">Research identifies not just what to teach, but how to teach it, how long each mode should last, and in what sequence. The Groundwork Model treats instructional design as a science, not a preference.</p>
+
+    <div class="instr-stack">
+      <div class="instr-layer">
+        <div class="instr-label" style="background:var(--ink); color:var(--paper)">
+          <div class="phase-tag" style="color:var(--warm)">Layer 1 · 15–20 min max</div>
+          <h3>Direct Instruction</h3>
+          <p style="color:rgba(247,242,234,0.5)">Teacher-led, explicit, focused</p>
+        </div>
+        <div class="instr-content">
+          <p><strong>What it is:</strong> Teacher introduces a new concept or skill with clear explanation, modeling, and worked examples. Checks for understanding throughout. No passive listening — students respond, predict, and demonstrate.</p>
+          <p><strong>When to use it:</strong> Foundational skills (phonics, arithmetic procedures, grammar), new domain knowledge, and any time students lack the background knowledge to discover productively. Project Follow Through — the largest education study ever conducted — found explicit direct instruction was the only approach with consistently positive outcomes for all learner types.</p>
+          <p><strong>Time limit:</strong> Research on attention and cognitive load shows that sustained passive listening degrades after 10–15 minutes. Direct instruction segments should not exceed 15–20 minutes without a response activity, movement break, or transition to practice.</p>
+        </div>
+        <div class="instr-metrics">
+          <div class="instr-metric">
+            <div class="metric-val">15 min</div>
+            <div class="metric-lbl">Max unbroken DI</div>
+          </div>
+          <div class="instr-metric">
+            <div class="metric-val">★★★★★</div>
+            <div class="metric-lbl">Evidence strength</div>
+          </div>
+        </div>
+      </div>
+      <div class="instr-layer">
+        <div class="instr-label" style="background:var(--blue); color:var(--paper)">
+          <div class="phase-tag" style="color:rgba(247,242,234,0.5)">Layer 2 · 20–30 min</div>
+          <h3>Guided Practice</h3>
+          <p style="color:rgba(247,242,234,0.5)">We do it together</p>
+        </div>
+        <div class="instr-content">
+          <p><strong>What it is:</strong> Students practice the new skill with teacher support — working examples together, checking work in real time, catching misconceptions before they calcify. Immediate, specific feedback is one of the highest-leverage interventions in all of research (Hattie d=0.73).</p>
+          <p><strong>When to use it:</strong> Immediately after direct instruction, before students work independently. Research shows that moving to independent practice too early — before adequate guided practice — produces frustration, errors, and discouragement. The sequence is non-negotiable: I do → We do → You do.</p>
+          <p><strong>AI role here:</strong> Adaptive AI tools extend guided practice by giving each student individualized immediate feedback — effectively giving every student a personal tutor for foundational skill work.</p>
+        </div>
+        <div class="instr-metrics">
+          <div class="instr-metric">
+            <div class="metric-val">d=0.73</div>
+            <div class="metric-lbl">Feedback effect size</div>
+          </div>
+          <div class="instr-metric">
+            <div class="metric-val">★★★★★</div>
+            <div class="metric-lbl">Evidence strength</div>
+          </div>
+        </div>
+      </div>
+      <div class="instr-layer">
+        <div class="instr-label" style="background:var(--green); color:var(--paper)">
+          <div class="phase-tag" style="color:rgba(247,242,234,0.5)">Layer 3 · 90–120 min</div>
+          <h3>Project Studio</h3>
+          <p style="color:rgba(247,242,234,0.5)">Problem-based, inquiry, making</p>
+        </div>
+        <div class="instr-content">
+          <p><strong>What it is:</strong> Students work on authentic, complex, multi-week projects. Teacher acts as coach, questioner, and connector — not instructor. This is where conceptual depth, creative thinking, collaboration, and real-world application happen. The longest block of the day, requiring sustained focus.</p>
+          <p><strong>Why this long:</strong> Deep work requires extended time. Research on flow states (Csikszentmihalyi) shows that meaningful creative and intellectual engagement requires at least 45–60 minutes to reach depth. 90–120 minute blocks allow students to actually get into the work, hit obstacles, and push through — the cognitive sequence that produces real learning.</p>
+          <p><strong>Movement built in:</strong> Within the Project Studio, 2-minute movement micro-breaks occur every 25–30 minutes. Students working on physical or outdoor projects naturally integrate movement.</p>
+        </div>
+        <div class="instr-metrics">
+          <div class="instr-metric">
+            <div class="metric-val">90 min</div>
+            <div class="metric-lbl">Minimum block length</div>
+          </div>
+          <div class="instr-metric">
+            <div class="metric-val">★★★★★</div>
+            <div class="metric-lbl">PBL evidence strength</div>
+          </div>
+        </div>
+      </div>
+      <div class="instr-layer">
+        <div class="instr-label" style="background:var(--teal); color:var(--paper)">
+          <div class="phase-tag" style="color:rgba(247,242,234,0.5)">Layer 4 · 20–25 min</div>
+          <h3>Reflection & Metacognition</h3>
+          <p style="color:rgba(247,242,234,0.5)">Daily portfolio practice</p>
+        </div>
+        <div class="instr-content">
+          <p><strong>What it is:</strong> Students document what they learned, what they made, what confused them, and what they'd do differently. This is not journaling for its own sake — it is metacognition, the deliberate practice of thinking about one's own thinking.</p>
+          <p><strong>Why it matters:</strong> Hattie's synthesis of 1,200+ meta-analyses rates metacognitive strategies at effect size d=0.69 — among the highest-leverage interventions known. Students who develop strong metacognitive habits outperform peers on virtually every academic measure, and the skill transfers across all domains and all of life.</p>
+          <p><strong>Timing:</strong> End of day, when the full day's learning is available to reflect on. 20–25 minutes is sufficient; beyond this, diminishing returns.</p>
+        </div>
+        <div class="instr-metrics">
+          <div class="instr-metric">
+            <div class="metric-val">d=0.69</div>
+            <div class="metric-lbl">Metacognition effect</div>
+          </div>
+          <div class="instr-metric">
+            <div class="metric-val">★★★★★</div>
+            <div class="metric-lbl">Evidence strength</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timing Science -->
+    <div style="margin-top:4rem">
+      <div class="sec-eyebrow">Timing Science — What Research Says About Duration</div>
+      <div class="timing-grid">
+        <div class="timing-card">
+          <div class="t-label">Attention Research</div>
+          <h3>The 20-Minute Rule</h3>
+          <p>Sustained attention to passive instruction degrades significantly after 10–15 minutes. After 20 minutes without an active response, retention drops sharply. This is not about student willpower — it is neuroscience.</p>
+          <div class="timing-rule">Rule: No passive instruction segment longer than 15–20 minutes. Always followed by a response, practice, or movement activity.</div>
+        </div>
+        <div class="timing-card">
+          <div class="t-label">Deep Work Research</div>
+          <h3>The 90-Minute Depth Window</h3>
+          <p>Meaningful creative and problem-solving work requires extended uninterrupted time. Research on flow states and cognitive engagement shows the deepest work occurs between 45 and 120 minutes into a focused session. Short class periods prevent students from ever reaching this depth.</p>
+          <div class="timing-rule">Rule: Project Studio blocks are minimum 90 minutes, uninterrupted except for 2-minute micro-movement breaks every 25–30 minutes.</div>
+        </div>
+        <div class="timing-card">
+          <div class="t-label">Schedule Research</div>
+          <h3>The 8:30am Biological Floor</h3>
+          <p>Adolescent circadian biology shifts during puberty, making early rising biologically harmful — not a habit problem. The American Academy of Pediatrics mandates no academic instruction before 8:30am for middle and high school. The Seattle study showed a 34-minute sleep increase and 4.5% grade improvement with a 55-minute start delay.</p>
+          <div class="timing-rule">Rule: No academic instruction before 8:30am for Workshop and Field phases. Day begins with advisory — relational, low-cognitive-load.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ENVIRONMENT -->
+<div class="env-section" id="environment">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">04 — The Environment</div>
+    <h2 class="sec-title" style="color:var(--paper)">Spaces Designed<br>From the Research Up</h2>
+    <p class="sec-lead">Every physical design decision is traceable to evidence. The learning environment is not a backdrop — it is an active variable in learning outcomes.</p>
+
+    <div class="env-floor-plan">
+      <div class="env-zones">
+        <div class="env-zone large">
+          <div class="zone-tag">Primary Learning Space</div>
+          <h3>The Project Studio</h3>
+          <p>The largest and most important space in the school. Designed for deep collaborative work, making, and inquiry. No rows. No fixed furniture. Configures differently for every project cycle.</p>
+          <ul class="zone-features">
+            <li>Large open floor plan — rearrangeable furniture</li>
+            <li>Full range of seating: standing desks, wobble stools, tables, floor cushions, couches</li>
+            <li>Dedicated making area with tools and materials</li>
+            <li>Display walls for work-in-progress</li>
+            <li>Natural light priority — large windows, outdoor access</li>
+            <li>Acoustic zoning — quiet focus area + collaborative zone</li>
+            <li>Plants and natural elements throughout</li>
+          </ul>
+          <span class="cite">Hendershot 2022 · Flexible seating · Kaplan ART · WHO acoustics</span>
+        </div>
+        <div class="env-zone">
+          <div class="zone-tag">Daily Anchor</div>
+          <h3>Advisory Circle</h3>
+          <p>Intimate space for 15 students + advisor. Circle seating. Warm, personal. Designed to feel like a living room, not a classroom.</p>
+          <ul class="zone-features">
+            <li>Circular or horseshoe arrangement</li>
+            <li>Soft seating options</li>
+            <li>Personal — photos, student work displayed</li>
+          </ul>
+          <span class="cite">Hattie d=0.72 · SDT relatedness</span>
+        </div>
+        <div class="env-zone">
+          <div class="zone-tag">Skill Building</div>
+          <h3>Foundations Room</h3>
+          <p>Smaller, quieter space for direct instruction and guided practice. Still flexible — not rows of desks — but designed for focused, teacher-led work.</p>
+          <ul class="zone-features">
+            <li>Max 12–15 students per session</li>
+            <li>Whiteboards on multiple walls</li>
+            <li>Wobble stools and standing options</li>
+          </ul>
+          <span class="cite">Project Follow Through · DI research</span>
+        </div>
+        <div class="env-zone">
+          <div class="zone-tag">Creation & Making</div>
+          <h3>The Makerspace</h3>
+          <p>Tools, materials, and infrastructure for building, designing, prototyping, and creating. Connects to the studio and to the outdoor space.</p>
+          <ul class="zone-features">
+            <li>Hand and power tools</li>
+            <li>Electronics and digital fabrication</li>
+            <li>Art and craft materials</li>
+            <li>Music practice rooms adjacent</li>
+          </ul>
+          <span class="cite">Papert constructionism · Maker Ed · Robinson 2015</span>
+        </div>
+        <div class="env-zone">
+          <div class="zone-tag">Outdoor Learning</div>
+          <h3>Green Outdoor Space</h3>
+          <p>Nature is not an amenity — it is infrastructure. Outdoor space includes natural surfaces, garden, movement infrastructure, and open space for both structured and unstructured activity.</p>
+          <ul class="zone-features">
+            <li>School garden managed by students</li>
+            <li>Cycling paths and bike storage</li>
+            <li>Climbing structure</li>
+            <li>Open field for sports and free play</li>
+            <li>Shaded natural seating for outdoor learning</li>
+          </ul>
+          <span class="cite">BMC Public Health 2023 · He et al. 2025 · Kaplan ART</span>
+        </div>
+        <div class="env-zone">
+          <div class="zone-tag">Community & Nutrition</div>
+          <h3>Communal Dining</h3>
+          <p>Meals are shared by teachers and students together. Nutritious, whole foods — ideally sourced from the school garden. No vending machines.</p>
+          <ul class="zone-features">
+            <li>Long communal tables — not cafeteria rows</li>
+            <li>Kitchen accessible to students</li>
+            <li>Connected to outdoor space</li>
+          </ul>
+          <span class="cite">PMC6723730 nutrition research</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seating Spectrum -->
+    <div style="margin-top:3rem">
+      <div class="sec-eyebrow" style="color:var(--warm)">The Seating Spectrum — Every Option Earns Its Place</div>
+      <div class="seating-spectrum">
+        <div class="seat-card">
+          <div class="seat-icon">🧍</div>
+          <h4>Standing Desk</h4>
+          <p>Highest engagement rating in student surveys. Reduces back pain and restlessness during focused work.</p>
+          <div class="best-for">Best for: focused solo work</div>
+        </div>
+        <div class="seat-card">
+          <div class="seat-icon">🌀</div>
+          <h4>Wobble Stool</h4>
+          <p>Micro-movement for students who need to move to focus. Strong benefits for attention regulation and ADHD.</p>
+          <div class="best-for">Best for: neurodivergent learners</div>
+        </div>
+        <div class="seat-card">
+          <div class="seat-icon">🪑</div>
+          <h4>Standard Chair</h4>
+          <p>Still available and preferred by some students. Autonomy means this is always an option — never imposed.</p>
+          <div class="best-for">Best for: student preference</div>
+        </div>
+        <div class="seat-card">
+          <div class="seat-icon">🛋️</div>
+          <h4>Soft Seating</h4>
+          <p>Couches and floor cushions for reading, reflection, and collaborative discussion. Not for sustained cognitive work.</p>
+          <div class="best-for">Best for: reading & reflection</div>
+        </div>
+        <div class="seat-card">
+          <div class="seat-icon">🪵</div>
+          <h4>Floor + Low Tables</h4>
+          <p>Collaborative floor-level work. Especially popular in Roots Phase. Promotes informal, creative interaction.</p>
+          <div class="best-for">Best for: group collaboration</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Environmental Non-Negotiables -->
+    <div style="margin-top:3rem; display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(247,242,234,0.06); border:1px solid rgba(247,242,234,0.06)">
+      <div style="padding:2rem; background:rgba(247,242,234,0.02)">
+        <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--warm); margin-bottom:0.5rem">Non-Negotiable 01</div>
+        <h4 style="font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; color:var(--paper); margin-bottom:0.4rem">Natural Light</h4>
+        <p style="font-size:0.75rem; color:rgba(247,242,234,0.45); line-height:1.55">Reduces fatigue, improves mood, supports circadian regulation. Windows on multiple walls. No fluorescent-only rooms.</p>
+      </div>
+      <div style="padding:2rem; background:rgba(247,242,234,0.02)">
+        <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--warm); margin-bottom:0.5rem">Non-Negotiable 02</div>
+        <h4 style="font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; color:var(--paper); margin-bottom:0.4rem">Acoustic Design</h4>
+        <p style="font-size:0.75rem; color:rgba(247,242,234,0.45); line-height:1.55">Poor acoustics are one of the most overlooked barriers to learning. Spaces zoned for quiet focus and collaborative noise with physical separation.</p>
+      </div>
+      <div style="padding:2rem; background:rgba(247,242,234,0.02)">
+        <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--warm); margin-bottom:0.5rem">Non-Negotiable 03</div>
+        <h4 style="font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; color:var(--paper); margin-bottom:0.4rem">Student Work Visible</h4>
+        <p style="font-size:0.75rem; color:rgba(247,242,234,0.45); line-height:1.55">Work in progress displayed throughout — not just finished products. The school's walls communicate that making and thinking are valued.</p>
+      </div>
+      <div style="padding:2rem; background:rgba(247,242,234,0.02)">
+        <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--warm); margin-bottom:0.5rem">Non-Negotiable 04</div>
+        <h4 style="font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; color:var(--paper); margin-bottom:0.4rem">No Rows of Desks</h4>
+        <p style="font-size:0.75rem; color:rgba(247,242,234,0.45); line-height:1.55">Rows communicate passivity and hierarchy. No classroom in the Groundwork Model has fixed rows. Every space is rearrangeable for the task at hand.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- THE FULL DAY -->
+<div class="day-section" id="day">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">05 — The Full Day</div>
+    <h2 class="sec-title">Every Hour Earns<br>Its Place</h2>
+    <p class="sec-lead">Three phase-specific daily schedules — each built from the research up. Every block justified by evidence on timing, duration, instruction mode, and the physical and cognitive needs of students at that developmental stage.</p>
+
+    <div class="day-phase-tabs">
+      <button class="day-tab active" onclick="showDay('roots')">Roots Phase · Ages 5–10</button>
+      <button class="day-tab" onclick="showDay('workshop')">Workshop Phase · Ages 10–14</button>
+      <button class="day-tab" onclick="showDay('field')">Field Phase · Ages 14–18</button>
+    </div>
+
+    <!-- ROOTS -->
+    <div class="day-content active" id="day-roots">
+
+      <!-- Research note banner -->
+      <div style="background:var(--ink); color:var(--paper); padding:1.25rem 2rem; margin-bottom:1px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:2rem; border:1px solid var(--light)">
+        <div>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--warm); margin-bottom:0.3rem">Start Time</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700">8:30am — not 8:00am</div>
+          <div style="font-size:0.72rem; color:rgba(247,242,234,0.5); margin-top:0.2rem; line-height:1.5">Young children rushed through breakfast and arriving dysregulated cannot learn. A 5-year-old who woke at 7:15am needs a calm morning. Research supports no earlier than 8:30am even for young children.</div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--warm); margin-bottom:0.3rem">Day Length</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700">6 hours (ends 2:30pm)</div>
+          <div style="font-size:0.72rem; color:rgba(247,242,234,0.5); margin-top:0.2rem; line-height:1.5">Meta-analysis shows full-day beats half-day — but 7 hours pushes the biological upper limit for ages 5–6. 6 hours with a rest period is the research-supported sweet spot. Quality over quantity.</div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--warm); margin-bottom:0.3rem">Attention Span</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700">8–15 min max per task</div>
+          <div style="font-size:0.72rem; color:rgba(247,242,234,0.5); margin-top:0.2rem; line-height:1.5">Ages 5–6: 8–15 minutes of focused attention on any single activity. No block runs longer than 20 minutes without a transition, movement break, or change of mode. The day is designed around this reality.</div>
+        </div>
+      </div>
+
+      <div class="day-timeline">
+        <div class="day-block anchor">
+          <div class="day-time"><span>8:30–8:50</span></div>
+          <div class="day-type"><span style="color:var(--warm)">Arrival</span></div>
+          <div class="day-main">
+            <h4>Soft Arrival & Morning Gathering</h4>
+            <p>Children arrive into a calm, welcoming environment — not a rushed lineup. Free choice play for the first 10 minutes as children settle in. Then a brief gathering circle: song, one question, one story. Sets the emotional tone. No academic demands at arrival — ever.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Emotional regulation as learning prerequisite · SDT relatedness · Attachment theory · Circadian biology — young children need calm morning transitions</p>
+          </div>
+        </div>
+        <div class="day-block movement">
+          <div class="day-time"><span>8:50–9:20</span></div>
+          <div class="day-type"><span style="color:var(--green)">Movement</span></div>
+          <div class="day-main">
+            <h4>Balance, Coordination & Outdoor Movement</h4>
+            <p>Cycling, climbing, balance beams, coordination games, or free outdoor movement. 30 minutes outdoors before any cognitive demands. Primes the prefrontal cortex, triggers BDNF, and regulates the nervous system. This is the most important block for brain preparation. Always outdoors, weather permitting.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>League of Bicyclists 2025 · He et al. 2025 · Prefrontal cortex activation · Morning exercise EF priming · BMC Public Health outdoor research</p>
+          </div>
+        </div>
+        <div class="day-block">
+          <div class="day-time"><span>9:20–10:00</span></div>
+          <div class="day-type"><span style="color:var(--blue)">Play-Learning</span></div>
+          <div class="day-main">
+            <h4>Guided Play Stations — Literacy & Numeracy</h4>
+            <p>Literacy and math embedded in play stations. Children rotate through 3–4 stations: manipulative math, story making, phonological play (songs, rhymes), and building/pattern work. Teacher facilitates and observes — no whole-group direct instruction. No worksheets. Max 15 minutes at any station before rotation.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Skene et al. 2022 guided play meta-analysis · Attention span 8–15 min ages 5–6 · Vanderbilt fade-out research — guided play not academic drill</p>
+          </div>
+        </div>
+        <div class="day-block movement">
+          <div class="day-time"><span>10:00–10:30</span></div>
+          <div class="day-type"><span style="color:var(--green)">Outdoor</span></div>
+          <div class="day-main">
+            <h4>Free Outdoor Play</h4>
+            <p>Fully unstructured outdoor play in natural space. Child-directed entirely — no adult agenda or structured activity. This is not a reward or a break from learning. It IS the learning. Imagination, social negotiation, physical risk-taking, and creative problem-solving all develop here in ways nothing else can replicate.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Perry Preschool play-based outcomes · Singer/Russ pretend play research · Kaplan Attention Restoration Theory · Finland outdoor model · EF development through free play</p>
+          </div>
+        </div>
+        <div class="day-block">
+          <div class="day-time"><span>10:30–11:45</span></div>
+          <div class="day-type"><span>Project & Play</span></div>
+          <div class="day-main">
+            <h4>Project Studio & Dramatic Play</h4>
+            <p>2–3 week themed inquiry projects alongside rich dramatic play. Building, making, storytelling, role play, art, music, and construction. Child-led with teacher as creative partner — never as instructor. Movement micro-break every 20 minutes: 2 minutes of movement woven into transitions between activities naturally.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Reggio Emilia · Papert constructionism · Singer pretend play + EF development · Robinson arts integration · 20-min seated maximum for ages 5–7</p>
+          </div>
+        </div>
+        <div class="day-block movement">
+          <div class="day-time"><span>11:45–12:45</span></div>
+          <div class="day-type"><span style="color:var(--green)">Nutrition</span></div>
+          <div class="day-main">
+            <h4>Communal Lunch + Outdoor Play</h4>
+            <p>Unhurried communal meal — teachers and children eat together. 25 minutes unstructured outdoor play after eating. Lunch conversation is rich language development time (Snow & Beals 2006). Post-lunch outdoor play restores attention for the afternoon and supports digestion. No rushing.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Nutrition + cognition PMC6723730 · Snow & Beals mealtime vocabulary research · Outdoor attention restoration · Community building research</p>
+          </div>
+        </div>
+        <div class="day-block anchor">
+          <div class="day-time"><span>12:45–1:15</span></div>
+          <div class="day-type"><span style="color:var(--warm)">Rest</span></div>
+          <div class="day-main">
+            <h4>Quiet Rest Period</h4>
+            <p>30 minutes of quiet, calm, low-stimulation time. Children who still nap may sleep. Others engage in quiet solo activity: looking at books, drawing, or resting on mats. Not optional — not used as catch-up time. Many 5–6 year olds are still developmentally in the transition from napping, and all children need this regulation reset in the middle of the day.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Sleep and memory consolidation research · Nap transition ages 5–6 developmental biology · Attention fatigue research · Full-day kindergarten — quality over quantity principle · Circadian biology for young children</p>
+          </div>
+        </div>
+        <div class="day-block">
+          <div class="day-time"><span>1:15–2:15</span></div>
+          <div class="day-type"><span>Music & Arts</span></div>
+          <div class="day-main">
+            <h4>Music, Arts & Making</h4>
+            <p>Instrument exploration, singing, visual arts, movement-based arts, and making. Music begins in the Roots Phase — rhythm, song, instrument exploration (not formal lessons yet). Builds working memory, phonological processing, and emotional expression. Fully hands-on, fully child-directed within the offered materials. Movement is embedded throughout.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Román-Caballero 2022 · Music EF research in ages 3–6 · Robinson arts integration · Maker Ed / Papert constructionism · KH Kim creativity preservation</p>
+          </div>
+        </div>
+        <div class="day-block anchor">
+          <div class="day-time"><span>2:15–2:30</span></div>
+          <div class="day-type"><span style="color:var(--warm)">Reflection</span></div>
+          <div class="day-main">
+            <h4>Story Circle & Portfolio</h4>
+            <p>Brief end-of-day gathering. Each child shares one thing they made, tried, or noticed today. Guide documents observations. Children contribute a drawing, dictation, or photo to their portfolio. Closes the day with warmth, intention, and a sense of completion. 15 minutes — not longer. Tired children cannot reflect for 30 minutes.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Metacognition d=0.69 Hattie · Narrative as creativity foundation PMC9313823 · Observational portfolio assessment · End-of-day fatigue — keep closing ritual short and warm</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day summary note -->
+      <div style="margin-top:1px; padding:1.5rem 2rem; background:var(--sand); border:1px solid var(--light); border-top:none; display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:2rem">
+        <div>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.3rem">Total Day</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700">6 hours</div>
+          <div style="font-size:0.72rem; color:var(--muted)">8:30am – 2:30pm</div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.3rem">Outdoor Time</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700">85+ min</div>
+          <div style="font-size:0.72rem; color:var(--muted)">Morning movement + outdoor play + post-lunch</div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.3rem">Max Seated Time</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700">20 min</div>
+          <div style="font-size:0.72rem; color:var(--muted)">Per block — never exceeded without movement</div>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.3rem">Max DI Segment</div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700">10–15 min</div>
+          <div style="font-size:0.72rem; color:var(--muted)">Ages 5–6 attention span ceiling — never exceeded</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- WORKSHOP -->
+    <div class="day-content" id="day-workshop">
+      <div class="day-timeline">
+        <div class="day-block anchor">
+          <div class="day-time"><span>8:30–8:50</span></div>
+          <div class="day-type"><span style="color:var(--warm)">Relationship</span></div>
+          <div class="day-main">
+            <h4>Advisory Circle</h4>
+            <p>15 students + advisor. Check-in, intention-setting, one community item. Same group, same advisor, every day. The relational anchor of the school.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Hattie d=0.72 teacher relationship · SDT relatedness · Multi-year looping evidence</p>
+          </div>
+        </div>
+        <div class="day-block movement">
+          <div class="day-time"><span>8:50–9:20</span></div>
+          <div class="day-type"><span style="color:var(--green)">Movement</span></div>
+          <div class="day-main">
+            <h4>Morning Aerobic Activity</h4>
+            <p>Running, cycling, sport, or cooperative movement games. Moderate intensity, 20–30 minutes. Primes executive function and BDNF for the Foundations Block that follows.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>He et al. 2025 · BDNF mechanism · Morning exercise and EF priming research</p>
+          </div>
+        </div>
+        <div class="day-block">
+          <div class="day-time"><span>9:20–10:30</span></div>
+          <div class="day-type"><span style="color:var(--blue)">Foundations</span></div>
+          <div class="day-main">
+            <h4>Foundations Block</h4>
+            <p>Direct instruction in literacy and numeracy (15 min max segments) followed by guided practice. AI adaptive tools for individualized skill practice. Small groups. Immediate feedback. Movement break at 30 minutes.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Project Follow Through · Scheerens 2023 DI+inquiry blend · PMC11219980 AI adaptive</p>
+          </div>
+        </div>
+        <div class="day-block movement">
+          <div class="day-time"><span>10:30–10:45</span></div>
+          <div class="day-type"><span style="color:var(--green)">Break</span></div>
+          <div class="day-main">
+            <h4>Movement Break + Transition</h4>
+            <p>Outdoor movement break between cognitive blocks. Restores attention. Unstructured — students choose their activity. Minimum 10 minutes outdoors.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Attention restoration theory · PA + cognition · 20-min seated maximum</p>
+          </div>
+        </div>
+        <div class="day-block">
+          <div class="day-time"><span>10:45–12:30</span></div>
+          <div class="day-type"><span>Project</span></div>
+          <div class="day-main">
+            <h4>Project Studio</h4>
+            <p>Deep work on 8-week interdisciplinary project. Teacher as coach. Flexible seating throughout. Real problems, real stakes. 2-min micro-movement breaks every 25–30 minutes built in. The heart of the school day.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>MDRC RCT 2021 · Hattie PBL · 90-min deep work research · Csikszentmihalyi flow</p>
+          </div>
+        </div>
+        <div class="day-block movement">
+          <div class="day-time"><span>12:30–1:30</span></div>
+          <div class="day-type"><span style="color:var(--green)">Nutrition</span></div>
+          <div class="day-main">
+            <h4>Communal Lunch + Outdoor Play</h4>
+            <p>Shared meal with teachers. 25 min unstructured outdoor play after eating — improvised games, free movement, natural space. Screen-free.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Nutrition PMC6723730 · Improvised PA + divergent thinking · Outdoor restoration</p>
+          </div>
+        </div>
+        <div class="day-block">
+          <div class="day-time"><span>1:30–3:00</span></div>
+          <div class="day-type"><span>Elective</span></div>
+          <div class="day-main">
+            <h4>Elective Track</h4>
+            <p>Student-chosen specialization: technology, arts (including instruments), ecology, design, or civics. Taught by specialists and community practitioners. Includes physical and outdoor components depending on track.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>SDT autonomy · Robinson Element concept · Music WM + phonological · Maker Ed</p>
+          </div>
+        </div>
+        <div class="day-block anchor">
+          <div class="day-time"><span>3:00–3:30</span></div>
+          <div class="day-type"><span style="color:var(--warm)">Reflection</span></div>
+          <div class="day-main">
+            <h4>Portfolio & Reflection</h4>
+            <p>Daily metacognition practice. What was made, what was learned, what was hard, what changed. Advisor available. AI logs mastery demonstrations from the day.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Hattie metacognition d=0.69 · Portfolio assessment research · AI mastery tracking</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIELD -->
+    <div class="day-content" id="day-field">
+      <div class="day-timeline">
+        <div class="day-block anchor">
+          <div class="day-time"><span>8:30–8:50</span></div>
+          <div class="day-type"><span style="color:var(--warm)">Relationship</span></div>
+          <div class="day-main">
+            <h4>Advisory Check-In</h4>
+            <p>Smaller advisory group (10–12). Deep check-in: what's alive in your work, what are you wrestling with, what do you need. Sets direction for the day.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Hattie d=0.72 · Big Picture Learning advisory model · SDT relatedness</p>
+          </div>
+        </div>
+        <div class="day-block">
+          <div class="day-time"><span>8:50–10:30</span></div>
+          <div class="day-type"><span style="color:var(--blue)">Deep Work</span></div>
+          <div class="day-main">
+            <h4>Senior Contribution / Independent Work Block</h4>
+            <p>Extended focus on individual Senior Contribution project or advanced coursework. Teacher available as coach. AI adaptive tools for any foundational gaps. Movement break at 60 minutes.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>SDT autonomy · 90-min deep work research · Strada internship + academic integration</p>
+          </div>
+        </div>
+        <div class="day-block movement">
+          <div class="day-time"><span>10:30–11:00</span></div>
+          <div class="day-type"><span style="color:var(--green)">Movement</span></div>
+          <div class="day-main">
+            <h4>Physical Activity Block</h4>
+            <p>Student-chosen movement: run, sport, cycling, gym, yoga, team game. 30 minutes, moderate to vigorous. Maintains cognitive performance for afternoon work.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>He et al. 2025 · Sember 2020 · PA as cognitive maintenance</p>
+          </div>
+        </div>
+        <div class="day-block">
+          <div class="day-time"><span>11:00–12:30</span></div>
+          <div class="day-type"><span>Seminar</span></div>
+          <div class="day-main">
+            <h4>Seminar / Project Debrief</h4>
+            <p>On school days: seminar on project-related content or skills, internship debrief, guest practitioner, or collaborative work. On internship days: this time is spent at the placement.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>PMC4767925 WBL debrief research · Big Picture triangulation model</p>
+          </div>
+        </div>
+        <div class="day-block movement">
+          <div class="day-time"><span>12:30–1:30</span></div>
+          <div class="day-type"><span style="color:var(--green)">Nutrition</span></div>
+          <div class="day-main">
+            <h4>Communal Lunch + Outdoor Time</h4>
+            <p>Shared meal. Outdoor movement or rest after eating. Students often use this for collaborative project work, community connection, or personal time.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Nutrition + cognition · Outdoor restoration · Community building</p>
+          </div>
+        </div>
+        <div class="day-block">
+          <div class="day-time"><span>1:30–3:00</span></div>
+          <div class="day-type"><span>Elective</span></div>
+          <div class="day-main">
+            <h4>Elective Specialization / Community Work</h4>
+            <p>Deep specialization in chosen track. Community mentor sessions, internship preparation, or collaborative cross-phase projects. Real-world connections actively maintained.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Iowa BIG outcomes · Strada 73% employment finding · Entrepreneur mentor research</p>
+          </div>
+        </div>
+        <div class="day-block anchor">
+          <div class="day-time"><span>3:00–3:30</span></div>
+          <div class="day-type"><span style="color:var(--warm)">Reflection</span></div>
+          <div class="day-main">
+            <h4>Portfolio & Mastery Review</h4>
+            <p>Daily portfolio entry. AI-assisted mastery map review — what's been demonstrated today, what's next. Advisor available for weekly deep check-ins.</p>
+          </div>
+          <div class="day-why">
+            <div class="why-label">Research basis</div>
+            <p>Metacognition d=0.69 · AI mastery tracking PMC11544060 · Competency-based progression</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- PHASES -->
+<div class="phases-section" id="phases">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">06 — Three Phases</div>
+    <h2 class="sec-title">Not Twelve Grades —<br>Three Developmental Phases</h2>
+    <p class="sec-lead">Students advance when they're ready, not when the calendar moves. Each phase has a distinct learning environment, instruction model, movement program, and assessment approach.</p>
+
+    <div class="phase-row">
+      <div class="phase-id">
+        <div class="age">Ages 5–10</div>
+        <h3>The Roots Phase</h3>
+      </div>
+      <div class="phase-body">
+        <div class="phase-col">
+          <div class="phase-col-label">What It Looks Like</div>
+          <p>Play-based learning, guided and free. No worksheets. No standardized testing. Rich dramatic play spaces, outdoor time throughout the day, and instrument introduction from age 5. Guided play is the primary instructional mode — learning goals exist but children lead the exploration.</p>
+          <p>Primary guide stays with each child 2–3 years. Mixed-age groups of 12. Communal meals prepared with student participation. Assessment is observational and portfolio-based only.</p>
+          <div class="phase-tags">
+            <span class="ptag g">Guided play primary</span>
+            <span class="ptag g">Mixed-age looping</span>
+            <span class="ptag g">Balance + cycling daily</span>
+            <span class="ptag b">Music begins age 5</span>
+            <span class="ptag b">Outdoor 90+ min/day</span>
+            <span class="ptag r">No standardized testing</span>
+            <span class="ptag r">No worksheets</span>
+          </div>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label">What Research Drives This</div>
+          <p>Skene et al. (2022) meta-analysis shows guided play outperforms direct instruction on math, shape knowledge, and executive function for this age group. Vanderbilt research shows academic pressure before age 6–7 produces gains that fade by 3rd grade and behavioral problems by 6th.</p>
+          <p>Perry Preschool longitudinal study: play-based early education produces stronger adult outcomes on every measure. Finland doesn't begin formal academics until age 7 and consistently ranks in the global top 10.</p>
+          <div class="phase-tags">
+            <span class="ptag">Skene 2022</span>
+            <span class="ptag">Perry Preschool</span>
+            <span class="ptag">Vanderbilt/Farran</span>
+            <span class="ptag">Finland model</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-id">
+        <div class="age">Ages 10–14</div>
+        <h3>The Workshop Phase</h3>
+      </div>
+      <div class="phase-body">
+        <div class="phase-col">
+          <div class="phase-col-label">What It Looks Like</div>
+          <p>Interdisciplinary 8-week project cycles as the spine. Daily Foundations Block for direct instruction in literacy and numeracy (blended with AI adaptive tools). Faculty Advisor meets weekly. Elective tracks — technology, arts, ecology, design, or civics. Morning aerobic activity every day. Flexible seating throughout.</p>
+          <p>Family learning guides sent home each cycle. No class before 8:30am. Exhibitions at the end of each project cycle. Competency tracking replaces grades.</p>
+          <div class="phase-tags">
+            <span class="ptag g">8-week project cycles</span>
+            <span class="ptag g">Morning aerobic activity</span>
+            <span class="ptag g">Flexible seating</span>
+            <span class="ptag b">AI adaptive foundations</span>
+            <span class="ptag b">Elective tracks</span>
+            <span class="ptag t">Family learning guides</span>
+            <span class="ptag r">Starts 8:30am</span>
+          </div>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label">What Research Drives This</div>
+          <p>This phase specifically counters the "fourth-grade creativity slump" — the documented drop in divergent thinking at ages 9–12 caused by conformity pressure, test culture, and reduced play. PBL research (MDRC 2021 RCT) shows well-implemented project-based learning outperforms traditional instruction on both standardized tests AND deeper learning measures.</p>
+          <p>KH Kim Torrance data identifies this as the highest-risk window for creativity suppression. The Workshop Phase is specifically designed to maintain and develop creative capacity through this window.</p>
+          <div class="phase-tags">
+            <span class="ptag">MDRC RCT 2021</span>
+            <span class="ptag">KH Kim Torrance</span>
+            <span class="ptag">Scheerens 2023</span>
+            <span class="ptag">de la Iglesia 2018</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-id">
+        <div class="age">Ages 14–18</div>
+        <h3>The Field Phase</h3>
+      </div>
+      <div class="phase-body">
+        <div class="phase-col">
+          <div class="phase-col-label">What It Looks Like</div>
+          <p>Two days per week in community internships with real business owners, entrepreneurs, artists, and practitioners. School is where students debrief, deepen, and connect experience to knowledge. AI maintains a live mastery map reviewed weekly with advisor.</p>
+          <p>Senior Contribution project — year-long, student-defined, real problem, public presentation. No letter grades. Competency transcripts. Physical activity daily, student-chosen. Flexible start options 8:30–9:00am.</p>
+          <div class="phase-tags">
+            <span class="ptag g">2 days/week internship</span>
+            <span class="ptag g">Senior Contribution</span>
+            <span class="ptag g">Daily student-chosen PA</span>
+            <span class="ptag b">Community mentors</span>
+            <span class="ptag b">Live AI mastery map</span>
+            <span class="ptag t">Flexible start 8:30–9:00</span>
+            <span class="ptag r">Competency transcripts</span>
+          </div>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label">What Research Drives This</div>
+          <p>Strada Education Foundation (2025): graduates who completed paid internships are 73% more likely to land a degree-required first job. Big Picture Learning longitudinal data: 93% graduation rate vs. 70% district average; stronger long-term career satisfaction and life outcomes.</p>
+          <p>Entrepreneur mentor randomized field experiment: students with entrepreneur mentors were 20% more likely to pursue entrepreneurial careers, with the strongest effect for first-generation students. Mentorship opens doors that family background cannot.</p>
+          <div class="phase-tags">
+            <span class="ptag">Strada 2025</span>
+            <span class="ptag">Big Picture longitudinal</span>
+            <span class="ptag">Iowa BIG data</span>
+            <span class="ptag">Mentor RCT 2024</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- FAMILY PARTNERSHIP -->
+<div class="family-section" id="family">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">07 — Family Partnership</div>
+    <h2 class="sec-title">Family Isn't a Guest —<br>Family Is the Co-Teacher</h2>
+    <p class="sec-lead">The APA review of 448 studies is unambiguous: the type of family involvement matters more than the amount. The Groundwork Model is designed to activate the kinds of engagement that research shows actually move outcomes — and stop asking families to do the things that don't.</p>
+
+    <!-- What Works vs. Doesn't -->
+    <div class="sec-eyebrow" style="margin-bottom:1rem">What the Research Says Works — and What Doesn't</div>
+    <div class="works-vs-doesnt">
+      <div class="works-col yes">
+        <div class="col-header">✓ What actually works</div>
+        <div class="works-item">
+          <div class="wi-icon">💬</div>
+          <div>
+            <h4>At-Home Conversations About Learning</h4>
+            <p>Talking about ideas, asking questions about what the child is working on, discussing the news, or debating a topic together. Especially powerful for older students.</p>
+            <div class="effect">Strong positive effect across all ages · APA 448-study review</div>
+          </div>
+        </div>
+        <div class="works-item">
+          <div class="wi-icon">📚</div>
+          <div>
+            <h4>Reading With and To Children</h4>
+            <p>Reading aloud together, taking children to the library, and surrounding them with books at home. Positive impact on reading, comprehension, language development, and attention.</p>
+            <div class="effect">Positive across all developmental stages · Harvard Family Research</div>
+          </div>
+        </div>
+        <div class="works-item">
+          <div class="wi-icon">🙌</div>
+          <div>
+            <h4>Expressing Belief and Encouragement</h4>
+            <p>Telling children you believe they can grow, that struggle is part of learning, and that their effort matters — consistently, specifically, and genuinely.</p>
+            <div class="effect">Consistent positive effect across all ages · Youth.gov synthesis</div>
+          </div>
+        </div>
+        <div class="works-item">
+          <div class="wi-icon">↔️</div>
+          <div>
+            <h4>Two-Way Communication With the School</h4>
+            <p>Regular meaningful dialogue between advisor and family — not just newsletters and report cards. Families who communicate regularly with teachers are more involved at home.</p>
+            <div class="effect">Strong positive effect on achievement AND engagement · National PTA research</div>
+          </div>
+        </div>
+        <div class="works-item">
+          <div class="wi-icon">🔢</div>
+          <div>
+            <h4>Structured Math Support at Home</h4>
+            <p>When schools give families specific, actionable guidance for supporting math — number games, counting activities, talking about patterns — proficiency improves significantly.</p>
+            <div class="effect">Higher math proficiency · Johns Hopkins research 2005</div>
+          </div>
+        </div>
+      </div>
+      <div class="works-col no">
+        <div class="col-header">✗ What doesn't work (or backfires)</div>
+        <div class="works-item">
+          <div class="wi-icon">📝</div>
+          <div>
+            <h4>Helping With Homework</h4>
+            <p>The APA review found that parental homework help has a small negative impact on academic achievement — particularly in secondary school. It removes the productive struggle that builds competence and can create dependency and conflict.</p>
+            <div class="effect">Small negative academic effect · APA meta-review 2019</div>
+          </div>
+        </div>
+        <div class="works-item">
+          <div class="wi-icon">🚁</div>
+          <div>
+            <h4>Hovering and Over-Managing</h4>
+            <p>"Helicopter parenting" undermines the autonomy and self-regulation that Self-Determination Theory identifies as essential for intrinsic motivation and deep learning. Children need room to struggle.</p>
+            <div class="effect">Reduces autonomy and self-regulation · SDT research · Deci & Ryan</div>
+          </div>
+        </div>
+        <div class="works-item">
+          <div class="wi-icon">🎪</div>
+          <div>
+            <h4>Attending Events Without At-Home Engagement</h4>
+            <p>Showing up to school events without meaningful engagement at home produces only a weak effect on actual learning. School attendance is not a substitute for the daily relational environment at home.</p>
+            <div class="effect">Weak effect on academic outcomes · Youth.gov synthesis</div>
+          </div>
+        </div>
+        <div class="works-item">
+          <div class="wi-icon">📣</div>
+          <div>
+            <h4>One-Way Communication From School</h4>
+            <p>Newsletters, grade reports, and one-directional emails inform families but don't engage them. Research shows two-way communication — where families have voice and response — is the active ingredient.</p>
+            <div class="effect">Minimal impact without reciprocal dialogue · Harvard Family Research Project</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Six Standards -->
+    <div class="sec-eyebrow" style="margin-bottom:1rem">The Six Standards of Family Partnership — How Groundwork Implements Each</div>
+    <p style="font-size:0.85rem; color:var(--muted); max-width:62ch; margin-bottom:2rem; line-height:1.7">Based on the National PTA's six research-backed standards for family engagement. These are the structural commitments the Groundwork Model makes to every family — not aspirations, but designed-in practices.</p>
+    <div class="six-standards">
+      <div class="standard-card">
+        <div class="std-num">01</div>
+        <h3>Two-Way Meaningful Communication</h3>
+        <p>Families and advisors communicate regularly — not just when something is wrong. Communication flows both directions: school informs families, families inform the school.</p>
+        <div class="how"><strong>Groundwork does this:</strong> Weekly advisor-family check-in (text, call, or note). Family Learning Guide sent home at the start of each 8-week project cycle. Families can message their advisor directly at any time. Exhibition nights create shared language around student growth.</div>
+      </div>
+      <div class="standard-card">
+        <div class="std-num">02</div>
+        <h3>Parenting Support</h3>
+        <p>Schools help families understand child development — what's normal, what's a signal, and how to support growth at home without creating pressure or dependency.</p>
+        <div class="how"><strong>Groundwork does this:</strong> Annual family orientation with developmental research summaries by phase. Monthly "Research in Plain English" newsletter explaining what studies show about supporting children. Advisor answers parenting questions as a trusted partner, not a gatekeeper.</div>
+      </div>
+      <div class="standard-card">
+        <div class="std-num">03</div>
+        <h3>Partners in Learning at Home</h3>
+        <p>Families receive specific, actionable guidance for how to support learning at home — replacing homework with high-value family activities grounded in research.</p>
+        <div class="how"><strong>Groundwork does this:</strong> Family Learning Guides for each project cycle include 3–5 conversation starters, a shared book recommendation, and one activity tied to the current project. No traditional homework. Family activities are optional, specific, and designed to be joyful.</div>
+      </div>
+      <div class="standard-card">
+        <div class="std-num">04</div>
+        <h3>Families Welcome at School</h3>
+        <p>Families have real roles — not just as event attendees, but as genuine contributors to school life. Their expertise, experience, and knowledge are treated as assets.</p>
+        <div class="how"><strong>Groundwork does this:</strong> Families invited to contribute to project cycles as subject-matter experts. Community Mentor Network draws heavily from parent community. Open-studio policy — families can observe project work any time. Shared lunch — parents can eat with students on designated days.</div>
+      </div>
+      <div class="standard-card">
+        <div class="std-num">05</div>
+        <h3>Decision-Making Partners</h3>
+        <p>Families have real voice in school governance — not just feedback on decisions already made. Research shows that parent decision-making roles increase investment and trust.</p>
+        <div class="how"><strong>Groundwork does this:</strong> Family Advisory Council with genuine input on policy, curriculum themes, and school direction. Annual family survey results shared publicly with school response. Phase transition decisions made collaboratively between advisor, student, and family — not unilaterally by school.</div>
+      </div>
+      <div class="standard-card">
+        <div class="std-num">06</div>
+        <h3>Community Resources for Families</h3>
+        <p>The school connects families to resources — not just educational ones — that strengthen the whole family's capacity to support their child. Especially critical for families under economic or social stress.</p>
+        <div class="how"><strong>Groundwork does this:</strong> Resource guide for local family support services maintained and updated. Advisor trained to identify and connect families to external support. School partnerships with local organizations. Explicit equity lens: all families can effectively support learning when given the right support.</div>
+      </div>
+    </div>
+
+    <!-- Family Engagement by Phase -->
+    <div class="sec-eyebrow" style="margin-bottom:1rem">Family Partnership by Phase — What It Looks Like at Each Stage</div>
+    <div class="family-by-phase">
+      <div class="fbp-row">
+        <div class="fbp-phase">
+          <div class="fp-age">Ages 5–10</div>
+          <h3>Roots Phase</h3>
+        </div>
+        <div class="fbp-col">
+          <div class="fbp-col-label">What families do at home</div>
+          <ul>
+            <li>Read aloud together daily — the single highest-impact at-home activity for this age</li>
+            <li>Visit the library weekly or biweekly and let children choose their own books</li>
+            <li>Talk about the project theme at dinner — Family Learning Guide provides conversation starters</li>
+            <li>Sing, do puzzles, and play board games — all build cognitive foundations research supports</li>
+            <li>Tell stories — oral narrative develops language and creative thinking simultaneously</li>
+            <li>Limit screens; prioritize outdoor play and physical activity at home</li>
+          </ul>
+        </div>
+        <div class="fbp-col">
+          <div class="fbp-col-label">What the school does with families</div>
+          <ul>
+            <li>Guide meets with each family informally every 4–6 weeks — in person or by call</li>
+            <li>Family Learning Guide sent home at start of every project cycle</li>
+            <li>Two formal portfolio sharing conferences per year — child leads the conversation</li>
+            <li>Monthly newsletter: "What your child's brain is doing this month" — developmental science in plain English</li>
+            <li>Families invited to participate in project work as contributors and storytellers</li>
+            <li>Annual family orientation: why play-based learning works — research explained clearly</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fbp-row">
+        <div class="fbp-phase">
+          <div class="fp-age">Ages 10–14</div>
+          <h3>Workshop Phase</h3>
+        </div>
+        <div class="fbp-col">
+          <div class="fbp-col-label">What families do at home</div>
+          <ul>
+            <li>Ask about the current project — "What problem are you solving? What's hard about it?"</li>
+            <li>Engage with Family Learning Guide activities — project-tied conversations and explorations</li>
+            <li>Attend the end-of-cycle Exhibition — the most important event in the school calendar</li>
+            <li>Share their own knowledge and expertise when relevant to project themes</li>
+            <li>Support sleep — no devices after 9pm, consistent sleep time, know that sleep IS learning</li>
+            <li>Express belief specifically: "I saw how you persisted on that problem" over generic praise</li>
+          </ul>
+        </div>
+        <div class="fbp-col">
+          <div class="fbp-col-label">What the school does with families</div>
+          <ul>
+            <li>Advisor contacts each family at least twice per project cycle — proactively, not reactively</li>
+            <li>Family Learning Guide includes 3 conversation starters, 1 book, 1 activity per cycle</li>
+            <li>Exhibition nights three times per year — student-led portfolio presentations</li>
+            <li>Family Advisory Council meets quarterly — real input on curriculum direction</li>
+            <li>Families invited as project consultants when their expertise fits the cycle theme</li>
+            <li>Annual sleep science briefing for families — the research on adolescent biology explained</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fbp-row">
+        <div class="fbp-phase">
+          <div class="fp-age">Ages 14–18</div>
+          <h3>Field Phase</h3>
+        </div>
+        <div class="fbp-col">
+          <div class="fbp-col-label">What families do at home</div>
+          <ul>
+            <li>Ask about the internship — "What did you do? What surprised you? What did you figure out?"</li>
+            <li>Engage with the Senior Contribution — follow its development, ask questions, attend the final presentation</li>
+            <li>Connect their own networks to the student's internship and mentor search where possible</li>
+            <li>Support autonomy — resist solving problems for the student; ask questions instead</li>
+            <li>Protect sleep fiercely — adolescent biology means sleep debt is a real academic cost</li>
+            <li>Celebrate learning milestones on the mastery map — not just "good grades"</li>
+          </ul>
+        </div>
+        <div class="fbp-col">
+          <div class="fbp-col-label">What the school does with families</div>
+          <ul>
+            <li>Advisor holds tri-weekly check-in: advisor + student + family together, reviewing mastery map</li>
+            <li>Families fully included in Senior Contribution presentation — public, celebrated event</li>
+            <li>Internship placement updates shared with families — mentor names, locations, project descriptions</li>
+            <li>Family invited to observe internship site once per placement with mentor approval</li>
+            <li>Post-graduation planning done as a three-way conversation: student, family, advisor</li>
+            <li>Community resources actively shared for families navigating college, career, and financial planning</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Family Engagement Calendar -->
+    <div class="family-calendar">
+      <div class="cal-header">The Family Partnership Calendar — Touchpoints Across the Year</div>
+      <div class="cal-grid">
+        <div class="cal-item">
+          <div class="cal-freq">Weekly</div>
+          <h4>Family Learning Guide</h4>
+          <p>Conversation starters, one activity, and one book recommendation tied to the current project cycle. Sent digitally; printable version available.</p>
+        </div>
+        <div class="cal-item">
+          <div class="cal-freq">Every 4–6 Weeks</div>
+          <h4>Advisor Check-In</h4>
+          <p>Proactive contact from advisor to family. Brief — 10–15 minutes. Celebrates growth, flags anything worth knowing, and invites family input. Not reserved for problems.</p>
+        </div>
+        <div class="cal-item">
+          <div class="cal-freq">Every 8 Weeks</div>
+          <h4>Exhibition Night</h4>
+          <p>End of each project cycle. Student presents work to family, community, and experts. The primary accountability event of the year. Families attend as a partner, not an audience.</p>
+        </div>
+        <div class="cal-item">
+          <div class="cal-freq">Monthly</div>
+          <h4>"Research in Plain English"</h4>
+          <p>One-page newsletter translating a piece of developmental or learning research into plain language with practical at-home applications. Builds family capacity over time.</p>
+        </div>
+        <div class="cal-item">
+          <div class="cal-freq">Twice Yearly</div>
+          <h4>Portfolio Conference</h4>
+          <p>Student-led. Student walks family through their portfolio — what they made, what they learned, what they want to work on. Advisor present as witness and guide.</p>
+        </div>
+        <div class="cal-item">
+          <div class="cal-freq">Quarterly</div>
+          <h4>Family Advisory Council</h4>
+          <p>Families participate in real school governance. Reviews curriculum themes, raises concerns, and provides input on school direction. Decisions and responses published transparently.</p>
+        </div>
+        <div class="cal-item">
+          <div class="cal-freq">Annually</div>
+          <h4>Family Orientation</h4>
+          <p>Beginning of year. Explains the model, the research behind it, and what families can do at home. Answers the "why no homework?" and "why no grades?" questions with evidence.</p>
+        </div>
+        <div class="cal-item">
+          <div class="cal-freq">As Needed</div>
+          <h4>Resource Connection</h4>
+          <p>Advisor connects families to community resources when needed — not just academic resources, but support for the whole family. No family navigates a challenge without a warm handoff.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Research callout -->
+    <div style="margin-top:3rem; padding:2.5rem; border:1px solid var(--light); background:var(--paper)">
+      <div class="sec-eyebrow" style="margin-bottom:0.75rem">The Dinner Table — The Most Underestimated Academic Tool</div>
+      <p style="font-size:0.95rem; color:var(--ink); line-height:1.8; max-width:80ch; margin-bottom:1.5rem">Harvard's Home-School Study of Language and Literacy Development produced one of the most surprising findings in family research: <strong>dinner table conversation is a more powerful vocabulary builder for young children than reading aloud.</strong> Dinner surfaces "rare words" — sophisticated vocabulary adults use naturally in stories — in a warm, contextual setting where children absorb language effortlessly. The CASA 10-year longitudinal study found teens who had 7 family dinners per week were 40% more likely to receive A's and B's. The benefits span language, academic achievement, mental health, and protection from risky behaviors — and they hold across every income level and culture studied.</p>
+
+      <!-- Dinner benefits grid -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--light); border:1px solid var(--light); margin-bottom:1.5rem">
+        <div style="background:var(--paper); padding:1.5rem 1.25rem">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem">Academic</div>
+          <h4 style="font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; margin-bottom:0.4rem">Higher Grades</h4>
+          <p style="font-size:0.75rem; color:var(--muted); line-height:1.55">Teens with 7 family dinners/week are 40% more likely to receive A's and B's. Effect holds across 10 years of longitudinal data.</p>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.06em; color:var(--warm); text-transform:uppercase; margin-top:0.5rem">CASA 10-year study 2005</div>
+        </div>
+        <div style="background:var(--paper); padding:1.5rem 1.25rem">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem">Language</div>
+          <h4 style="font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; margin-bottom:0.4rem">Vocabulary Growth</h4>
+          <p style="font-size:0.75rem; color:var(--muted); line-height:1.55">Dinner conversation exposes children to more "rare words" than read-aloud. Preschool dinner talk predicts vocabulary and reading scores through 6th grade.</p>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.06em; color:var(--warm); text-transform:uppercase; margin-top:0.5rem">Harvard Home-School Study · Snow & Beals 2006</div>
+        </div>
+        <div style="background:var(--paper); padding:1.5rem 1.25rem">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem">Mental Health</div>
+          <h4 style="font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; margin-bottom:0.4rem">Wellbeing & Resilience</h4>
+          <p style="font-size:0.75rem; color:var(--muted); line-height:1.55">Regular family meals associated with higher self-esteem, reduced depression, reduced anxiety, and a stronger sense of family identity and belonging.</p>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.06em; color:var(--warm); text-transform:uppercase; margin-top:0.5rem">Harrison et al. 2015 · Armstrong-Carter & Telzer 2020</div>
+        </div>
+        <div style="background:var(--paper); padding:1.5rem 1.25rem">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem">Protection</div>
+          <h4 style="font-family:'Cormorant Garamond',serif; font-size:1rem; font-weight:700; margin-bottom:0.4rem">Risk Reduction</h4>
+          <p style="font-size:0.75rem; color:var(--muted); line-height:1.55">Teens with frequent family dinners significantly less likely to use substances. Protective effects hold 1 and 5 years later in longitudinal follow-up.</p>
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.06em; color:var(--warm); text-transform:uppercase; margin-top:0.5rem">Project EAT · Eisenberg et al. 2004</div>
+        </div>
+      </div>
+
+      <!-- What makes dinner work -->
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem">
+        <div>
+          <div style="font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--green); margin-bottom:0.75rem">✓ What makes dinner powerful</div>
+          <ul style="list-style:none; padding:0">
+            <li style="font-size:0.8rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.5rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--warm)">→</span><strong style="color:var(--ink)">No devices at the table</strong> — this is the single most important condition. Screens reduce conversational depth and eliminate most of the benefits.</li>
+            <li style="font-size:0.8rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.5rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--warm)">→</span><strong style="color:var(--ink)">Adults tell stories about their day</strong> — not just ask about the child's. Hearing sophisticated adult language in narrative context is the vocabulary mechanism.</li>
+            <li style="font-size:0.8rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.5rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--warm)">→</span><strong style="color:var(--ink)">Open questions that require thinking</strong> — "What surprised you?" "What's something you figured out?" rather than "How was school?"</li>
+            <li style="font-size:0.8rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.5rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--warm)">→</span><strong style="color:var(--ink)">All family members speak</strong> — children need practice producing conversation, not just receiving it.</li>
+            <li style="font-size:0.8rem; color:var(--muted); padding-left:0.85rem; position:relative; line-height:1.6"><span style="position:absolute; left:0; color:var(--warm)">→</span><strong style="color:var(--ink)">Frequency matters</strong> — 5 or more dinners per week produces the strongest outcomes. Even 3–4 produces meaningful benefits.</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--accent); margin-bottom:0.75rem">How Groundwork Supports This</div>
+          <ul style="list-style:none; padding:0">
+            <li style="font-size:0.8rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.5rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--warm)">→</span>Every Family Learning Guide includes a <strong style="color:var(--ink)">Dinner Table Edition</strong> — 3 conversation starters tied to the current project cycle that naturally spark the narrative, exploratory conversations the research shows are most beneficial</li>
+            <li style="font-size:0.8rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.5rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--warm)">→</span><strong style="color:var(--ink)">No homework</strong> is assigned — so family dinner time is never competed with or rushed through to finish an assignment</li>
+            <li style="font-size:0.8rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.5rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--warm)">→</span>Family orientation includes the <strong style="color:var(--ink)">dinner research</strong> explicitly — parents understand why this matters and how to make it work</li>
+            <li style="font-size:0.8rem; color:var(--muted); padding-left:0.85rem; position:relative; line-height:1.6"><span style="position:absolute; left:0; color:var(--warm)">→</span>Evening school events are scheduled with awareness of <strong style="color:var(--ink)">family meal times</strong> — the school never routinely disrupts the dinner hour</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Research callout -->
+    <div style="margin-top:2rem; padding:2.5rem; border:1px solid var(--light); background:var(--paper)">
+      <div class="sec-eyebrow" style="margin-bottom:0.75rem">The Research in One Paragraph</div>
+      <p style="font-size:0.95rem; color:var(--ink); line-height:1.8; max-width:80ch">The APA's review of 448 studies found that <strong>at-home discussion, encouragement, and reading with children</strong> are among the most powerful things a family can do — while helping with homework shows a small negative effect on achievement. The Harvard Family Research Project identifies <strong>two-way communication</strong> as the active ingredient in school-family partnership. The National PTA's six standards provide the structural framework. And one finding cuts across every study: <strong>all families can effectively support their children's learning</strong> when given the right guidance — the gap between highly and less-involved families is largely a gap in information and school support, not in motivation or love.</p>
+      <div style="margin-top:1rem; font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.1em; color:var(--warm); text-transform:uppercase">APA Meta-Review 2019 · Harvard Family Research Project · National PTA Six Standards · Youth.gov Synthesis</div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ASSESSMENT -->
+<div id="assessment">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">08 — Assessment</div>
+    <h2 class="sec-title">Evidence of Growth,<br>Not Ranking</h2>
+    <p class="sec-lead">Grades sort students by performance relative to each other. The Groundwork Model uses three interlocking systems that document genuine growth and communicate it honestly.</p>
+    <div class="assess-grid">
+      <div class="assess-card">
+        <h3>The Living Portfolio</h3>
+        <p>Each student curates a record of their best work across all domains — updated throughout every phase. Work is annotated with what it demonstrates and why it matters.</p>
+        <ul>
+          <li>Written, multimedia, and physical work</li>
+          <li>Project documentation and process notes</li>
+          <li>Self-assessments and advisor commentary</li>
+          <li>Presented at every family conference</li>
+          <li>AI-assisted organization and tagging</li>
+          <li>Carried across all three phases</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <h3>Mastery Benchmarks</h3>
+        <p>~60 core competencies K–12. Each with clear descriptive rubrics. Students advance when they demonstrate mastery — not when the year ends. AI maintains a live map each student and advisor review weekly.</p>
+        <ul>
+          <li>No letter grades or percentages</li>
+          <li>Students see their full map at all times</li>
+          <li>Advisor reviews map weekly with student</li>
+          <li>Translates to college-compatible transcripts</li>
+          <li>AI flags gaps and pacing issues early</li>
+          <li>Informed by Competency Works research</li>
+        </ul>
+      </div>
+      <div class="assess-card">
+        <h3>Public Exhibitions</h3>
+        <p>Three times per year, students present work to a real audience — parents, community, and experts. The most authentic, high-stakes assessment possible. Nothing focuses learning like a real audience.</p>
+        <ul>
+          <li>End of each 8-week project cycle</li>
+          <li>Panel includes community and field experts</li>
+          <li>Student defends process and decisions</li>
+          <li>Family attendance builds engagement</li>
+          <li>Replaces end-of-year exams entirely</li>
+          <li>Based on High Tech High model evidence</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- EVIDENCE WALL -->
+<div class="evidence-section" id="evidence">
+  <div class="section-wrap">
+    <div class="sec-eyebrow">09 — The Evidence</div>
+    <h2 class="sec-title" style="color:var(--paper)">Every Decision<br>Has a Citation</h2>
+    <div class="evidence-grid">
+      <div class="ev-item">
+        <div>
+          <h4>Physical activity improves math and overall academic achievement</h4>
+          <p>17-RCT meta-analysis through December 2024. Moderate-intensity activity showed the strongest effect. All four FITT dimensions (frequency, intensity, time, type) moderated outcomes.</p>
+          <div class="study">He et al. 2025 · Frontiers in Public Health</div>
+        </div>
+        <div class="ev-stat"><div class="big">SMD .22</div><div class="small">Overall achievement improvement</div></div>
+      </div>
+      <div class="ev-item">
+        <div>
+          <h4>Later start times produce more sleep and better grades</h4>
+          <p>Objective wrist-monitor data from two Seattle high schools. Students didn't stay up later — they slept more. Grades, attendance, and tardiness all improved.</p>
+          <div class="study">de la Iglesia et al. 2018 · Science Advances</div>
+        </div>
+        <div class="ev-stat"><div class="big">+4.5%</div><div class="small">Grade improvement post start-time shift</div></div>
+      </div>
+      <div class="ev-item">
+        <div>
+          <h4>Guided play outperforms direct instruction for early childhood</h4>
+          <p>39 studies, 3,893 children ages 1–8. Guided play outperformed DI on math skills, shape knowledge, and task switching. Outperformed free play on spatial vocabulary.</p>
+          <div class="study">Skene et al. 2022 · Meta-analysis</div>
+        </div>
+        <div class="ev-stat"><div class="big">g=0.63</div><div class="small">Shape knowledge advantage over DI</div></div>
+      </div>
+      <div class="ev-item">
+        <div>
+          <h4>Teacher-student relationships: highest-leverage known factor</h4>
+          <p>Synthesis of 800+ meta-analyses. Effect size d=0.72 — well above the 0.40 threshold equivalent to one year of expected growth. Strongest for disadvantaged students.</p>
+          <div class="study">Hattie, Visible Learning 2009</div>
+        </div>
+        <div class="ev-stat"><div class="big">d=.72</div><div class="small">Effect size (0.40 = 1yr growth)</div></div>
+      </div>
+      <div class="ev-item">
+        <div>
+          <h4>Internship graduates dramatically outperform peers in employment</h4>
+          <p>National survey of college graduates. Those with paid internship experience were far more likely to secure degree-required employment and report career satisfaction long-term.</p>
+          <div class="study">Strada Education Foundation 2025</div>
+        </div>
+        <div class="ev-stat"><div class="big">73%</div><div class="small">More likely to land degree-required job</div></div>
+      </div>
+      <div class="ev-item">
+        <div>
+          <h4>Play-based early education changes life trajectories</h4>
+          <p>123 children followed to age 40. Play-based preschool participants had higher graduation rates, employment, earnings, lower arrest rates, and better health outcomes.</p>
+          <div class="study">High/Scope Perry Preschool 1962–present</div>
+        </div>
+        <div class="ev-stat"><div class="big">$12.90</div><div class="small">Return per $1 invested</div></div>
+      </div>
+      <div class="ev-item">
+        <div>
+          <h4>Metacognition: among the highest-leverage interventions known</h4>
+          <p>Synthesis of 1,200+ meta-analyses covering 300 million students. Teaching students how to plan, monitor, and evaluate their own learning outperforms most curriculum interventions.</p>
+          <div class="study">Hattie, Visible Learning 2009</div>
+        </div>
+        <div class="ev-stat"><div class="big">d=.69</div><div class="small">Metacognition effect size</div></div>
+      </div>
+      <div class="ev-item">
+        <div>
+          <h4>Creativity scores have declined since 1990 — sharpest drop in K–6</h4>
+          <p>Analysis of nearly 300,000 Torrance Test scores. Scores rose from 1966–1990, then declined steadily. The inflection point coincides with the rise of standardized accountability in education.</p>
+          <div class="study">KH Kim, College of William & Mary 2010, 2017</div>
+        </div>
+        <div class="ev-stat"><div class="big">1990</div><div class="small">Year creativity scores began declining</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <h2>The Groundwork Model v3</h2>
+      <p>Every hour, every space, every instruction decision — traceable to evidence.<br>Research library: 13 domains, 50+ studies, 2 decades of longitudinal data.</p>
+    </div>
+    <div class="footer-right">
+      <p>Research current through May 2026</p>
+      <p>Version 3.0 · Full Physical Activity + Environment Integration</p>
+      <p>Nothing sacred. Everything earned.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+function showDay(phase) {
+  document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('day-' + phase).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
