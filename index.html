@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Groundwork Model — Three Pathways</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@200;300;400;500;600&family=Barlow+Condensed:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #141210;
+    --paper: #f8f4ee;
+    --light: #ebe4d6;
+    --muted: #7a7060;
+    --sand: #ede6d5;
+
+    /* Model 1 — In-Person */
+    --m1: #1e4060;
+    --m1-light: #e8f0f8;
+    --m1-mid: #2a5a88;
+    --m1-dark: #0f2030;
+
+    /* Model 2 — Hybrid */
+    --m2: #2e5e3a;
+    --m2-light: #e8f4ec;
+    --m2-mid: #3d7a4d;
+    --m2-dark: #162e1c;
+
+    /* Model 3 — Independent */
+    --m3: #6b3a1e;
+    --m3-light: #f8f0e8;
+    --m3-mid: #8a4d28;
+    --m3-dark: #3a1e0a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: var(--ink); height: 50px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem;
+  }
+  .nav-logo {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.95rem; color: var(--paper); letter-spacing: 0.03em;
+  }
+  .nav-models {
+    display: flex; gap: 0;
+  }
+  .nav-model {
+    padding: 0 1.5rem; height: 50px;
+    display: flex; align-items: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(248,244,238,0.5); text-decoration: none; cursor: pointer;
+    border-left: 1px solid rgba(255,255,255,0.06);
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-model:hover { color: var(--paper); }
+  .nav-model.m1:hover { background: var(--m1); color: white; }
+  .nav-model.m2:hover { background: var(--m2); color: white; }
+  .nav-model.m3:hover { background: var(--m3); color: white; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; padding-top: 50px;
+    background: var(--ink);
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 0;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 60%, rgba(30,64,96,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 60% 30%, rgba(46,94,58,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse 30% 40% at 85% 70%, rgba(107,58,30,0.25) 0%, transparent 50%);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 6rem 5rem 0;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(248,244,238,0.4); margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
+  }
+  .hero h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(3rem, 7vw, 7rem);
+    font-weight: 700; line-height: 0.95;
+    color: var(--paper); letter-spacing: -0.02em;
+    opacity: 0; animation: fadeUp 0.7s 0.3s forwards;
+  }
+  .hero h1 em { font-style: italic; }
+  .hero-sub {
+    font-size: 1rem; color: rgba(248,244,238,0.5);
+    max-width: 52ch; margin-top: 1.75rem; line-height: 1.8;
+    opacity: 0; animation: fadeUp 0.7s 0.5s forwards;
+  }
+  .hero-three {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    margin-top: 4rem;
+    opacity: 0; animation: fadeUp 0.7s 0.7s forwards;
+  }
+  .hero-model {
+    padding: 2.5rem 2rem;
+    border-top: 3px solid;
+    position: relative; cursor: pointer;
+    transition: background 0.25s;
+    text-decoration: none;
+  }
+  .hero-model.m1 { border-color: var(--m1-mid); }
+  .hero-model.m2 { border-color: var(--m2-mid); }
+  .hero-model.m3 { border-color: var(--m3-mid); }
+  .hero-model:hover { background: rgba(255,255,255,0.04); }
+  .hero-model .model-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .hero-model.m1 .model-num { color: var(--m1-mid); }
+  .hero-model.m2 .model-num { color: var(--m2-mid); }
+  .hero-model.m3 .model-num { color: var(--m3-mid); }
+  .hero-model h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(1.3rem, 2.5vw, 2rem);
+    font-weight: 700; color: var(--paper); line-height: 1.15;
+    margin-bottom: 0.75rem;
+  }
+  .hero-model p {
+    font-size: 0.82rem; color: rgba(248,244,238,0.45); line-height: 1.65;
+  }
+  .hero-model .hero-model-stats {
+    display: flex; gap: 1.5rem; margin-top: 1.5rem;
+  }
+  .hero-model-stat .hms-n {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem; font-weight: 600;
+    line-height: 1;
+  }
+  .hero-model.m1 .hms-n { color: var(--m1-mid); }
+  .hero-model.m2 .hms-n { color: var(--m2-mid); }
+  .hero-model.m3 .hms-n { color: var(--m3-mid); }
+  .hero-model-stat .hms-l {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: rgba(248,244,238,0.3); margin-top: 0.2rem;
+  }
+  .hero-model + .hero-model { border-left: 1px solid rgba(255,255,255,0.06); }
+  .hero-scroll {
+    position: relative; z-index: 2;
+    padding: 2rem 5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(248,244,238,0.25);
+    display: flex; align-items: center; gap: 1rem;
+    opacity: 0; animation: fadeUp 0.7s 1s forwards;
+  }
+  .hero-scroll::before {
+    content: ''; display: block; width: 30px; height: 1px;
+    background: rgba(248,244,238,0.2);
+  }
+
+  /* ── COMPARISON TABLE ── */
+  .compare-section {
+    background: var(--sand);
+  }
+  .sw { max-width: 1200px; margin: 0 auto; padding: 6rem 4rem; }
+  .sec-ey {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .sec-ti {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700; line-height: 1.05; margin-bottom: 1.25rem;
+  }
+  .sec-le {
+    font-size: 0.95rem; color: var(--muted); max-width: 58ch; line-height: 1.8;
+    border-left: 2px solid rgba(0,0,0,0.15); padding-left: 1.25rem;
+    margin-bottom: 3.5rem;
+  }
+  hr.div { border: none; border-top: 1px solid var(--light); max-width: 1200px; margin: 0 auto; }
+
+  .compare-table {
+    width: 100%; border-collapse: collapse;
+    border: 1px solid var(--light);
+  }
+  .compare-table th {
+    padding: 1.5rem 1.75rem; text-align: left;
+    border-bottom: 1px solid var(--light);
+    border-right: 1px solid var(--light);
+  }
+  .compare-table th:first-child {
+    background: var(--paper);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); width: 180px;
+  }
+  .compare-table th.m1h { background: var(--m1-dark); }
+  .compare-table th.m2h { background: var(--m2-dark); }
+  .compare-table th.m3h { background: var(--m3-dark); }
+  .compare-table th .th-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .compare-table th.m1h .th-num { color: var(--m1-mid); }
+  .compare-table th.m2h .th-num { color: var(--m2-mid); }
+  .compare-table th.m3h .th-num { color: var(--m3-mid); }
+  .compare-table th h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem; font-weight: 700; color: var(--paper);
+  }
+  .compare-table td {
+    padding: 1.25rem 1.75rem;
+    border-bottom: 1px solid var(--light);
+    border-right: 1px solid var(--light);
+    vertical-align: top;
+    background: var(--paper);
+    font-size: 0.82rem; color: var(--muted); line-height: 1.65;
+  }
+  .compare-table td:first-child {
+    background: var(--sand);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600; font-size: 0.75rem; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink);
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td strong { color: var(--ink); font-weight: 500; }
+  .c1 { border-left: 3px solid var(--m1) !important; }
+  .c2 { border-left: 3px solid var(--m2) !important; }
+  .c3 { border-left: 3px solid var(--m3) !important; }
+
+  /* ── MODEL SECTIONS ── */
+  .model-hero {
+    padding: 5rem 0 0;
+    min-height: 45vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .model-hero-content { padding: 4rem 5rem 0; }
+  .model-num-large {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 8rem; font-weight: 700; line-height: 0.85;
+    opacity: 0.08; position: absolute; right: 5rem; top: 50%;
+    transform: translateY(-50%);
+    letter-spacing: -0.05em;
+  }
+  .model-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .model-title {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700; line-height: 0.95; letter-spacing: -0.02em;
+    color: var(--paper);
+  }
+  .model-title em { font-style: italic; }
+  .model-tagline {
+    font-size: 1rem; margin-top: 1.25rem;
+    line-height: 1.75; max-width: 52ch;
+  }
+  .model-meta-strip {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    margin-top: 3rem;
+  }
+  .mms-item {
+    padding: 1.5rem 1.75rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .mms-item + .mms-item { border-left: 1px solid rgba(255,255,255,0.08); }
+  .mms-item .mms-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase;
+    opacity: 0.4; margin-bottom: 0.35rem;
+  }
+  .mms-item .mms-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem; font-weight: 600; color: var(--paper);
+    line-height: 1.3;
+  }
+
+  /* Model section body */
+  .model-body { background: var(--paper); }
+  .model-section { max-width: 1200px; margin: 0 auto; padding: 5rem 4rem; }
+  .ms-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .ms-heading {
+    font-family: 'Libre Baskerville', serif;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700; line-height: 1.05; margin-bottom: 1.25rem;
+  }
+  .ms-lead {
+    font-size: 0.95rem; color: var(--muted); max-width: 60ch;
+    line-height: 1.8; margin-bottom: 3rem;
+    border-left: 2px solid; padding-left: 1.25rem;
+  }
+
+  /* DAY SCHEDULE */
+  .day-sched { display: flex; flex-direction: column; gap: 1px; }
+  .ds-block {
+    display: grid; grid-template-columns: 100px 100px 1fr 180px;
+    gap: 0; border: 1px solid var(--light);
+  }
+  .ds-block + .ds-block { border-top: none; }
+  .ds-time {
+    padding: 1.4rem 1rem;
+    display: flex; align-items: center; justify-content: center;
+    border-right: 1px solid var(--light); background: var(--paper);
+  }
+  .ds-time span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem; color: var(--muted); text-align: center; line-height: 1.4;
+  }
+  .ds-type {
+    padding: 1.4rem 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    border-right: 1px solid var(--light); background: var(--paper);
+  }
+  .ds-type span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase;
+    text-align: center; line-height: 1.6;
+  }
+  .ds-main {
+    padding: 1.4rem 2rem; background: var(--paper);
+    border-right: 1px solid var(--light);
+  }
+  .ds-main h4 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem;
+  }
+  .ds-main p { font-size: 0.78rem; color: var(--muted); line-height: 1.55; }
+  .ds-why {
+    padding: 1.4rem 1.25rem; background: var(--paper);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .ds-why .wy-l {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.48rem; letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .ds-why p { font-size: 0.68rem; color: var(--muted); line-height: 1.55; }
+  .ds-block.anchor .ds-time,
+  .ds-block.anchor .ds-type,
+  .ds-block.anchor .ds-main,
+  .ds-block.anchor .ds-why { background: var(--ink); }
+  .ds-block.anchor .ds-time span,
+  .ds-block.anchor .ds-main p,
+  .ds-block.anchor .ds-why p { color: rgba(248,244,238,0.45); }
+  .ds-block.anchor .ds-main h4 { color: var(--paper); }
+  .ds-block.anchor .ds-why .wy-l { opacity: 0.5; }
+
+  /* PILLAR GRIDS */
+  .pillar-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--light);
+    border: 1px solid var(--light);
+    margin-top: 2.5rem;
+  }
+  .pg-card {
+    background: var(--paper); padding: 2.25rem 2rem;
+    transition: background 0.2s;
+  }
+  .pg-card:hover { background: var(--sand); }
+  .pg-card .pg-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .pg-card .pg-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .pg-card h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; line-height: 1.25;
+  }
+  .pg-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+  .pg-card .pg-research {
+    margin-top: 0.75rem; font-family: 'DM Mono', monospace;
+    font-size: 0.5rem; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  /* PHASE TABS */
+  .phase-tabs {
+    display: flex; gap: 1px; background: var(--light);
+    border: 1px solid var(--light); margin-bottom: 1px;
+  }
+  .phase-tab {
+    flex: 1; padding: 1rem; background: var(--sand);
+    text-align: center; cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); border: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .phase-tab.active { color: var(--paper); }
+  .phase-content { display: none; }
+  .phase-content.active { display: block; }
+
+  /* WEEKLY RHYTHM */
+  .week-grid {
+    display: grid; gap: 1px;
+    background: var(--light); border: 1px solid var(--light);
+    margin-top: 2.5rem;
+  }
+  .week-row {
+    display: grid; background: var(--light); gap: 1px;
+  }
+  .week-cell {
+    background: var(--paper); padding: 1.5rem 1.25rem;
+    min-height: 100px;
+  }
+  .week-cell .wc-day {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .week-cell h4 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; line-height: 1.2;
+  }
+  .week-cell p { font-size: 0.72rem; color: var(--muted); line-height: 1.5; }
+  .week-cell.campus { border-top: 3px solid; }
+  .week-cell.home { border-top: 3px solid var(--light); }
+  .week-cell.half { opacity: 0.75; }
+  .week-header {
+    display: grid; background: var(--light); gap: 1px;
+  }
+  .week-header-cell {
+    background: var(--ink); color: var(--paper); padding: 0.75rem 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* FAMILY & COMMUNITY SECTION */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
+  .tc-card {
+    padding: 2rem; border: 1px solid var(--light); background: var(--sand);
+  }
+  .tc-card .tc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.52rem; letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .tc-card h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem;
+  }
+  .tc-card ul { list-style: none; padding: 0; }
+  .tc-card ul li {
+    font-size: 0.78rem; color: var(--muted);
+    padding-left: 0.85rem; position: relative; margin-bottom: 0.4rem; line-height: 1.55;
+  }
+  .tc-card ul li::before {
+    content: '→'; position: absolute; left: 0; font-size: 0.7rem;
+  }
+
+  /* RESEARCH ALIGNMENT */
+  .research-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--light); border: 1px solid var(--light); margin-top: 3rem;
+  }
+  .rs-card {
+    padding: 1.75rem 1.5rem; background: var(--paper);
+  }
+  .rs-card .rs-stat {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 2rem; font-weight: 700; line-height: 1; margin-bottom: 0.4rem;
+  }
+  .rs-card .rs-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); line-height: 1.5; margin-bottom: 0.5rem;
+  }
+  .rs-card p { font-size: 0.72rem; color: var(--muted); line-height: 1.55; }
+
+  /* DARK BAND */
+  .dark-band { background: var(--ink); padding: 4rem; }
+  .dark-band-inner { max-width: 1200px; margin: 0 auto; }
+  .dark-band h3 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.5rem; font-weight: 700; color: var(--paper); margin-bottom: 1.25rem;
+  }
+  .dark-band-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05); }
+  .db-item {
+    padding: 1.75rem; background: rgba(255,255,255,0.02);
+  }
+  .db-item .db-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .db-item h4 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 0.95rem; font-weight: 700; color: var(--paper); margin-bottom: 0.4rem;
+  }
+  .db-item p { font-size: 0.75rem; color: rgba(248,244,238,0.45); line-height: 1.6; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink); padding: 4rem 5rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto; }
+  .footer-brand h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.5rem; color: var(--paper); margin-bottom: 0.5rem;
+  }
+  .footer-brand p { font-size: 0.78rem; color: rgba(248,244,238,0.35); line-height: 1.7; }
+  .footer-col h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(248,244,238,0.4); margin-bottom: 1rem;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li {
+    font-size: 0.78rem; color: rgba(248,244,238,0.3);
+    margin-bottom: 0.4rem; line-height: 1.5;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .hero-three { grid-template-columns: 1fr; }
+    .hero-model + .hero-model { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
+    .compare-table { display: block; overflow-x: auto; }
+    .model-meta-strip { grid-template-columns: 1fr 1fr; }
+    .pillar-grid { grid-template-columns: 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .research-strip { grid-template-columns: 1fr 1fr; }
+    .dark-band-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .ds-block { grid-template-columns: 80px 1fr; }
+    .ds-type, .ds-why { display: none; }
+    .sw { padding: 4rem 1.5rem; }
+    .model-section { padding: 4rem 1.5rem; }
+    .hero-content { padding: 4rem 2rem 0; }
+    nav .nav-models { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">The Groundwork — Three Pathways</span>
+  <div class="nav-models">
+    <a class="nav-model m1" onclick="document.getElementById('in-person').scrollIntoView({behavior:'smooth'})">In-Person</a>
+    <a class="nav-model m2" onclick="document.getElementById('hybrid').scrollIntoView({behavior:'smooth'})">Hybrid</a>
+    <a class="nav-model m3" onclick="document.getElementById('independent').scrollIntoView({behavior:'smooth'})">Independent Study</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">The Groundwork Model · Delivery Frameworks</div>
+    <h1>One <em>Framework.</em><br>Three Pathways.</h1>
+    <p class="hero-sub">The same research-backed foundation — the graduate profile, the instructional model, the movement program, the family partnership, the creative environment — delivered in three distinct formats to serve every family's situation. The research doesn't change. The delivery does.</p>
+  </div>
+  <div class="hero-three">
+    <a class="hero-model m1" onclick="document.getElementById('in-person').scrollIntoView({behavior:'smooth'})">
+      <div class="model-num">In-Person School</div>
+      <h2>In-Person<br>School</h2>
+      <p>5 days per week on campus. The full Groundwork experience in a purpose-built environment with daily community, movement, and mentorship.</p>
+      <div class="hero-model-stats">
+        <div class="hero-model-stat"><div class="hms-n">5</div><div class="hms-l">Days/week on campus</div></div>
+        <div class="hero-model-stat"><div class="hms-n">6–7</div><div class="hms-l">Hours/day</div></div>
+        <div class="hero-model-stat"><div class="hms-n">90+</div><div class="hms-l">Min movement daily</div></div>
+      </div>
+    </a>
+    <a class="hero-model m2" onclick="document.getElementById('hybrid').scrollIntoView({behavior:'smooth'})">
+      <div class="model-num">Hybrid</div>
+      <h2>Hybrid<br>Campus</h2>
+      <p>Full days Monday and Wednesday, half-day Friday on campus. Tuesday and Thursday at home. Deep community with family flexibility built in by design.</p>
+      <div class="hero-model-stats">
+        <div class="hero-model-stat"><div class="hms-n">2.5</div><div class="hms-l">Days/week on campus</div></div>
+        <div class="hero-model-stat"><div class="hms-n">7</div><div class="hms-l">Campus hrs M/W</div></div>
+        <div class="hero-model-stat"><div class="hms-n">4</div><div class="hms-l">Campus hrs Friday</div></div>
+      </div>
+    </a>
+    <a class="hero-model m3" onclick="document.getElementById('independent').scrollIntoView({behavior:'smooth'})">
+      <div class="model-num">Independent Study</div>
+      <h2>Independent<br>Study</h2>
+      <p>Home-based learning with full Groundwork curriculum, advisor relationship, and community connection. School comes to the family.</p>
+      <div class="hero-model-stats">
+        <div class="hero-model-stat"><div class="hms-n">0</div><div class="hms-l">Required campus days</div></div>
+        <div class="hero-model-stat"><div class="hms-n">Weekly</div><div class="hms-l">Advisor connection</div></div>
+        <div class="hero-model-stat"><div class="hms-n">Monthly</div><div class="hms-l">Community gatherings</div></div>
+      </div>
+    </a>
+  </div>
+  <div class="hero-scroll">Scroll to explore each model</div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="compare-section">
+  <div class="sw">
+    <div class="sec-ey" style="color:var(--muted)">At a Glance</div>
+    <h2 class="sec-ti">How the Three Pathways Compare</h2>
+    <p class="sec-le">All three models share the same research foundation. What differs is structure, setting, and daily rhythm — not the depth of the learning or the strength of the relationships.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="m1h"><h3>In-Person School</h3></th>
+          <th class="m2h"><h3>Hybrid</h3></th>
+          <th class="m3h"><h3>Independent Study</h3></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Campus Days</td>
+          <td class="c1"><strong>5 days/week</strong> — Mon through Fri</td>
+          <td class="c2"><strong>2.5 days/week</strong> — Mon &amp; Wed full day, Fri half-day</td>
+          <td class="c3"><strong>Optional</strong> — Monthly community days + optional events</td>
+        </tr>
+        <tr>
+          <td>Daily Hours</td>
+          <td class="c1">Roots: 6 hrs (8:30–2:30) · Workshop/Field: 7 hrs (8:30–3:30)</td>
+          <td class="c2">Mon &amp; Wed: full day (8:30–3:30) · Fri: half-day (8:30–12:30) · Home days: flexible, 3–4 hrs structured</td>
+          <td class="c3">Flexible within daily structure · Target 4–5 hours of active learning</td>
+        </tr>
+        <tr>
+          <td>Advisor Relationship</td>
+          <td class="c1">Daily advisory circle · multi-year relationship · 15 students per advisor</td>
+          <td class="c2">On-campus advisory every campus day + weekly video check-in on home days</td>
+          <td class="c3">Weekly 1:1 video session with advisor + async portfolio review</td>
+        </tr>
+        <tr>
+          <td>Movement Program</td>
+          <td class="c1">90+ min/day on campus — all 6 movement types fully delivered</td>
+          <td class="c2">60+ min on campus days · Family movement guide for home days</td>
+          <td class="c3">Family delivers movement program using Groundwork Movement Guide · weekly log</td>
+        </tr>
+        <tr>
+          <td>Project Studio</td>
+          <td class="c1">Daily 90-min block · teacher-coached · in purpose-built studio space</td>
+          <td class="c2">On campus M/W/F · Home continuation Tue/Thu with structured guide</td>
+          <td class="c3">Family-facilitated with Groundwork project materials · advisor reviews weekly</td>
+        </tr>
+        <tr>
+          <td>Instruction Model</td>
+          <td class="c1">Full blend: DI + guided practice + PBL + AI adaptive tools</td>
+          <td class="c2">DI + guided practice on campus · AI adaptive tools supplement home days</td>
+          <td class="c3">AI adaptive foundations + family-guided instruction + advisor-designed projects</td>
+        </tr>
+        <tr>
+          <td>Family Role</td>
+          <td class="c1">Partner — Family Learning Guide, exhibitions, dinner conversations, advisory relationship</td>
+          <td class="c2">Active co-teacher on home days · campus partner on campus days</td>
+          <td class="c3">Primary teacher · Groundwork-trained · supported by advisor and community</td>
+        </tr>
+        <tr>
+          <td>Peer Community</td>
+          <td class="c1">Daily — mixed-age groups, advisory circles, project teams, shared lunch</td>
+          <td class="c2">On-campus days + monthly community events + optional clubs</td>
+          <td class="c3">Monthly community gatherings + cohort video sessions + optional local meetups</td>
+        </tr>
+        <tr>
+          <td>Assessment</td>
+          <td class="c1">Portfolio + mastery benchmarks + tri-annual public exhibitions</td>
+          <td class="c2">Portfolio + mastery benchmarks + semi-annual exhibitions (on campus)</td>
+          <td class="c3">Portfolio + mastery benchmarks + annual exhibition (community or virtual)</td>
+        </tr>
+        <tr>
+          <td>Internships (Field Phase)</td>
+          <td class="c1">2 days/week in community placements · school manages partnerships</td>
+          <td class="c2">1–2 days/week · school or family sourced · advisor-integrated</td>
+          <td class="c3">Family-sourced with advisor guidance · strong fit for entrepreneurial families</td>
+        </tr>
+        <tr>
+          <td>Best Suited For</td>
+          <td class="c1">Families who want full daily community, structure, and professional teaching environment</td>
+          <td class="c2">Families wanting community + flexibility · working parents · partial home preference</td>
+          <td class="c3">Families with strong home learning commitment · travel · rural · unique situations</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ════════════════════ IN-PERSON SCHOOL ════════════════════ -->
+<div id="in-person">
+
+  <!-- Model 1 Hero -->
+  <div class="model-hero" style="background: var(--m1-dark); position:relative; overflow:hidden">
+    <div style="position:absolute; inset:0; background: radial-gradient(ellipse 70% 60% at 30% 50%, rgba(42,90,136,0.5) 0%, transparent 60%)"></div>
+    <div class="model-num-large" style="color:white">I</div>
+    <div class="model-hero-content" style="position:relative; z-index:2">
+      <div class="model-eyebrow" style="color:var(--m1-mid)">In-Person School · Five Days Per Week</div>
+      <h1 class="model-title">In-<em>Person</em><br>School</h1>
+      <p class="model-tagline" style="color:rgba(248,244,238,0.55)">The full Groundwork experience, five days a week. Every research element fully delivered — daily movement, deep advisory relationships, project studio, communal meals, flexible environments, and real-world community connections.</p>
+    </div>
+    <div class="model-meta-strip">
+      <div class="mms-item"><div class="mms-label">Campus Days</div><div class="mms-val">Mon – Fri</div></div>
+      <div class="mms-item"><div class="mms-label">Roots Hours</div><div class="mms-val">8:30am – 2:30pm</div></div>
+      <div class="mms-item"><div class="mms-label">Workshop/Field Hours</div><div class="mms-val">8:30am – 3:30pm</div></div>
+      <div class="mms-item"><div class="mms-label">Movement Daily</div><div class="mms-val">90+ minutes</div></div>
+      <div class="mms-item"><div class="mms-label">Advisory Group</div><div class="mms-val">≤15 students</div></div>
+    </div>
+  </div>
+
+  <div class="model-body">
+
+    <!-- What Makes It Work -->
+    <div class="model-section">
+      <div class="ms-title" style="color:var(--m1)">What Makes In-Person School Work</div>
+      <h2 class="ms-heading">The Full Research Stack,<br>Every Single Day</h2>
+      <p class="ms-lead" style="border-color:var(--m1)">In-person schooling five days per week allows every element of the research framework to operate at full strength — daily relationships, daily movement, daily community, and daily project depth. Nothing is rationed or scheduled around family logistics. The school does the full job.</p>
+
+      <div class="pillar-grid">
+        <div class="pg-card">
+          <div class="pg-icon">🏫</div>
+          <div class="pg-label" style="color:var(--m1)">Daily Community</div>
+          <h3>Advisory Circles Every Morning</h3>
+          <p>Same advisor, same group of 15, every single day for 2–3 years. The relationship quality research requires consistency and time — daily contact across years is what produces the d=0.72 effect size. Nothing replicates this in other models.</p>
+          <div class="pg-research" style="color:var(--m1)">Hattie d=0.72 · Multi-year looping · SDT relatedness</div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-icon">🏃</div>
+          <div class="pg-label" style="color:var(--m1)">Full Movement Program</div>
+          <h3>All 6 Movement Types, Daily</h3>
+          <p>The complete research-backed movement program — aerobic, balance/coordination, improvised play, micro-movement, outdoor nature time, and team sports — all fully delivered. Cycling infrastructure, outdoor space, movement-integrated days.</p>
+          <div class="pg-research" style="color:var(--m1)">He et al. 2025 · League of Bicyclists · 90+ min/day target</div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-icon">🌿</div>
+          <div class="pg-label" style="color:var(--m1)">Purpose-Built Environment</div>
+          <h3>Spaces Designed From Research Up</h3>
+          <p>Flexible seating throughout, natural light, acoustic zoning, makerspace, music rooms, school garden, outdoor green space, and communal dining. The environment is an active variable in learning — it is designed as one.</p>
+          <div class="pg-research" style="color:var(--m1)">Hendershot 2022 · Kaplan ART · WHO acoustics · BMC Public Health</div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-icon">🔨</div>
+          <div class="pg-label" style="color:var(--m1)">Full Project Studio</div>
+          <h3>90-Minute Deep Work Daily</h3>
+          <p>The 90-minute Project Studio block requires a purpose-built space, materials, and a teacher present as coach. Deep work that reaches flow state requires extended uninterrupted time in a designed environment — this model provides it fully, every day.</p>
+          <div class="pg-research" style="color:var(--m1)">MDRC RCT 2021 · Csikszentmihalyi flow · 90-min depth research</div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-icon">🍽️</div>
+          <div class="pg-label" style="color:var(--m1)">Communal Meals</div>
+          <h3>Teachers & Students Eat Together</h3>
+          <p>Daily communal lunch is both nutritional infrastructure and community-building. Mealtime conversation is a rich vocabulary and language development context. The school community is built at the table — every day, not occasionally.</p>
+          <div class="pg-research" style="color:var(--m1)">Snow & Beals 2006 · PMC6723730 nutrition · Community building</div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-icon">🤝</div>
+          <div class="pg-label" style="color:var(--m1)">Community Mentors</div>
+          <h3>Real-World Connections Weekly</h3>
+          <p>The school's physical presence in the community allows genuine relationships with local business owners, entrepreneurs, artists, and practitioners. Field Phase internships are 2 days/week. The community is the curriculum's extended campus.</p>
+          <div class="pg-research" style="color:var(--m1)">Strada 73% · Big Picture 93% graduation · Iowa BIG outcomes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IN-PERSON: Phases + Schedules -->
+    <div class="model-section" style="padding-top:0">
+      <div class="ms-title" style="color:var(--m1)">The Three Phases</div>
+      <h2 class="ms-heading">How Students Progress<br>Through In-Person School</h2>
+      <p class="ms-lead" style="border-color:var(--m1)">Students advance when they demonstrate readiness — not when the calendar says so. Each phase has a distinct learning environment, daily rhythm, and set of goals. Toggle between phases to see a sample day for each.</p>
+
+      <!-- Phase descriptions -->
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--light); border:1px solid var(--light); margin-bottom:2.5rem">
+        <div style="background:var(--paper); padding:2.25rem 2rem; border-top:3px solid var(--m1-dark)">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m1); margin-bottom:0.5rem">Roots Phase · Ages 5–10</div>
+          <h3 style="font-family:'Libre Baskerville',serif; font-size:1.15rem; font-weight:700; margin-bottom:0.75rem">The Foundation of Self, Relationship &amp; Literacy</h3>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">Play is the primary learning mode. No worksheets, no standardized tests. Guided play stations for literacy and numeracy, rich outdoor time, pretend play, music, and making. One guide stays with each child for 2–3 years in a mixed-age group of 12.</p>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">The goal is not early academics — it is the development of executive function, emotional regulation, language, and the love of learning that makes all future academics possible.</p>
+          <p style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--m1)">Day: 8:30am–2:30pm · 6 hours · 85+ min outdoors · No DI segment &gt;15 min</p>
+        </div>
+        <div style="background:var(--paper); padding:2.25rem 2rem; border-top:3px solid var(--m2)">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m2); margin-bottom:0.5rem">Workshop Phase · Ages 10–14</div>
+          <h3 style="font-family:'Libre Baskerville',serif; font-size:1.15rem; font-weight:700; margin-bottom:0.75rem">Learning Through Making, Building &amp; Real Problems</h3>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">Eight-week interdisciplinary project cycles are the spine. Daily Foundations Block for direct instruction in literacy and numeracy. Elective tracks let students begin developing their distinctive strengths. A Faculty Advisor meets with each student weekly.</p>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">This phase specifically counters the documented creativity slump at ages 9–12 — the window where standardized schooling most aggressively suppresses divergent thinking. The design protects it.</p>
+          <p style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--m2)">Day: 8:30am–3:30pm · 7 hours · 60+ min outdoors · No class before 8:30am</p>
+        </div>
+        <div style="background:var(--paper); padding:2.25rem 2rem; border-top:3px solid var(--m3)">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m3); margin-bottom:0.5rem">Field Phase · Ages 14–18</div>
+          <h3 style="font-family:'Libre Baskerville',serif; font-size:1.15rem; font-weight:700; margin-bottom:0.75rem">Real Contribution, Real Mentors &amp; Real Stakes</h3>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">Two days per week in community internships with business owners, entrepreneurs, artists, and practitioners. School is where students debrief, go deeper, and connect experience to knowledge. The Senior Contribution project — a year-long student-defined real-world project — culminates this phase.</p>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">No letter grades. Competency transcripts. AI maintains a live mastery map reviewed weekly with the advisor. Students advance when they're ready.</p>
+          <p style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--m3)">Day: 8:30am–3:30pm · Internship 2 days/week · Flexible start 8:30–9:00am</p>
+        </div>
+      </div>
+
+      <!-- Phase schedule toggle -->
+      <div class="ms-title" style="color:var(--m1)">Sample Daily Schedules</div>
+      <div style="display:flex; gap:1px; background:var(--light); border:1px solid var(--light); margin-bottom:1px">
+        <button class="phase-tab active" style="background:var(--m1-dark); color:var(--paper);" onclick="togglePhase('ip','roots',this)">Roots · Ages 5–10</button>
+        <button class="phase-tab" onclick="togglePhase('ip','workshop',this)">Workshop · Ages 10–14</button>
+        <button class="phase-tab" onclick="togglePhase('ip','field',this)">Field · Ages 14–18</button>
+      </div>
+
+      <!-- IP ROOTS -->
+      <div class="phase-content active" id="ip-roots">
+        <div style="background:var(--m1-dark); color:rgba(248,244,238,0.6); padding:0.75rem 1.5rem; font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--light); border-bottom:none">
+          Roots Phase · In-Person School · 8:30am–2:30pm · 6 Hours · Play-Based · No Worksheets · No Standardized Tests
+        </div>
+        <div class="day-sched">
+          <div class="ds-block anchor"><div class="ds-time"><span>8:30–8:50</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Arrival</span></div><div class="ds-main"><h4>Soft Arrival &amp; Morning Gathering</h4><p>Children arrive into calm free-choice play. After 10 minutes, brief gathering circle: one song, one question, one story. No academic demands at arrival.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Emotional regulation as learning prerequisite · Attachment theory · SDT relatedness</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>8:50–9:20</span></div><div class="ds-type"><span style="color:var(--m2)">Movement</span></div><div class="ds-main"><h4>Balance &amp; Coordination Outdoors</h4><p>Cycling, climbing, balance beams, coordination games — always outdoors. 30 min. Primes the prefrontal cortex before any cognitive demand.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>League of Bicyclists 2025 · Prefrontal cortex activation · He et al. 2025</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>9:20–10:00</span></div><div class="ds-type"><span style="color:var(--m1)">Play-Learn</span></div><div class="ds-main"><h4>Guided Play Stations — Literacy &amp; Numeracy</h4><p>Math and literacy embedded in rotating play stations. Manipulatives, story-making, rhyme, and building. Max 15 min per station. No whole-group instruction. No worksheets ever.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Skene et al. 2022 · Attention span 8–15 min ages 5–6 · Vanderbilt fade-out warning</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:00–10:30</span></div><div class="ds-type"><span style="color:var(--m2)">Outdoor</span></div><div class="ds-main"><h4>Free Outdoor Play</h4><p>Fully unstructured outdoor play in natural space. Child-directed entirely — no adult agenda. This is not a break. It is the most powerful cognitive and creative development activity available for this age.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Perry Preschool · Singer/Russ pretend play · Kaplan ART · Finland model</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:30–11:45</span></div><div class="ds-type"><span style="color:var(--m2-mid)">Project</span></div><div class="ds-main"><h4>Project Studio &amp; Dramatic Play</h4><p>2–3 week themed inquiry projects alongside rich pretend play. Building, making, storytelling, role play, art, and music. Child-led with guide as creative partner. Micro-movement every 20 min.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Reggio Emilia · Papert constructionism · Singer pretend play + EF · Robinson arts</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>11:45–12:45</span></div><div class="ds-type"><span style="color:var(--m2)">Nutrition</span></div><div class="ds-main"><h4>Communal Lunch + Outdoor Play</h4><p>Unhurried shared meal — teachers and children eat together. Rich mealtime conversation for vocabulary development. 25 min outdoor play after eating.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Snow &amp; Beals 2006 mealtime vocab · PMC6723730 nutrition · Outdoor restoration</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>12:45–1:15</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Rest</span></div><div class="ds-main"><h4>Quiet Rest Period</h4><p>30 minutes of calm, low-stimulation time. Children who still nap may sleep. Others draw, look at books, or rest quietly. Non-negotiable — many 5–6 year olds are still in the nap transition.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Developmental biology · Memory consolidation · Circadian biology ages 5–6</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>1:15–2:15</span></div><div class="ds-type"><span style="color:var(--m3-mid)">Arts</span></div><div class="ds-main"><h4>Music, Arts &amp; Making</h4><p>Instrument exploration, visual arts, movement arts, and making. Music begins here — rhythm, song, and instrument exploration (not formal lessons). Builds working memory, phonological processing, and emotional expression.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Román-Caballero 2022 · Music EF in ages 3–6 · KH Kim creativity preservation</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>2:15–2:30</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Reflect</span></div><div class="ds-main"><h4>Story Circle &amp; Portfolio</h4><p>Each child shares one thing they made or noticed. Guide observes and documents. Brief portfolio entry — drawing, dictation, or photo. Warm, intentional close. 15 min only — tired children cannot reflect longer.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Metacognition d=0.69 · Narrative creativity PMC9313823 · End-of-day fatigue research</p></div></div>
+        </div>
+      </div>
+
+      <!-- IP WORKSHOP -->
+      <div class="phase-content" id="ip-workshop">
+        <div style="background:var(--m2-dark); color:rgba(248,244,238,0.6); padding:0.75rem 1.5rem; font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--light); border-bottom:none">
+          Workshop Phase · In-Person School · 8:30am–3:30pm · 7 Hours · Project-Based · Blended Instruction · No Class Before 8:30am
+        </div>
+        <div class="day-sched">
+          <div class="ds-block anchor"><div class="ds-time"><span>8:30–8:50</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Anchor</span></div><div class="ds-main"><h4>Advisory Circle</h4><p>Same 15 students + advisor every day. Check-in, intention, one community item. Multi-year relationship. The relational spine of the school day.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Hattie d=0.72 · SDT relatedness · Multi-year looping evidence</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>8:50–9:20</span></div><div class="ds-type"><span style="color:var(--m2)">Movement</span></div><div class="ds-main"><h4>Morning Aerobic Activity</h4><p>Running, cycling, sport, or cooperative movement games. Moderate intensity, 30 min outdoors. Primes BDNF and executive function for the Foundations Block that follows.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>He et al. 2025 · BDNF mechanism · Morning exercise primes EF</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>9:20–10:30</span></div><div class="ds-type"><span style="color:var(--m1)">Foundations</span></div><div class="ds-main"><h4>Foundations Block</h4><p>Direct instruction in literacy + numeracy (15-min max segments) → guided practice → AI adaptive tools for individualized skill practice. Movement break at 30 min.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Project Follow Through · Scheerens 2023 blend · AI PMC11219980 2024</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:30–10:45</span></div><div class="ds-type"><span style="color:var(--m2)">Break</span></div><div class="ds-main"><h4>Outdoor Movement Break</h4><p>Unstructured outdoor break between cognitive blocks. Movement, nature, peer connection. Restores directed attention for Project Studio.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Kaplan ART · 20-min seated ceiling · Attention restoration research</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:45–12:30</span></div><div class="ds-type"><span style="color:var(--m2-mid)">Project</span></div><div class="ds-main"><h4>Project Studio</h4><p>90-min deep work on current 8-week interdisciplinary project. Teacher as coach. Flexible seating throughout. Real problems, real stakes. 2-min micro-movement breaks every 25–30 min.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>MDRC RCT 2021 · Csikszentmihalyi flow · 90-min depth minimum</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>12:30–1:30</span></div><div class="ds-type"><span style="color:var(--m2)">Nutrition</span></div><div class="ds-main"><h4>Communal Lunch + Outdoor Play</h4><p>Shared meal with teachers. Rich vocabulary-building conversation. 25 min unstructured outdoor play after eating. Screen-free.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>PMC6723730 nutrition · Snow &amp; Beals mealtime vocab · Outdoor restoration</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>1:30–3:00</span></div><div class="ds-type"><span style="color:var(--m3-mid)">Elective</span></div><div class="ds-main"><h4>Elective Track</h4><p>Student-chosen specialization: technology, arts (inc. instruments), ecology, design, or civics. Taught by specialists and community practitioners. Builds individual strengths and the Element.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>SDT autonomy · Robinson Element · Music WM · Maker Ed · KH Kim creativity</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>3:00–3:30</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Reflect</span></div><div class="ds-main"><h4>Portfolio &amp; Reflection</h4><p>Daily metacognition practice. What was made, learned, struggled with, changed. AI logs mastery demonstrations from the day. Advisor available.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Hattie metacognition d=0.69 · Portfolio research · AI mastery tracking</p></div></div>
+        </div>
+      </div>
+
+      <!-- IP FIELD -->
+      <div class="phase-content" id="ip-field">
+        <div style="background:var(--m3-dark); color:rgba(248,244,238,0.6); padding:0.75rem 1.5rem; font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--light); border-bottom:none">
+          Field Phase · In-Person School · 8:30am–3:30pm · Internship 2 Days/Week · Senior Contribution · Competency Transcripts
+        </div>
+        <div class="day-sched">
+          <div class="ds-block anchor"><div class="ds-time"><span>8:30–8:50</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Anchor</span></div><div class="ds-main"><h4>Advisory Check-In</h4><p>Smaller advisory group (10–12). Deep check-in: what's alive in your work, what are you wrestling with, what do you need today. Sets direction and intention.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Hattie d=0.72 · Big Picture advisory model · SDT relatedness</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>8:50–10:30</span></div><div class="ds-type"><span style="color:var(--m1)">Deep Work</span></div><div class="ds-main"><h4>Senior Contribution / Independent Work Block</h4><p>Extended focus on student-defined Senior Contribution project or advanced coursework. Teacher as coach and questioner. AI adaptive tools for any foundational gaps. Movement break at 60 min.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>SDT autonomy · 90-min deep work research · Self-direction as graduate goal</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:30–11:00</span></div><div class="ds-type"><span style="color:var(--m2)">Movement</span></div><div class="ds-main"><h4>Physical Activity — Student-Chosen</h4><p>30 min student-chosen movement: run, sport, cycling, yoga, team game. Maintains cognitive performance for afternoon seminar. Daily, no exceptions.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>He et al. 2025 · SDT autonomy in movement choice · PA as cognitive maintenance</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>11:00–12:30</span></div><div class="ds-type"><span style="color:var(--m2-mid)">Seminar</span></div><div class="ds-main"><h4>Seminar / Internship Debrief</h4><p>On school days: seminar, project debrief, or guest practitioner. On internship days (2x/week): student is at their community placement working with a real mentor.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>PMC4767925 WBL debrief · Big Picture triangulation · Strada 73% finding</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>12:30–1:30</span></div><div class="ds-type"><span style="color:var(--m2)">Nutrition</span></div><div class="ds-main"><h4>Communal Lunch + Outdoor Time</h4><p>Shared meal. Outdoor movement or rest after eating. Students often use this for collaborative project work, community connection, or informal advisor conversation.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Nutrition + cognition · Outdoor restoration · Community relationship building</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>1:30–3:00</span></div><div class="ds-type"><span style="color:var(--m3-mid)">Elective</span></div><div class="ds-main"><h4>Elective Specialization / Community Work</h4><p>Deep specialization in chosen track. Community mentor sessions, internship preparation, or cross-phase collaborative projects. Real-world connections actively maintained.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Iowa BIG outcomes · Entrepreneur mentor RCT 2024 · Strada 73%</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>3:00–3:30</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Reflect</span></div><div class="ds-main"><h4>Portfolio &amp; Mastery Review</h4><p>Daily portfolio entry. AI-assisted mastery map review — what was demonstrated today, what's next. Advisor available for weekly deep one-on-one check-ins.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Metacognition d=0.69 · AI mastery tracking PMC11544060 · Competency progression</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Family Partnership — In-Person -->
+    <div class="dark-band">
+      <div class="dark-band-inner">
+        <h3>Family Partnership — In-Person School</h3>
+        <p style="font-size:0.88rem; color:rgba(248,244,238,0.55); max-width:68ch; margin-bottom:0.5rem; line-height:1.8">The APA's review of 448 studies is clear: <strong style="color:var(--paper)">what families do matters as much as what the school does.</strong> In the In-Person model, families are not passive drop-off parents — they are research-defined partners. The school handles the full instructional program. The family activates everything research shows happens best at home. Together they produce outcomes neither can achieve alone.</p>
+        <p style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--m1-mid); margin-bottom:2.5rem">APA 448-study review · Harvard Family Research Project · National PTA Six Standards · CASA 10-year study · Snow &amp; Beals 2006</p>
+
+        <!-- On Campus -->
+        <div style="font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--m1-mid); margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid rgba(255,255,255,0.08)">On Campus — How Families Are Involved at School</div>
+        <div class="dark-band-grid" style="margin-bottom:2.5rem">
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m1-mid)">Every 8 Weeks</div>
+            <h4>Public Exhibition Night</h4>
+            <p>Students present completed project work to family, community members, and outside experts. Families are not an audience — they are co-assessors who ask real questions and give real feedback. Research shows public accountability to people who matter drives deeper learning and higher student motivation than any test.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m1-mid)">Twice Yearly</div>
+            <h4>Student-Led Portfolio Conference</h4>
+            <p>The student leads the conference — walking family and advisor through their portfolio of work. Not a teacher-led report card meeting. Research shows student-led conferences build self-advocacy, metacognition, and ownership of learning. The family sees the full picture of who their child is becoming, not just a grade.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m1-mid)">Every 4–6 Weeks</div>
+            <h4>Proactive Advisor Contact</h4>
+            <p>Every family receives a proactive call, note, or brief from their child's advisor — not reserved for problems. The APA review identifies two-way communication as the active ingredient in family engagement. Advisors celebrate growth, invite family input, and ensure families always feel informed and included.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m1-mid)">Quarterly</div>
+            <h4>Family Advisory Council</h4>
+            <p>Families hold real governance roles — not just feedback surveys. The council provides genuine input on curriculum themes, school policies, and community partnerships. National PTA research identifies decision-making partnership as one of the six standards of effective family engagement. Decisions and responses are published transparently.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m1-mid)">Throughout the Year</div>
+            <h4>Families as Project Contributors</h4>
+            <p>When a family member's professional expertise, life experience, or cultural knowledge connects to the current project cycle, they are invited to contribute — as guest practitioners, storytellers, or project consultants. This activates the research finding that students whose families are visible contributors to school life show higher engagement and stronger identity as learners.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m1-mid)">Open Studio Policy</div>
+            <h4>Families May Observe Any Time</h4>
+            <p>Families are welcome to observe Project Studio time, elective tracks, and community events with advance notice. Seeing learning in action — rather than just receiving reports about it — builds the understanding and trust that the family partnership research shows is essential for sustained engagement.</p>
+          </div>
+        </div>
+
+        <!-- At Home -->
+        <div style="font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--m1-mid); margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid rgba(255,255,255,0.08)">At Home — What Research Shows Families Should Do After School</div>
+        <div class="dark-band-grid" style="margin-bottom:2.5rem">
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,244,238,0.5)">Every Night</div>
+            <h4>Family Dinner Together</h4>
+            <p>The CASA 10-year longitudinal study found teens eating 7 family dinners per week were 40% more likely to receive A's and B's. Harvard research shows dinner table conversation outperforms read-aloud as a vocabulary builder — children absorb sophisticated "rare words" naturally from adult stories. The school provides a Dinner Table Conversation Guide each week: 3 questions tied to the current project cycle. No screens at the table. No homework to rush through. Just conversation.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,244,238,0.5)">Weekly</div>
+            <h4>Family Learning Guide Activities</h4>
+            <p>Each project cycle comes with a Family Learning Guide — 3–5 conversation starters, one book recommendation, and one optional activity tied to what the child is working on at school. These are not homework assignments. They are high-leverage at-home engagement tools grounded in the APA finding that at-home discussion and encouragement are among the strongest academic supports a family can provide. Takes 20–30 minutes. Builds knowledge, language, and the sense that learning happens everywhere — not only at school.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,244,238,0.5)">Daily for Young Children</div>
+            <h4>Reading Together (Roots Phase)</h4>
+            <p>For children in the Roots Phase (ages 5–10), reading together at home is one of the highest-return activities available. The Harvard Home-School Study found that families who read with their children and take them to the library regularly produce measurably stronger language outcomes through 6th grade. The school provides monthly book lists matched to each child's phase and project cycle. No pressure — just reading because it matters and because it's enjoyable.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,244,238,0.5)">Always</div>
+            <h4>Express Belief — Specifically</h4>
+            <p>The APA review of 448 studies found that family encouragement and expressed belief in the child is one of the most consistent predictors of academic achievement across all ages. This doesn't mean generic praise. Research on growth mindset shows that specific, process-focused encouragement is most powerful: "I noticed how you kept working on that even when it got hard" rather than "You're so smart." The school's monthly newsletter includes specific language families can use.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,244,238,0.5)">Non-Negotiable</div>
+            <h4>Protect Sleep</h4>
+            <p>The research on sleep and academic performance is unambiguous — and protecting it is entirely a family-side responsibility. AAP recommendations: ages 6–12 need 9–12 hours; ages 13–18 need 8–10 hours. No screens after 9pm. Consistent sleep and wake times even on weekends. The school schedules no homework that competes with sleep, starts no earlier than 8:30am, and communicates the sleep research directly to families at orientation and annually. Families protect the hours the school cannot.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,244,238,0.5)">Weekend &amp; After School</div>
+            <h4>Movement, Outdoor Play &amp; Free Time</h4>
+            <p>The school delivers 90+ minutes of movement daily — but research suggests children benefit from movement across the full day and week, not just during school hours. Outdoor play after school, weekend bike rides, sports leagues, and unstructured nature time all compound the school's movement program. Improvised outdoor play specifically (child-designed games, free exploration) develops the divergent thinking that sits at the heart of creativity. The school provides a Home Movement Guide with simple weekly suggestions.</p>
+          </div>
+        </div>
+
+        <!-- What NOT to do -->
+        <div style="font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(248,144,80,0.7); margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid rgba(255,255,255,0.08)">What the Research Says NOT to Do at Home</div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.04)">
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,144,80,0.7)">Avoid</div>
+            <h4>Helping With Homework</h4>
+            <p>The APA's 448-study review found parental homework help has a small <em>negative</em> effect on academic achievement — especially in secondary school. It removes the productive struggle that builds competence and can create conflict and dependency. The Groundwork Model assigns no traditional homework precisely because of this evidence. If your child asks for help, ask questions rather than give answers.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,144,80,0.7)">Avoid</div>
+            <h4>Hovering and Over-Managing</h4>
+            <p>Self-Determination Theory is unambiguous: children develop stronger intrinsic motivation, deeper learning, and greater self-regulation when they experience genuine autonomy. "Helicopter parenting" — solving problems before children encounter them, managing their social relationships, advocating too aggressively with teachers — undermines the very independence the school is building. Trust the process. Be available, not ever-present.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,144,80,0.7)">Avoid</div>
+            <h4>Screens Competing with Connection</h4>
+            <p>The research on family dinner, evening conversation, and reading together all share one prerequisite: the family is actually present and engaged together. Screens — phones at dinner, TV during family time, devices in bedrooms after 9pm — directly displace the activities research shows matter most. The school communicates the screen research directly and provides a simple family screen protocol. The most impactful thing most families can do is phones away at dinner. Every night.</p>
+          </div>
+        </div>
+
+        <!-- Research anchor -->
+        <div style="margin-top:2rem; padding:1.5rem 2rem; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06)">
+          <div style="font-family:'DM Mono',monospace; font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--m1-mid); margin-bottom:0.5rem">The Research in One Sentence</div>
+          <p style="font-size:0.88rem; color:rgba(248,244,238,0.6); line-height:1.8; max-width:80ch">All families can effectively support their children's learning when given the right guidance — the gap between highly involved and less involved families is largely a gap in information and school support, not in motivation or love. The Groundwork Model is designed to close that gap.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ════════════════════════ HYBRID ═════════════════════════ -->
+<div id="hybrid">
+
+  <div class="model-hero" style="background: var(--m2-dark); position:relative; overflow:hidden">
+    <div style="position:absolute; inset:0; background: radial-gradient(ellipse 70% 60% at 70% 40%, rgba(61,122,77,0.4) 0%, transparent 60%)"></div>
+    <div class="model-num-large" style="color:white">H</div>
+    <div class="model-hero-content" style="position:relative; z-index:2">
+      <div class="model-eyebrow" style="color:var(--m2-mid)">Hybrid · Mon &amp; Wed Full Day · Fri Half-Day · Tue &amp; Thu at Home</div>
+      <h1 class="model-title">Hybrid<br><em>Campus</em></h1>
+      <p class="model-tagline" style="color:rgba(248,244,238,0.55)">Full days Monday and Wednesday, a half-day Friday on campus — plus two structured home learning days Tuesday and Thursday. Community, mentorship, and movement on campus. Project continuation, family learning, and self-direction at home. Neither diluted.</p>
+    </div>
+    <div class="model-meta-strip">
+      <div class="mms-item"><div class="mms-label">Full Campus Days</div><div class="mms-val">Mon &amp; Wed</div></div>
+      <div class="mms-item"><div class="mms-label">Half Campus Day</div><div class="mms-val">Friday AM</div></div>
+      <div class="mms-item"><div class="mms-label">Home Days</div><div class="mms-val">Tue &amp; Thu</div></div>
+      <div class="mms-item"><div class="mms-label">Campus Hours M/W</div><div class="mms-val">8:30am – 3:30pm</div></div>
+      <div class="mms-item"><div class="mms-label">Campus Hours Fri</div><div class="mms-val">8:30am – 12:30pm</div></div>
+    </div>
+  </div>
+
+  <div class="model-body">
+
+    <div class="model-section">
+      <div class="ms-title" style="color:var(--m2)">The Design Logic</div>
+      <h2 class="ms-heading">Campus for Community.<br>Home for Depth.</h2>
+      <p class="ms-lead" style="border-color:var(--m2)">The hybrid model isn't a compromise — it's a deliberate design. Research shows that community, relationships, and movement require physical co-presence. Project depth, family engagement, and self-direction can happen powerfully at home. The model puts each element where it works best.</p>
+
+      <!-- Weekly rhythm -->
+      <div class="ms-title" style="color:var(--m2); margin-top:3rem">The Weekly Rhythm</div>
+      <div class="week-grid">
+        <div class="week-header" style="grid-template-columns: repeat(5,1fr)">
+          <div class="week-header-cell" style="background:var(--m1-dark)">Monday · Full Day</div>
+          <div class="week-header-cell" style="background:var(--m2-dark)">Tuesday · Home</div>
+          <div class="week-header-cell" style="background:var(--m1-dark)">Wednesday · Full Day</div>
+          <div class="week-header-cell" style="background:var(--m2-dark)">Thursday · Home</div>
+          <div class="week-header-cell" style="background:var(--m1-dark)">Friday · Half Day</div>
+        </div>
+        <div class="week-row" style="grid-template-columns: repeat(5,1fr)">
+          <div class="week-cell campus" style="border-color:var(--m1-mid)">
+            <div class="wc-day" style="color:var(--m1)">8:30–3:30 · Full Day</div>
+            <h4>Full Campus Day</h4>
+            <p>Advisory · Morning movement · Foundations Block · Project Studio · Elective Track · Portfolio reflection</p>
+          </div>
+          <div class="week-cell home">
+            <div class="wc-day" style="color:var(--m2)">Home Day</div>
+            <h4>Project Continuation</h4>
+            <p>Continue Monday's project work. AI adaptive foundations practice. Movement guide — 60+ min family activity.</p>
+          </div>
+          <div class="week-cell campus" style="border-color:var(--m1-mid)">
+            <div class="wc-day" style="color:var(--m1)">8:30–3:30 · Full Day</div>
+            <h4>Full Campus Day</h4>
+            <p>Advisory · Morning movement · Foundations Block · Project Studio mid-cycle · Elective Track · Portfolio reflection</p>
+          </div>
+          <div class="week-cell home">
+            <div class="wc-day" style="color:var(--m2)">Home Day</div>
+            <h4>Deep Work + Family</h4>
+            <p>Independent project research/making. Family Learning Guide activity. Advisor video check-in (15 min, Thu PM).</p>
+          </div>
+          <div class="week-cell campus half" style="border-color:var(--m1-mid)">
+            <div class="wc-day" style="color:var(--m1)">8:30–12:30 · Half Day</div>
+            <h4>Exhibition Prep / Community</h4>
+            <p>Project presentations, guest practitioners, community connections, week reflection + portfolio. Ends at lunch.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HYBRID: Phases + Schedules -->
+    <div class="model-section" style="padding-top:0">
+      <div class="ms-title" style="color:var(--m2)">The Three Phases in Hybrid</div>
+      <h2 class="ms-heading">How Each Phase Works<br>Across Campus &amp; Home Days</h2>
+      <p class="ms-lead" style="border-color:var(--m2)">Each phase adapts the hybrid rhythm differently. The campus days always anchor community, movement, and instruction. Home days deepen the project work and activate the family partnership research. Toggle between phases to see a sample campus day for each.</p>
+
+      <!-- Phase descriptions -->
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--light); border:1px solid var(--light); margin-bottom:2.5rem">
+        <div style="background:var(--paper); padding:2.25rem 2rem; border-top:3px solid var(--m1-dark)">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m1); margin-bottom:0.5rem">Roots Phase · Ages 5–10</div>
+          <h3 style="font-family:'Libre Baskerville',serif; font-size:1.15rem; font-weight:700; margin-bottom:0.75rem">Play on Campus, Play at Home</h3>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">Campus days are rich play environments: outdoor movement, guided play stations, project and dramatic play, music, and arts. Home days mirror this — the Family Play Guide gives parents specific play activities, books, outdoor explorations, and songs that extend what's happening at school.</p>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">The Roots Phase is especially well-suited to hybrid because young children naturally learn through family life — reading together, outdoor play, and mealtime conversation are all home-native activities that the research shows are high-leverage.</p>
+          <p style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--m1)">Campus: M/W 8:30–2:30 (6 hrs) · Fri 8:30–12:30 · Home: Family Play Guide · No worksheets</p>
+        </div>
+        <div style="background:var(--paper); padding:2.25rem 2rem; border-top:3px solid var(--m2)">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m2); margin-bottom:0.5rem">Workshop Phase · Ages 10–14</div>
+          <h3 style="font-family:'Libre Baskerville',serif; font-size:1.15rem; font-weight:700; margin-bottom:0.75rem">Project Launched on Campus, Continued at Home</h3>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">Campus days deliver the elements that need physical co-presence: direct instruction, teacher-coached project work, peer collaboration, movement, and advisory. Home days Tue/Thu continue the 8-week project using the Home Day Project Guide — researching, making, writing, or building independently.</p>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">The Thursday afternoon advisor video check-in maintains relationship continuity and keeps each student on track between campus days.</p>
+          <p style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--m2)">Campus: M/W 8:30–3:30 · Fri 8:30–12:30 · Home: Project Guide + AI tools · Thu advisor video</p>
+        </div>
+        <div style="background:var(--paper); padding:2.25rem 2rem; border-top:3px solid var(--m3)">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m3); margin-bottom:0.5rem">Field Phase · Ages 14–18</div>
+          <h3 style="font-family:'Libre Baskerville',serif; font-size:1.15rem; font-weight:700; margin-bottom:0.75rem">Community, Campus, and Internship in Balance</h3>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">In the Field Phase, hybrid works naturally with the internship schedule. One or both home days can be internship days — meaning the student spends Tuesday or Thursday at their community placement rather than at home. Campus days anchor the seminar, debrief, and Senior Contribution work.</p>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">Friday's half-day is the key community touchpoint — students from across the Field Phase gather for exhibition prep, guest practitioners, and peer connection.</p>
+          <p style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--m3)">Campus: M/W 8:30–3:30 · Fri 8:30–12:30 · Internship: 1–2 home days/week · Advisor weekly</p>
+        </div>
+      </div>
+
+      <!-- Hybrid schedule toggle -->
+      <div class="ms-title" style="color:var(--m2)">Sample Campus Day Schedules</div>
+      <div style="display:flex; gap:1px; background:var(--light); border:1px solid var(--light); margin-bottom:1px">
+        <button class="phase-tab active" style="background:var(--m1-dark); color:var(--paper);" onclick="togglePhase('hy','roots',this)">Roots · Ages 5–10</button>
+        <button class="phase-tab" onclick="togglePhase('hy','workshop',this)">Workshop · Ages 10–14</button>
+        <button class="phase-tab" onclick="togglePhase('hy','field',this)">Field · Ages 14–18</button>
+      </div>
+
+      <!-- HY ROOTS -->
+      <div class="phase-content active" id="hy-roots">
+        <div style="background:var(--m1-dark); color:rgba(248,244,238,0.6); padding:0.75rem 1.5rem; font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--light); border-bottom:none">
+          Roots Phase · Hybrid Campus Day (Mon &amp; Wed) · 8:30am–2:30pm · Play-Based · No Worksheets
+        </div>
+        <div class="day-sched">
+          <div class="ds-block anchor"><div class="ds-time"><span>8:30–8:50</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Arrival</span></div><div class="ds-main"><h4>Soft Arrival &amp; Morning Gathering</h4><p>Calm arrival into free-choice play. Brief gathering circle: song, one question, one story. Includes a quick "what did you do at home yesterday?" connection — keeping campus and home days linked.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Emotional regulation prerequisite · Attachment · Home-campus continuity</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>8:50–9:20</span></div><div class="ds-type"><span style="color:var(--m2)">Movement</span></div><div class="ds-main"><h4>Balance &amp; Coordination Outdoors</h4><p>Cycling, climbing, balance beams. Campus-specific movement infrastructure — bikes, climbing structures — that home days may not have. Concentrated here on campus days.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>League of Bicyclists 2025 · Prefrontal cortex activation · He et al. 2025</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>9:20–10:00</span></div><div class="ds-type"><span style="color:var(--m1)">Play-Learn</span></div><div class="ds-main"><h4>Guided Play Stations</h4><p>Literacy and math in guided play stations. Teacher-facilitated, child-led. Continues the project theme that students also worked on at home. Max 15 min per station.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Skene et al. 2022 · Attention span 8–15 min · Project continuity Tue→campus</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:00–10:30</span></div><div class="ds-type"><span style="color:var(--m2)">Outdoor</span></div><div class="ds-main"><h4>Free Outdoor Play</h4><p>Unstructured outdoor play in natural space. Campus provides natural surfaces, garden access, and green space that home days may not always have.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Perry Preschool · Kaplan ART · Campus outdoor infrastructure advantage</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:30–11:45</span></div><div class="ds-type"><span style="color:var(--m2-mid)">Project</span></div><div class="ds-main"><h4>Project Studio &amp; Collaborative Play</h4><p>Themed project work + dramatic play. Peer collaboration that home days can't replicate — playing, making, and building alongside 5–6 other children. Teacher connects today's work to what students did at home.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Reggio Emilia · Singer pretend play · Peer collaboration in early childhood</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>11:45–12:45</span></div><div class="ds-type"><span style="color:var(--m2)">Nutrition</span></div><div class="ds-main"><h4>Communal Lunch + Outdoor Play</h4><p>Shared meal. Teacher explicitly models rich vocabulary storytelling at the table. 25 min outdoor play. Students and guide eat together — community built daily.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Snow &amp; Beals vocabulary · PMC6723730 · Community relationship research</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>12:45–1:15</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Rest</span></div><div class="ds-main"><h4>Quiet Rest Period</h4><p>30 min calm, low-stimulation time. Children who need to nap may. Others rest quietly. Non-negotiable on all campus days for this age group.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Developmental biology · Memory consolidation · Circadian biology ages 5–6</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>1:15–2:15</span></div><div class="ds-type"><span style="color:var(--m3-mid)">Arts</span></div><div class="ds-main"><h4>Music, Arts &amp; Making</h4><p>Instrument exploration, visual arts, and making. Campus provides instruments and makerspace materials. Home days continue with Family Arts Guide (simpler materials, same creative spirit).</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Román-Caballero 2022 · Music EF ages 3–6 · Campus makerspace advantage</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>2:15–2:30</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Close</span></div><div class="ds-main"><h4>Story Circle + Home Day Brief</h4><p>Each child shares one thing. Guide documents. Brief Home Day Guide distributed — what to play, read, and explore at home tomorrow. Keeps the learning continuous.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Metacognition · Home-campus continuity · Family involvement research</p></div></div>
+        </div>
+      </div>
+
+      <!-- HY WORKSHOP -->
+      <div class="phase-content" id="hy-workshop">
+        <div style="background:var(--m2-dark); color:rgba(248,244,238,0.6); padding:0.75rem 1.5rem; font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--light); border-bottom:none">
+          Workshop Phase · Hybrid Campus Day (Mon &amp; Wed) · 8:30am–3:30pm · Full Day · Project + Foundations + Elective
+        </div>
+        <div class="day-sched">
+          <div class="ds-block anchor"><div class="ds-time"><span>8:30–8:50</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Anchor</span></div><div class="ds-main"><h4>Advisory Circle</h4><p>Same group, same advisor, every campus day. Check-in includes "what did you work on at home?" — home day work is acknowledged, connected, and built upon. Not separate from campus learning.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Hattie d=0.72 · Home-campus integration · SDT relatedness</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>8:50–9:30</span></div><div class="ds-type"><span style="color:var(--m2)">Movement</span></div><div class="ds-main"><h4>Morning Aerobic Activity</h4><p>40 min aerobic + balance outdoors. Campus cycling infrastructure, team games, and balance circuits. Home days use Family Movement Guide; campus days deliver the movement that requires campus infrastructure.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>He et al. 2025 · BDNF priming · Campus movement infrastructure advantage</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>9:30–10:30</span></div><div class="ds-type"><span style="color:var(--m1)">Foundations</span></div><div class="ds-main"><h4>Foundations Block</h4><p>DI in literacy + numeracy (15-min max) → guided practice. Teacher-led correction of misconceptions. AI adaptive tools for individualized practice — extended on home days. Movement break at 30 min.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Project Follow Through · Teacher coaching irreplaceable for concept intro · Scheerens 2023</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:30–10:45</span></div><div class="ds-type"><span style="color:var(--m2)">Break</span></div><div class="ds-main"><h4>Outdoor Movement Break</h4><p>Unstructured outdoor break. Peer time on campus is especially high-value in the hybrid model — these moments build the community that home days can't.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Kaplan ART · Peer connection research · 20-min seated ceiling</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:45–12:30</span></div><div class="ds-type"><span style="color:var(--m2-mid)">Project</span></div><div class="ds-main"><h4>Project Studio</h4><p>Monday: launch or debrief from Tuesday home day. Wednesday: mid-cycle collaborative work and teacher coaching. Students bring their home day work back to the studio — campus and home are two parts of one project.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>MDRC RCT 2021 · Teacher coaching is campus-specific · 90-min depth</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>12:30–1:30</span></div><div class="ds-type"><span style="color:var(--m2)">Nutrition</span></div><div class="ds-main"><h4>Communal Lunch + Outdoor Play</h4><p>Shared meal. 25 min outdoor play. Campus lunch is a key community touchpoint — in the hybrid model, these shared meals are concentrated rather than daily, making them even more intentional.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>PMC6723730 nutrition · Snow &amp; Beals · Community building research</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>1:30–3:00</span></div><div class="ds-type"><span style="color:var(--m3-mid)">Elective</span></div><div class="ds-main"><h4>Elective Track</h4><p>Student-chosen specialization with specialists and community practitioners. Home day enrichment activities extend elective themes — the Family Learning Guide includes a project-tied at-home extension each cycle.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>SDT autonomy · Robinson Element · Music WM · Maker Ed</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>3:00–3:30</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Close</span></div><div class="ds-main"><h4>Portfolio + Home Day Brief</h4><p>Portfolio entry for the day. Advisor distributes the Home Day Project Guide for tomorrow — specific tasks, questions to explore, and what to bring back on Wednesday. Continuity is the structural key.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Metacognition d=0.69 · Home-campus continuity research · Family involvement</p></div></div>
+        </div>
+      </div>
+
+      <!-- HY FIELD -->
+      <div class="phase-content" id="hy-field">
+        <div style="background:var(--m3-dark); color:rgba(248,244,238,0.6); padding:0.75rem 1.5rem; font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--light); border-bottom:none">
+          Field Phase · Hybrid Campus Day (Mon &amp; Wed) · 8:30am–3:30pm · Internship on Home Days · Senior Contribution
+        </div>
+        <div class="day-sched">
+          <div class="ds-block anchor"><div class="ds-time"><span>8:30–8:50</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Anchor</span></div><div class="ds-main"><h4>Advisory Check-In</h4><p>Deep check-in including internship debrief from home days. "What happened at your placement? What did you figure out? What question are you carrying?" Campus starts by integrating real-world experience.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Hattie d=0.72 · Big Picture triangulation · WBL debrief research</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>8:50–10:30</span></div><div class="ds-type"><span style="color:var(--m1)">Deep Work</span></div><div class="ds-main"><h4>Senior Contribution Work Block</h4><p>Extended focus on student-defined Senior Contribution project. Teacher as coach. Students often bring materials, findings, or questions from their internship days directly into this work. Movement break at 60 min.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>SDT autonomy · 90-min deep work · Internship experience fuels project work</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:30–11:00</span></div><div class="ds-type"><span style="color:var(--m2)">Movement</span></div><div class="ds-main"><h4>Physical Activity — Student-Chosen</h4><p>30 min student-chosen movement. Campus provides sports courts, cycling, and open field. Maintains cognitive performance. Home days include movement in the Family Movement Guide.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>He et al. 2025 · SDT autonomy in movement choice · PA cognitive maintenance</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>11:00–12:30</span></div><div class="ds-type"><span style="color:var(--m2-mid)">Seminar</span></div><div class="ds-main"><h4>Seminar / Internship Debrief</h4><p>Structured debrief of internship experiences. Guest practitioners on rotating schedule. Cross-cohort conversation between students in different placements. This is where the WBL debrief research is fully activated.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>PMC4767925 WBL debrief essential · Big Picture triangulation · Iowa BIG model</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>12:30–1:30</span></div><div class="ds-type"><span style="color:var(--m2)">Nutrition</span></div><div class="ds-main"><h4>Communal Lunch + Outdoor Time</h4><p>Shared meal. In the hybrid model, campus lunches are concentrated community time — they matter more, not less, precisely because they don't happen every day.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Community building · Snow &amp; Beals vocabulary · Nutrition research</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>1:30–3:00</span></div><div class="ds-type"><span style="color:var(--m3-mid)">Specialization</span></div><div class="ds-main"><h4>Elective / Community Mentor Session</h4><p>Community mentors come to campus on rotating schedule. Students in the same elective track work together. Home days may also include mentor sessions at the mentor's workplace.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Entrepreneur mentor RCT 2024 · Strada 73% · Iowa BIG community connections</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>3:00–3:30</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Close</span></div><div class="ds-main"><h4>Portfolio + Home Day / Internship Brief</h4><p>Portfolio entry. Advisor distributes the Home Day Guide for Thursday — including whether Thursday is an internship day or a deep work day, and what to focus on either way.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Metacognition d=0.69 · AI mastery tracking · Home-campus-internship continuity</p></div></div>
+        </div>
+      </div>
+    </div>
+
+      <!-- Full Day Mon/Wed Label -->
+      <div style="font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--m1); padding:0.75rem 1rem; background:var(--m1-dark); color:rgba(248,244,238,0.7); margin-bottom:1px">Monday &amp; Wednesday — Full Day · 8:30am to 3:30pm</div>
+
+      <div class="day-sched">
+        <div class="ds-block anchor">
+          <div class="ds-time"><span>8:30–8:50</span></div>
+          <div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Anchor</span></div>
+          <div class="ds-main"><h4>Advisory Circle</h4><p>Same group, same advisor, every campus day. Check-in includes review of home day work since last campus time. Relationships maintained through daily consistency.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Hattie d=0.72 · SDT relatedness · Video check-in supplements but doesn't replace in-person</p></div>
+        </div>
+        <div class="ds-block" style="border-top:none">
+          <div class="ds-time"><span>8:50–9:30</span></div>
+          <div class="ds-type"><span style="color:var(--m2)">Movement</span></div>
+          <div class="ds-main"><h4>Morning Movement — Outdoor</h4><p>40 min aerobic + balance activity outdoors. Cycling, team games, balance circuits. Campus days deliver the movement infrastructure families can't replicate at home.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>He et al. 2025 · BDNF priming · Morning exercise EF research</p></div>
+        </div>
+        <div class="ds-block" style="border-top:none">
+          <div class="ds-time"><span>9:30–10:30</span></div>
+          <div class="ds-type"><span style="color:var(--m1)">Foundations</span></div>
+          <div class="ds-main"><h4>Foundations Block</h4><p>DI in literacy + numeracy (15-min max segments) → guided practice → AI adaptive tools. Teacher provides what AI alone can't: misconception correction, questioning, and real relationship.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Project Follow Through · Scheerens 2023 blend · Human instruction irreplaceable for concept introduction</p></div>
+        </div>
+        <div class="ds-block" style="border-top:none">
+          <div class="ds-time"><span>10:30–10:45</span></div>
+          <div class="ds-type"><span style="color:var(--m2)">Break</span></div>
+          <div class="ds-main"><h4>Outdoor Movement Break</h4><p>Unstructured outdoor break. Movement, nature, peer connection. Restores attention for Project Studio.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Kaplan ART · 20-min seated ceiling · Peer time on campus is high-value</p></div>
+        </div>
+        <div class="ds-block" style="border-top:none">
+          <div class="ds-time"><span>10:45–12:30</span></div>
+          <div class="ds-type"><span style="color:var(--m2-mid)">Project</span></div>
+          <div class="ds-main"><h4>Project Studio</h4><p>90-min deep project work. Monday: launch or debrief from Tuesday home day. Wednesday: mid-cycle collaborative work and teacher coaching. Flexible seating, 2-min micro-breaks every 25 min.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>MDRC RCT 2021 · Teacher coaching is campus-specific · 90-min depth minimum</p></div>
+        </div>
+        <div class="ds-block" style="border-top:none">
+          <div class="ds-time"><span>12:30–1:30</span></div>
+          <div class="ds-type"><span style="color:var(--m2)">Nutrition</span></div>
+          <div class="ds-main"><h4>Communal Lunch + Outdoor Play</h4><p>Shared meal with teachers and peers. 25 min unstructured outdoor play after eating. Screen-free. Community built at the table.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>PMC6723730 nutrition · Snow & Beals vocabulary · Outdoor restoration · Community</p></div>
+        </div>
+        <div class="ds-block" style="border-top:none">
+          <div class="ds-time"><span>1:30–3:00</span></div>
+          <div class="ds-type"><span style="color:var(--m3-mid)">Elective</span></div>
+          <div class="ds-main"><h4>Elective Track</h4><p>Student-chosen specialization: technology, arts, ecology, design, or civics. Taught by specialists and community practitioners. The afternoon deepens the morning's project and builds individual strengths.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>SDT autonomy · Robinson Element · Music WM · Maker Ed · Community mentor connection</p></div>
+        </div>
+        <div class="ds-block anchor" style="border-top:none">
+          <div class="ds-time"><span>3:00–3:30</span></div>
+          <div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Reflect</span></div>
+          <div class="ds-main"><h4>Portfolio + Home Day Brief</h4><p>Portfolio entry for the day. Advisor gives each student their Home Day Guide — what to work on, observe, and bring back. Metacognition and continuity in one block.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Metacognition d=0.69 · Continuity between campus and home is the structural key</p></div>
+        </div>
+      </div>
+
+      <!-- Friday Half-Day Label -->
+      <div style="font-family:'DM Mono',monospace; font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; padding:0.75rem 1rem; background:var(--m2-dark); color:rgba(248,244,238,0.7); margin-top:2rem; margin-bottom:1px">Friday — Half Day · 8:30am to 12:30pm · Exhibition, Community &amp; Week Close</div>
+
+      <div class="day-sched">
+        <div class="ds-block anchor">
+          <div class="ds-time"><span>8:30–8:50</span></div>
+          <div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Anchor</span></div>
+          <div class="ds-main"><h4>Advisory — Week Review</h4><p>Check-in with the full week. What landed? What's unfinished? What question emerged from the Thursday home day? Sets the tone for a reflective, community-focused morning.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Hattie d=0.72 · Weekly rhythm and closure builds metacognitive awareness</p></div>
+        </div>
+        <div class="ds-block" style="border-top:none">
+          <div class="ds-time"><span>8:50–9:20</span></div>
+          <div class="ds-type"><span style="color:var(--m2)">Movement</span></div>
+          <div class="ds-main"><h4>Morning Movement</h4><p>30 min outdoor movement. Improvised play and cooperative games preferred on Fridays — lighter and more social than the structured aerobic sessions on Mon/Wed.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>ScienceDirect 2025 improvised PA + divergent thinking · End-of-week energy pattern</p></div>
+        </div>
+        <div class="ds-block" style="border-top:none">
+          <div class="ds-time"><span>9:20–11:00</span></div>
+          <div class="ds-type"><span style="color:var(--m2-mid)">Exhibition</span></div>
+          <div class="ds-main"><h4>Project Exhibition Prep or Presentation</h4><p>During active project cycles: Friday is exhibition prep — rehearsing, refining, and stress-testing work. At cycle end: full public exhibition with community audience. The accountability structure of the model.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>High Tech High exhibition model · Real audience accountability · MDRC PBL research</p></div>
+        </div>
+        <div class="ds-block" style="border-top:none">
+          <div class="ds-time"><span>11:00–11:45</span></div>
+          <div class="ds-type"><span style="color:var(--m3-mid)">Community</span></div>
+          <div class="ds-main"><h4>Guest Practitioners + Community Connection</h4><p>Monthly: a guest business owner, entrepreneur, artist, or practitioner joins for 45 minutes. Students ask real questions. Community mentor relationships begin here. Real world enters school every Friday.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Entrepreneur mentor RCT 2024 · Iowa BIG · Strada 73% employment finding</p></div>
+        </div>
+        <div class="ds-block anchor" style="border-top:none">
+          <div class="ds-time"><span>11:45–12:30</span></div>
+          <div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Close</span></div>
+          <div class="ds-main"><h4>Week Portfolio + Weekend Home Brief</h4><p>Weekly portfolio entry covering the full week. Advisor distributes the Home Day Guide for the following Tuesday and Thursday. Students leave with clarity and purpose.</p></div>
+          <div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Metacognition d=0.69 · Weekly reflection rhythm · Home day continuity</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Home Day Structure -->
+    <div class="model-section" style="padding-top:0">
+      <div class="ms-title" style="color:var(--m2)">Home Day Structure</div>
+      <h2 class="ms-heading">Tuesday & Thursday —<br>Structured, Not Free-Form</h2>
+      <p class="ms-lead" style="border-color:var(--m2)">Home days are not days off. They are structured learning days designed around what research shows families and individuals do well — project continuation, movement, reading, and deep focus. Each day has a guide prepared by the advisor the Friday before.</p>
+
+      <div class="two-col">
+        <div class="tc-card">
+          <div class="tc-label" style="color:var(--m2)">Home Day — Morning Block (9:00–11:00)</div>
+          <h3>Project Continuation + Foundations Practice</h3>
+          <ul>
+            <li><strong>9:00–9:30:</strong> Outdoor movement — Family Movement Guide. 30 min minimum. Bike riding, nature walk, backyard games, or sport. Movement before cognitive work.</li>
+            <li><strong>9:30–10:15:</strong> AI adaptive foundations practice — personalized literacy and numeracy tools. 45 min max. Student works independently; parent available but not hovering.</li>
+            <li><strong>10:15–11:00:</strong> Project work — continue the current 8-week project using the Home Day Project Guide. Making, researching, writing, building, or creating.</li>
+          </ul>
+        </div>
+        <div class="tc-card">
+          <div class="tc-label" style="color:var(--m2)">Home Day — Afternoon Block (11:00–1:00)</div>
+          <h3>Reading + Family Learning + Free Time</h3>
+          <ul>
+            <li><strong>11:00–11:30:</strong> Independent reading — student-chosen book from their reading list. Builds vocabulary, comprehension, and the reading habit.</li>
+            <li><strong>11:30–12:00:</strong> Family Learning Guide activity — project-tied conversation, experiment, or outing. This is the slot where the dinner table research gets activated.</li>
+            <li><strong>12:00–1:00:</strong> Communal lunch at home. Use the Dinner Table Conversation Guide. Then free outdoor play — unstructured, child-directed. Nature preferred.</li>
+            <li><strong>15-min video check-in (Thursday afternoons):</strong> Student + advisor. Review home day progress, preview next campus day, address any questions.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="research-strip">
+        <div class="rs-card">
+          <div class="rs-stat" style="color:var(--m2)">d=0.69</div>
+          <div class="rs-label">Metacognition effect</div>
+          <p>Home Day Guides include daily reflection prompts — "What did I figure out? What do I still not understand?" — maintaining the metacognitive practice even off campus.</p>
+        </div>
+        <div class="rs-card">
+          <div class="rs-stat" style="color:var(--m2)">448</div>
+          <div class="rs-label">Studies on family involvement</div>
+          <p>Home days activate the family involvement research directly. The APA's 448-study review shows at-home discussion and reading produce the strongest academic returns.</p>
+        </div>
+        <div class="rs-card">
+          <div class="rs-stat" style="color:var(--m2)">60+</div>
+          <div class="rs-label">Minutes movement on home days</div>
+          <p>The Family Movement Guide ensures the movement research is maintained on home days — outdoor play, bike riding, and nature time are built into the home day structure.</p>
+        </div>
+        <div class="rs-card">
+          <div class="rs-stat" style="color:var(--m2)">★★★★</div>
+          <div class="rs-label">AI adaptive learning evidence</div>
+          <p>AI adaptive tools are most valuable for independent practice — exactly what home days provide. 2024 controlled study: AI platforms significantly enhanced performance and engagement vs. traditional instruction.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Family Role M2 -->
+    <div class="dark-band" style="background:var(--m2-dark)">
+      <div class="dark-band-inner">
+        <h3>The Family's Role in Hybrid</h3>
+        <p style="font-size:0.85rem; color:rgba(248,244,238,0.5); max-width:60ch; margin-bottom:2rem; line-height:1.7">In the hybrid model, families are active co-teachers on home days — not just partners. The school provides all materials, guides, and support. The family provides the time, space, and presence.</p>
+        <div class="dark-band-grid">
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m2-mid)">Every Campus Day</div>
+            <h4>Arrive Prepared, Depart With a Plan</h4>
+            <p>Students receive a Home Day Guide at the end of every campus day — specific instructions for what to work on and how. No family should ever wonder what to do on a home day.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m2-mid)">Home Days</div>
+            <h4>Movement + Project + Reading</h4>
+            <p>The family ensures movement happens, project work gets done, and reading occurs daily. The parent is not expected to teach — they facilitate and observe. The AI and the project guide do the heavy lifting.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m2-mid)">Weekly</div>
+            <h4>Dinner Table Conversations</h4>
+            <p>The Family Learning Guide Dinner Table Edition gives families 3 conversation starters tied to the current project cycle. Harvard research: this builds more vocabulary than almost any other at-home activity.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m2-mid)">Thursday PM</div>
+            <h4>Advisor Video Check-In</h4>
+            <p>15-minute student-advisor video session. Reviews the home day work, previews the upcoming Friday. Maintains the relationship continuity that the research requires — even across distance.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m2-mid)">Every 8 Weeks</div>
+            <h4>Exhibition on Campus</h4>
+            <p>All hybrid students present on campus at the end of each project cycle. Families attend. Community members and practitioners assess. The accountability structure of the in-person model maintained fully.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m2-mid)">Family Training</div>
+            <h4>Groundwork Home Day Orientation</h4>
+            <p>All families complete a 2-hour orientation on how to facilitate home days effectively. Covers the movement guide, how to use the AI tools, how to not hover, and when to reach out to the advisor. Research on family involvement operationalized as a skill.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ══════════════════ INDEPENDENT STUDY ════════════════════ -->
+<div id="independent">
+
+  <div class="model-hero" style="background: var(--m3-dark); position:relative; overflow:hidden">
+    <div style="position:absolute; inset:0; background: radial-gradient(ellipse 70% 60% at 20% 60%, rgba(138,77,40,0.4) 0%, transparent 60%)"></div>
+    <div class="model-num-large" style="color:white">IS</div>
+    <div class="model-hero-content" style="position:relative; z-index:2">
+      <div class="model-eyebrow" style="color:var(--m3-mid)">Independent Study · Home-Based</div>
+      <h1 class="model-title">Independent<br><em>Study</em></h1>
+      <p class="model-tagline" style="color:rgba(248,244,238,0.55)">The full Groundwork curriculum delivered at home. Family as primary teacher, advisor as guide, AI as adaptive tutor, and community as monthly anchor. Not a lesser version of school — a differently designed one, built for families committed to home learning.</p>
+    </div>
+    <div class="model-meta-strip">
+      <div class="mms-item"><div class="mms-label">Campus Days</div><div class="mms-val">None required</div></div>
+      <div class="mms-item"><div class="mms-label">Advisor Sessions</div><div class="mms-val">Weekly 1:1 video</div></div>
+      <div class="mms-item"><div class="mms-label">Community Days</div><div class="mms-val">Monthly in-person</div></div>
+      <div class="mms-item"><div class="mms-label">Daily Active Learning</div><div class="mms-val">4–5 hours</div></div>
+      <div class="mms-item"><div class="mms-label">Movement Target</div><div class="mms-val">90+ min/day</div></div>
+    </div>
+  </div>
+
+  <div class="model-body">
+
+    <div class="model-section">
+      <div class="ms-title" style="color:var(--m3)">The Design Logic</div>
+      <h2 class="ms-heading">The Groundwork Framework<br>Comes to the Family</h2>
+      <p class="ms-lead" style="border-color:var(--m3)">Independent Study is not unschooling — it is a fully structured, research-backed educational program delivered at home. The family receives a complete curriculum, a dedicated advisor, AI-powered adaptive tools, a movement guide, and a monthly community to belong to. The school's job shifts from delivery to design, support, and accountability.</p>
+
+      <!-- What the school provides -->
+      <div class="pillar-grid">
+        <div class="pg-card">
+          <div class="pg-icon">📋</div>
+          <div class="pg-label" style="color:var(--m3)">Full Curriculum</div>
+          <h3>Weekly Learning Plans</h3>
+          <p>Advisor-prepared weekly plan for each student: project guide, foundations targets, movement schedule, reading list, family activities, and reflection prompts. Never wondering what to do next.</p>
+          <div class="pg-research" style="color:var(--m3)">Competency-based progression · Portfolio assessment</div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-icon">🤖</div>
+          <div class="pg-label" style="color:var(--m3)">AI Adaptive Tools</div>
+          <h3>Personalized Foundations Practice</h3>
+          <p>AI adaptive literacy and numeracy platforms do what a single parent-teacher can't: give each child precisely the right challenge at the right moment, with immediate feedback. The family facilitates; AI individualizes.</p>
+          <div class="pg-research" style="color:var(--m3)">PMC11219980 2024 controlled study · AI adaptive evidence ★★★★</div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-icon">👤</div>
+          <div class="pg-label" style="color:var(--m3)">Dedicated Advisor</div>
+          <h3>Weekly 1:1 Video Session</h3>
+          <p>Every student has a Groundwork advisor who knows them, tracks their mastery map, reviews their portfolio, sets the weekly plan, and is available for questions. The relationship research doesn't disappear at home — it gets concentrated.</p>
+          <div class="pg-research" style="color:var(--m3)">Hattie d=0.72 · SDT relatedness · Big Picture advisory model</div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-icon">🏃</div>
+          <div class="pg-label" style="color:var(--m3)">Movement Guide</div>
+          <h3>Family Movement Program</h3>
+          <p>A weekly movement guide covering all 6 movement types: daily aerobic activity, balance and coordination (cycling, climbing), improvised outdoor play, micro-movement breaks, nature time, and team sports through community leagues or co-ops.</p>
+          <div class="pg-research" style="color:var(--m3)">He et al. 2025 · 90+ min/day target maintained at home</div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-icon">🌐</div>
+          <div class="pg-label" style="color:var(--m3)">Monthly Community</div>
+          <h3>In-Person Community Days</h3>
+          <p>Once per month, all Independent Study students gather for a full community day — project exhibitions, collaborative work, peer connection, movement, and shared meals. The community the research requires, concentrated into meaningful moments.</p>
+          <div class="pg-research" style="color:var(--m3)">SDT relatedness · Peer learning · Exhibition accountability</div>
+        </div>
+        <div class="pg-card">
+          <div class="pg-icon">🤝</div>
+          <div class="pg-label" style="color:var(--m3)">Mentor Network</div>
+          <h3>Community Connections</h3>
+          <p>Families access the Groundwork Community Mentor Network — business owners, entrepreneurs, artists, and practitioners who support project work and Field Phase internships. Especially powerful for entrepreneurially-minded families.</p>
+          <div class="pg-research" style="color:var(--m3)">Iowa BIG · Entrepreneur mentor RCT · Strada 73% finding</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INDEPENDENT STUDY: Phases + Schedules -->
+    <div class="model-section" style="padding-top:0">
+      <div class="ms-title" style="color:var(--m3)">The Three Phases in Independent Study</div>
+      <h2 class="ms-heading">How Each Phase Works<br>in the Home Setting</h2>
+      <p class="ms-lead" style="border-color:var(--m3)">Each phase adapts differently for the home environment. The Roots Phase is naturally home-suited — play, reading, and outdoor exploration are home-native. The Workshop Phase requires the most active facilitation. The Field Phase is where independent study is often at its most powerful. Toggle between phases to see a sample home day for each.</p>
+
+      <!-- Phase descriptions -->
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--light); border:1px solid var(--light); margin-bottom:2.5rem">
+        <div style="background:var(--paper); padding:2.25rem 2rem; border-top:3px solid var(--m1-dark)">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m1); margin-bottom:0.5rem">Roots Phase · Ages 5–10</div>
+          <h3 style="font-family:'Libre Baskerville',serif; font-size:1.15rem; font-weight:700; margin-bottom:0.75rem">Play is the Curriculum — Home is Ideal</h3>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">The home environment is naturally the richest play environment available. Reading together, outdoor exploration, music, imaginative play, and hands-on making are all home-native activities the research shows are highest-leverage for ages 5–10. No AI tools before age 8. No worksheets ever.</p>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">The parent-child relationship in this phase can be the closest thing to the ideal Roots environment — when structured with the Groundwork guides and held accountable through weekly advisor sessions and monthly community days.</p>
+          <p style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--m1)">Day: 8:30am–2:30pm · Play guide · Outdoor 90+ min · Rest period · No AI before age 8</p>
+        </div>
+        <div style="background:var(--paper); padding:2.25rem 2rem; border-top:3px solid var(--m2)">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m2); margin-bottom:0.5rem">Workshop Phase · Ages 10–14</div>
+          <h3 style="font-family:'Libre Baskerville',serif; font-size:1.15rem; font-weight:700; margin-bottom:0.75rem">Projects + Community + Active Facilitation</h3>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">This phase requires the most active family facilitation. Eight-week project cycles need real materials, dedicated space, and an engaged adult. AI adaptive tools handle the personalized foundations practice. The monthly Community Days are most important here — peer collaboration during the creativity slump window (ages 9–12) is non-negotiable.</p>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">Local co-ops, community sports leagues, and neighborhood groups supplement the peer connection that monthly campus days provide. Weekly advisor video sessions track mastery and adjust the learning plan.</p>
+          <p style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--m2)">Day: 9:00am–2:30pm · AI adaptive tools · Project Guide · Weekly advisor · Monthly community</p>
+        </div>
+        <div style="background:var(--paper); padding:2.25rem 2rem; border-top:3px solid var(--m3)">
+          <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m3); margin-bottom:0.5rem">Field Phase · Ages 14–18</div>
+          <h3 style="font-family:'Libre Baskerville',serif; font-size:1.15rem; font-weight:700; margin-bottom:0.75rem">The Most Powerful Home Phase</h3>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">The Field Phase is where independent study is at its most powerful. Family professional networks source internships. Entrepreneurially-minded parents model real-world contribution directly. The 20% entrepreneur mentor effect is most accessible for families already embedded in professional or business communities.</p>
+          <p style="font-size:0.8rem; color:var(--muted); line-height:1.65; margin-bottom:0.75rem">The Senior Contribution project — the year-long student-defined real-world project — is fully supported at home. Advisor weekly sessions review the mastery map and guide the project trajectory.</p>
+          <p style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--m3)">Flexible · Internship-integrated · Senior Contribution · Weekly advisor · Competency transcripts</p>
+        </div>
+      </div>
+
+      <!-- IS schedule toggle -->
+      <div class="ms-title" style="color:var(--m3)">Sample Home Learning Day Schedules</div>
+      <div style="display:flex; gap:1px; background:var(--light); border:1px solid var(--light); margin-bottom:1px">
+        <button class="phase-tab active" style="background:var(--m1-dark); color:var(--paper);" onclick="togglePhase('is','roots',this)">Roots · Ages 5–10</button>
+        <button class="phase-tab" onclick="togglePhase('is','workshop',this)">Workshop · Ages 10–14</button>
+        <button class="phase-tab" onclick="togglePhase('is','field',this)">Field · Ages 14–18</button>
+      </div>
+
+      <!-- IS ROOTS -->
+      <div class="phase-content active" id="is-roots">
+        <div style="background:var(--m1-dark); color:rgba(248,244,238,0.6); padding:0.75rem 1.5rem; font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--light); border-bottom:none">
+          Roots Phase · Independent Study Home Day · 8:30am–2:30pm · Play-Based · No AI before age 8 · No Worksheets Ever
+        </div>
+        <div class="day-sched">
+          <div class="ds-block anchor"><div class="ds-time"><span>8:30–8:50</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Launch</span></div><div class="ds-main"><h4>Morning Gathering — Just Family</h4><p>One song, one question about the day, brief look at the Family Play Guide for today. Calm, warm, unhurried. The relational tone the day needs is set in these first 20 minutes.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Emotional regulation prerequisite · Attachment research · SDT relatedness</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>8:50–9:30</span></div><div class="ds-type"><span style="color:var(--m3)">Movement</span></div><div class="ds-main"><h4>Outdoor Movement — Family Activity</h4><p>40 min outdoors. Groundwork Movement Guide: today might be bike riding, a nature walk, backyard obstacle course, or free outdoor play. Parent participates when possible. No screens, no structure imposed.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>He et al. 2025 · League of Bicyclists · Morning movement before cognitive work · BDNF</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>9:30–10:15</span></div><div class="ds-type"><span style="color:var(--m1)">Play-Learn</span></div><div class="ds-main"><h4>Guided Play — Literacy &amp; Numeracy</h4><p>Parent facilitates 2–3 guided play activities from the weekly Family Play Guide: counting games, rhyme play, storytelling with props, pattern building. Max 15 min per activity. No instruction — play.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Skene et al. 2022 guided play · Attention span 8–15 min · No AI before age 8</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:15–11:00</span></div><div class="ds-type"><span style="color:var(--m2)">Outdoor</span></div><div class="ds-main"><h4>Free Outdoor Play</h4><p>Unstructured outdoor play — entirely child-directed. Parent watches from a distance. This is the most important block of the day for this age group. The research is clear: do not interrupt it.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Perry Preschool · Singer/Russ · Kaplan ART · EF development through free play</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>11:00–11:45</span></div><div class="ds-type"><span style="color:var(--m2-mid)">Project</span></div><div class="ds-main"><h4>Project &amp; Imaginative Play</h4><p>Themed project activity from the weekly Project Guide — building, making, painting, crafting, or dramatic play. Parent sets out materials and steps back. Micro-movement every 20 min.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Reggio Emilia · Papert constructionism · Pretend play EF development</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>11:45–12:45</span></div><div class="ds-type"><span style="color:var(--m2)">Nutrition</span></div><div class="ds-main"><h4>Family Lunch + Outdoor Time</h4><p>Family eats together. Dinner Table Conversation Guide (3 questions tied to current project theme). No screens. 25 min outdoor play after eating. The Harvard vocabulary research activates here every single day.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Snow &amp; Beals 2006 · CASA 10-yr study · Harvard mealtime vocabulary · Outdoor restoration</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>12:45–1:15</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Rest</span></div><div class="ds-main"><h4>Quiet Rest Period</h4><p>30 min of calm, low-stimulation time. Sleep for those who need it. Quiet drawing, books, or resting for others. Non-negotiable for ages 5–6. Protect it from being "productive."</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Developmental biology · Memory consolidation · Circadian biology · Research file 14</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>1:15–2:15</span></div><div class="ds-type"><span style="color:var(--m3-mid)">Arts</span></div><div class="ds-main"><h4>Reading Together + Music &amp; Making</h4><p>Read aloud for 20 min (child chooses the book). Then instrument exploration (simple percussion, recorder, keyboard), arts, or making from the weekly guide. Parent participates alongside — not as teacher.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Harvard literacy research · Román-Caballero 2022 · Robinson arts integration</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>2:15–2:30</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Close</span></div><div class="ds-main"><h4>Story Circle &amp; Portfolio</h4><p>Child shares one thing they made or discovered. Parent documents for the portfolio — photo, drawing, or voice note. Warm, brief close. Advisor reviews the portfolio weekly.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Metacognition · Portfolio research · Advisor mastery tracking</p></div></div>
+        </div>
+      </div>
+
+      <!-- IS WORKSHOP -->
+      <div class="phase-content" id="is-workshop">
+        <div style="background:var(--m2-dark); color:rgba(248,244,238,0.6); padding:0.75rem 1.5rem; font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--light); border-bottom:none">
+          Workshop Phase · Independent Study Home Day · 9:00am–2:30pm · AI Foundations + Project Guide + Family Engagement
+        </div>
+        <div class="day-sched">
+          <div class="ds-block anchor"><div class="ds-time"><span>9:00–9:20</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Launch</span></div><div class="ds-main"><h4>Morning Launch — Weekly Plan Review</h4><p>Student reviews their weekly plan from the advisor. Sets intention: what to accomplish today, what movement is planned, what question to carry. Builds the self-direction that is the Workshop Phase's hidden curriculum.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>SDT autonomy · Metacognition d=0.69 · Self-direction as graduate competency</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>9:20–10:05</span></div><div class="ds-type"><span style="color:var(--m3)">Movement</span></div><div class="ds-main"><h4>Morning Movement — Outdoors</h4><p>45 min from the Family Movement Guide: aerobic (cycling, running, sport) or balance/coordination. Before any cognitive work — every single day, without exception. Parent joins when possible; child may go independently at this age.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>He et al. 2025 · BDNF priming · Morning EF priming · League of Bicyclists 2025</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>10:05–11:05</span></div><div class="ds-type"><span style="color:var(--m1)">Foundations</span></div><div class="ds-main"><h4>AI Adaptive Foundations</h4><p>60 min of AI-adaptive literacy and numeracy. Student works independently — parent available, not hovering. AI meets each student exactly where they are. Max 20 min seated; 2-min movement break at 20 and 40 min.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>PMC11219980 2024 · AI outperforms traditional instruction for independent practice · 20-min seated ceiling</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>11:05–12:35</span></div><div class="ds-type"><span style="color:var(--m2-mid)">Project</span></div><div class="ds-main"><h4>Project Studio at Home</h4><p>90 min of deep project work from the Groundwork Project Guide. Making, researching, writing, building, designing, or experimenting. Parent as interested observer and question-asker, not instructor. Micro-breaks every 25 min.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>MDRC RCT 2021 · Csikszentmihalyi flow · 90-min depth minimum · SDT autonomy</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>12:35–1:20</span></div><div class="ds-type"><span style="color:var(--m2)">Nutrition</span></div><div class="ds-main"><h4>Family Lunch + Outdoor Play</h4><p>Family eats together. Dinner Table Conversation Guide — 3 questions tied to current project cycle. No screens. 25 min outdoor play after eating. This is where the Harvard mealtime vocabulary research and the CASA dinner research activate daily.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Snow &amp; Beals 2006 · CASA 10-yr study 40% A/B finding · Outdoor restoration</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>1:20–2:15</span></div><div class="ds-type"><span style="color:var(--m3-mid)">Enrichment</span></div><div class="ds-main"><h4>Reading + Arts + Music + Making</h4><p>Independent reading (student-chosen). Then instrument practice, visual arts, or making from the Family Learning Guide. Student chooses the mode. Advisor tracks this in the weekly plan — it's not optional enrichment, it's part of the mastery map.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Román-Caballero music WM · KH Kim creativity preservation · SDT autonomy · Robinson arts</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>2:15–2:30</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Reflect</span></div><div class="ds-main"><h4>Portfolio Documentation</h4><p>Student documents the day: what was made, what was learned, what was hard. Added to digital portfolio. Advisor reviews all entries weekly — this is the accountability backbone of the Independent Study model.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Metacognition d=0.69 · Portfolio research · AI mastery map · Weekly advisor review</p></div></div>
+        </div>
+      </div>
+
+      <!-- IS FIELD -->
+      <div class="phase-content" id="is-field">
+        <div style="background:var(--m3-dark); color:rgba(248,244,238,0.6); padding:0.75rem 1.5rem; font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; border:1px solid var(--light); border-bottom:none">
+          Field Phase · Independent Study Home Day · Flexible · Internship-Integrated · Senior Contribution · Weekly Advisor
+        </div>
+        <div class="day-sched">
+          <div class="ds-block anchor"><div class="ds-time"><span>8:30–9:00</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Launch</span></div><div class="ds-main"><h4>Morning Planning — Self-Directed</h4><p>Student reviews weekly plan independently. Sets today's priorities: what to advance on the Senior Contribution, whether today is an internship day, what question to bring to the advisor this week. Full self-direction expected at this phase.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>SDT autonomy · Metacognition · Self-direction as the primary Field Phase outcome</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>9:00–9:45</span></div><div class="ds-type"><span style="color:var(--m3)">Movement</span></div><div class="ds-main"><h4>Morning Movement — Student-Chosen</h4><p>45 min student-chosen physical activity. Running, cycling, gym, sport, yoga — student decides. At this age the goal is establishing a lifelong movement habit, not compliance with a program.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>He et al. 2025 · SDT autonomy in movement · Lifelong habit formation</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>9:45–12:00</span></div><div class="ds-type"><span style="color:var(--m2-mid)">Senior Work</span></div><div class="ds-main"><h4>Senior Contribution Deep Work Block</h4><p>Extended focus on the year-long Senior Contribution project — student-defined, community-serving, publicly presented. Researching, building, creating, writing, meeting with mentors, or conducting field work. Movement breaks every 25–30 min.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>SDT autonomy · 90-min deep work · Internship research Strada 2025 · Senior Contribution as highest expression of the model</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>OR</span></div><div class="ds-type"><span style="color:var(--m3-mid)">Internship</span></div><div class="ds-main"><h4>Internship Day (2–3 days/week)</h4><p>On internship days, 9:00am–12:30pm or longer is spent at the community placement — with a business owner, entrepreneur, artist, scientist, or practitioner. The most powerful learning available at this phase. Family networks sourced; advisor-guided.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>Entrepreneur mentor RCT 20% career effect · Strada 73% · Big Picture 93% graduation · Iowa BIG ACT 22</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>12:00–1:00</span></div><div class="ds-type"><span style="color:var(--m2)">Nutrition</span></div><div class="ds-main"><h4>Family Lunch (when at home)</h4><p>Family eats together when schedule allows. Even in the Field Phase — especially in the Field Phase — the dinner table conversation research applies. These conversations now go deeper: "What did you encounter at your internship? What would you do differently?"</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>CASA 10-yr study · Snow &amp; Beals · Family conversation supports internship integration</p></div></div>
+          <div class="ds-block" style="border-top:none"><div class="ds-time"><span>1:00–2:30</span></div><div class="ds-type"><span style="color:var(--m3-mid)">Enrichment</span></div><div class="ds-main"><h4>Deep Reading + Elective Specialization</h4><p>Extended reading in a domain connected to Senior Contribution or elective track. Instrument practice, advanced making, or independent study in a chosen discipline. Fully student-directed. Advisor tracks via weekly portfolio review.</p></div><div class="ds-why"><div class="wy-l" style="color:var(--muted)">Why</div><p>SDT autonomy · Robinson Element · Deep domain knowledge as creative foundation</p></div></div>
+          <div class="ds-block anchor" style="border-top:none"><div class="ds-time"><span>2:30–2:45</span></div><div class="ds-type"><span style="color:rgba(248,244,238,0.5)">Reflect</span></div><div class="ds-main"><h4>Portfolio Entry + Mastery Map Update</h4><p>Student updates their portfolio and mastery map — logging what was demonstrated today. AI tracks patterns across the week. Advisor reviews everything in the weekly 1:1 and adjusts the plan.</p></div><div class="ds-why"><div class="wy-l" style="color:rgba(248,244,238,0.4)">Why</div><p>Metacognition d=0.69 · AI mastery tracking PMC11544060 · Competency-based progression</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Honest limitations -->
+    <div class="dark-band" style="background:var(--m3-dark)">
+      <div class="dark-band-inner">
+        <h3>What Independent Study Requires — and What It Cannot Fully Replace</h3>
+        <p style="font-size:0.85rem; color:rgba(248,244,238,0.5); max-width:60ch; margin-bottom:2rem; line-height:1.7">The research is honest: some elements of the Groundwork model are harder to fully replicate at home. Families choosing Independent Study should understand these limitations and how the model addresses them.</p>
+        <div class="dark-band-grid">
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,144,80,0.8)">Limitation</div>
+            <h4>Daily Peer Interaction</h4>
+            <p>Children need peers. Research on social development is clear. Monthly community days, community sports leagues, co-ops, and neighborhood play groups are essential supplements — not optional.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,144,80,0.8)">Limitation</div>
+            <h4>Diverse Adult Relationships</h4>
+            <p>The advisor provides one key adult relationship. The community mentor network provides others. Families must actively pursue varied adult mentorship — community organizations, sports coaches, faith communities, clubs.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:rgba(248,144,80,0.8)">Limitation</div>
+            <h4>Parent Capacity</h4>
+            <p>Independent Study requires a dedicated adult at home who has completed Groundwork training and can maintain the structure. It is not appropriate for families without this capacity. Honest assessment at enrollment is essential.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m3-mid)">Addressed By</div>
+            <h4>Monthly Community Days</h4>
+            <p>Concentrated, high-quality peer time. Project exhibitions, collaborative work, shared meals, and movement — all the community elements, once per month with full intensity.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m3-mid)">Addressed By</div>
+            <h4>Community Mentor Network</h4>
+            <p>Active placement of students with community mentors for project support and Field Phase internships. Families access the network; the school maintains relationships and quality standards.</p>
+          </div>
+          <div class="db-item">
+            <div class="db-label" style="color:var(--m3-mid)">Addressed By</div>
+            <h4>Groundwork Family Training</h4>
+            <p>Required 4-hour family training before enrollment. Covers facilitation skills, the movement guide, how to use AI tools, when not to help, and how to reach the advisor. Ongoing support throughout.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- WHICH MODEL? -->
+<div style="background:var(--sand)">
+  <div class="sw">
+    <div class="sec-ey" style="color:var(--muted)">Choosing Your Path</div>
+    <h2 class="sec-ti">Which Model Is Right<br>for Your Family?</h2>
+    <p class="sec-le">The research doesn't dictate a single delivery format — it dictates the elements that must be present. Each model ensures those elements are present. The choice is about your family's situation, not about which is "better."</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1px; background:var(--light); border:1px solid var(--light)">
+      <div style="background:var(--paper); padding:2.5rem 2rem; border-top:3px solid var(--m1)">
+        <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m1); margin-bottom:0.75rem">Choose In-Person School if...</div>
+        <ul style="list-style:none; padding:0">
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m1-mid)">→</span>You want the full daily community experience for your child</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m1-mid)">→</span>Both parents work full-time and need a full school day</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m1-mid)">→</span>Your child thrives on daily peer interaction and structured environment</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m1-mid)">→</span>You want the full movement infrastructure, campus environment, and specialist teachers</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; line-height:1.6"><span style="position:absolute; left:0; color:var(--m1-mid)">→</span>You prefer to be the family partner rather than the home teacher</li>
+        </ul>
+      </div>
+      <div style="background:var(--paper); padding:2.5rem 2rem; border-top:3px solid var(--m2)">
+        <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m2); margin-bottom:0.75rem">Choose Hybrid if...</div>
+        <ul style="list-style:none; padding:0">
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m2-mid)">→</span>You want community and structure but also meaningful family time on weekdays</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m2-mid)">→</span>One parent works part-time or from home and can facilitate home days</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m2-mid)">→</span>You value the research on family involvement and want to be more actively involved in daily learning</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m2-mid)">→</span>Your child does well with both community time and independent work</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; line-height:1.6"><span style="position:absolute; left:0; color:var(--m2-mid)">→</span>You want a transition path — either toward more campus time or toward independent study</li>
+        </ul>
+      </div>
+      <div style="background:var(--paper); padding:2.5rem 2rem; border-top:3px solid var(--m3)">
+        <div style="font-family:'DM Mono',monospace; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--m3); margin-bottom:0.75rem">Choose Independent Study if...</div>
+        <ul style="list-style:none; padding:0">
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m3-mid)">→</span>A committed adult is available to facilitate learning at home daily</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m3-mid)">→</span>Your family travels, lives rurally, or has scheduling constraints that make campus attendance difficult</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m3-mid)">→</span>You are deeply engaged in your child's education and want to be the primary teacher</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; margin-bottom:0.6rem; line-height:1.6"><span style="position:absolute; left:0; color:var(--m3-mid)">→</span>Your family has professional or entrepreneurial networks that could enrich the Field Phase</li>
+          <li style="font-size:0.82rem; color:var(--muted); padding-left:0.85rem; position:relative; line-height:1.6"><span style="position:absolute; left:0; color:var(--m3-mid)">→</span>You are willing to actively build peer community through co-ops, sports leagues, and monthly gatherings</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h2>The Groundwork<br>Three Pathways</h2>
+      <p>One research-backed framework. Three delivery models. Every element traceable to peer-reviewed evidence. The graduate profile, instruction model, movement program, family partnership, and creative environment — delivered wherever your family is.</p>
+    </div>
+    <div class="footer-col">
+      <h4>The Three Models</h4>
+      <ul>
+        <li>In-Person School</li>
+        <li>Hybrid</li>
+        <li>Independent Study</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Research Foundation</h4>
+      <ul>
+        <li>14 research domains</li>
+        <li>50+ peer-reviewed studies</li>
+        <li>Physical activity program</li>
+        <li>Instruction science</li>
+        <li>Family partnership</li>
+        <li>Environment design</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Version</h4>
+      <ul>
+        <li>Three Pathways v1.0</li>
+        <li>Based on Groundwork v3</li>
+        <li>Research current May 2026</li>
+        <li>Nothing sacred</li>
+        <li>Everything earned</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+<script>
+function togglePhase(pathway, phase, btn) {
+  // Hide all phase-content in this pathway
+  var prefix = pathway + '-';
+  document.querySelectorAll('[id^="' + prefix + '"]').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  // Show selected
+  var target = document.getElementById(prefix + phase);
+  if (target) target.classList.add('active');
+  // Update tab buttons — find siblings
+  var tabContainer = btn.parentElement;
+  tabContainer.querySelectorAll('.phase-tab').forEach(function(t) {
+    t.classList.remove('active');
+    t.style.background = '';
+    t.style.color = '';
+  });
+  btn.classList.add('active');
+  // Color the active tab per pathway
+  var colors = { ip: { bg: 'var(--m1-dark)', roots: 'var(--m1-dark)', workshop: 'var(--m2-dark)', field: 'var(--m3-dark)' },
+                 hy: { roots: 'var(--m1-dark)', workshop: 'var(--m2-dark)', field: 'var(--m3-dark)' },
+                 is: { roots: 'var(--m1-dark)', workshop: 'var(--m2-dark)', field: 'var(--m3-dark)' } };
+  if (colors[pathway] && colors[pathway][phase]) {
+    btn.style.background = colors[pathway][phase];
+    btn.style.color = 'var(--paper)';
+  }
+}
+</script>
+</html>
